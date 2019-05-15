@@ -92,7 +92,7 @@ class LoginPage extends React.Component {
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
                   <Button color="warning" simple size="lg" block>
-                    Let's Go
+                    Enviar
                   </Button>
                 </CardFooter>
               </Card>
