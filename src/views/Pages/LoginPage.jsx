@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import { connect } from 'react-redux';
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -20,6 +20,9 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+
+import * as authenticationActions from '../../actions/authenticationActions';
+import { bindActionCreators } from 'redux'
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
@@ -44,13 +47,40 @@ class LoginPage extends React.Component {
     clearTimeout(this.timeOutFunction);
     this.timeOutFunction = null;
   }
+
+  onHandleLogin = (event) => {
+    event.preventDefault();
+
+    let username = event.target.firstname.value;
+    let password = event.target.password.value;
+
+    const data = {
+      username, password
+    };
+
+    this.props.UserActions.loginUserAction(data);
+  }
+
   render() {
     const { classes } = this.props;
+
+    let isSuccess, message;
+
+    if (this.props.response.login.hasOwnProperty('response')) {
+      isSuccess = this.props.response.login.response.success;
+      message = this.props.response.login.response.message;
+
+      if (isSuccess) {
+        localStorage.removeItem('token');
+        localStorage.setItem('token', this.props.response.login.response.token);
+      }
+    }
+
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
           <GridItem xs={12} sm={6} md={4}>
-            <form>
+            <form onSubmit={this.onHandleLogin}>
               <Card login className={classes[this.state.cardAnimaton]}>
                 <CardHeader
                   className={`${classes.cardHeader} ${classes.textCenter}`}
@@ -91,7 +121,7 @@ class LoginPage extends React.Component {
                   />
                 </CardBody>
                 <CardFooter className={classes.justifyContentCenter}>
-                  <Button color="warning" simple size="lg" block>
+                  <Button type="submit" color="warning" simple size="lg" block>
                     Enviar
                   </Button>
                 </CardFooter>
@@ -108,4 +138,13 @@ LoginPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(loginPageStyle)(LoginPage);
+const mapStateToProps = (response) => ({response});
+
+function mapDispatchToProps(dispatch){
+  return{
+    // actions: bindActionCreators(acciones, dispatch)
+    UserActions:  bindActionCreators(authenticationActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(loginPageStyle)(LoginPage));
