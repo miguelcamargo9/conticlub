@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as serviceConst from './index'
 
 export const registerUserService = (request) => {
-  let REGISTER_API_ENDPOINT = 'http://localhost:4000/api/v1/register';
+  const REGISTER_API_ENDPOINT = 'http://localhost:4000/api/v1/register';
 
   const parameters = {
     method: 'POST',
@@ -22,9 +22,9 @@ export const registerUserService = (request) => {
 };
 
 export const loginUserService = (request) => {
-  let LOGIN_API_ENDPOINT = 'http://localhost:8000/api/login';
+  const LOGIN_API_ENDPOINT = 'http://localhost:8000/api/login';
 
-  let data = {
+  const data = {
     username: request.username,
     password: request.password,
     grant_type: serviceConst.GRANT_TYPE,
