@@ -51,8 +51,8 @@ class LoginPage extends React.Component {
   onHandleLogin = (event) => {
     event.preventDefault();
 
-    let username = event.target.firstname.value;
-    let password = event.target.password.value;
+   const username = event.target.firstname.value;
+    const password = event.target.password.value;
 
     const data = {
       username, password
@@ -140,7 +140,6 @@ const mapStateToProps = (response) => ({response});
 
 function mapDispatchToProps(dispatch){
   return{
-    // actions: bindActionCreators(acciones, dispatch)
     UserActions:  bindActionCreators(authenticationActions, dispatch)
   }
 }
