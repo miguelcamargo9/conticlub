@@ -142,7 +142,6 @@ const mapStateToProps = (response) => ({response});
 
 function mapDispatchToProps(dispatch){
   return{
-    // actions: bindActionCreators(acciones, dispatch)
     UserActions:  bindActionCreators(authenticationActions, dispatch)
   }
 }
