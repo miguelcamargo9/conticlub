@@ -64,11 +64,9 @@ class LoginPage extends React.Component {
   render() {
     const { classes } = this.props;
 
-    let isSuccess, message;
-
     if (this.props.response.login.hasOwnProperty('response')) {
-      isSuccess = this.props.response.login.response.success;
-      message = this.props.response.login.response.message;
+      const isSuccess = this.props.response.login.response.success;
+      const message = this.props.response.login.response.message;
 
       if (isSuccess) {
         localStorage.removeItem('token');
