@@ -5,9 +5,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
 import LiveHelp from "@material-ui/icons/LiveHelp";
-import LocationOn from "@material-ui/icons/LocationOn";
 import Gavel from "@material-ui/icons/Gavel";
-import HelpOutline from "@material-ui/icons/HelpOutline";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -110,7 +108,7 @@ class howToWorks extends React.Component {
                       <CardBody>
                         <div>
                             <div><strong>Si deseas conocer como manejar la plataforma, descarga el manual de usuario en el siguiente link:</strong></div>
-                            <div><a href='http://conticlub.co/sites/default/files/MANUAL_DE_USUARIO.pdf' target='_blank'>Descargar manual de usuario</a></div>
+                            <div><a href='http://conticlub.co/sites/default/files/MANUAL_DE_USUARIO.pdf' target='_blank' rel="noopener noreferrer">Descargar manual de usuario</a></div>
                             <div>&nbsp;</div>
                             <div><strong>¿Cómo consulto el estado de aprobación de mi solicitud para redimir? </strong></div>
                             <div>Rta: Para consultar el estado de aprobación, se debe ingresar al perfil y en el apartado “mis pedidos y lista de deseos” ahí podrá verificar el estado de su solicitud hasta su entrega.</div>

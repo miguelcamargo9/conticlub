@@ -16,11 +16,6 @@ function Footer({ ...props }) {
     [classes.containerFluid]: fluid,
     [classes.whiteColor]: white
   });
-  var anchor =
-    classes.a +
-    cx({
-      [" " + classes.whiteColor]: white
-    });
   var block = cx({
     [classes.block]: true,
     [classes.whiteColor]: white
