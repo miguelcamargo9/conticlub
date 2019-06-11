@@ -24,7 +24,7 @@ import logo from "assets/img/logo-white.svg";
 
 var ps;
 
-class Dashboard extends React.Component {
+class Content extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -196,4 +196,4 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(Dashboard);
+export default withStyles(appStyle)(Content);
