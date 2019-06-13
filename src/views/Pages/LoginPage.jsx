@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -20,9 +20,10 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import compose from "recompose/compose";
 
-import * as authenticationActions from '../../actions/authenticationActions';
-import { bindActionCreators } from 'redux'
+import * as authenticationActions from "../../actions/authenticationActions";
+import { bindActionCreators } from "redux";
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
@@ -48,29 +49,30 @@ class LoginPage extends React.Component {
     this.timeOutFunction = null;
   }
 
-  onHandleLogin = (event) => {
+  onHandleLogin = event => {
     event.preventDefault();
 
-   const username = event.target.firstname.value;
+    const username = event.target.firstname.value;
     const password = event.target.password.value;
 
     const data = {
-      username, password
+      username,
+      password
     };
 
     this.props.UserActions.loginUserAction(data);
-  }
+  };
 
   render() {
     const { classes } = this.props;
 
-    if (this.props.response.login.hasOwnProperty('response')) {
+    if (this.props.response.login.hasOwnProperty("response")) {
       const isSuccess = this.props.response.login.response.success;
       const message = this.props.response.login.response.message;
 
       if (isSuccess) {
-        localStorage.removeItem('token');
-        localStorage.setItem('token', this.props.response.login.response.token);
+        localStorage.removeItem("token");
+        localStorage.setItem("token", this.props.response.login.response.token);
       }
     }
 
@@ -136,12 +138,18 @@ LoginPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (response) => ({response});
+const mapStateToProps = response => ({ response });
 
-function mapDispatchToProps(dispatch){
-  return{
-    UserActions:  bindActionCreators(authenticationActions, dispatch)
-  }
+function mapDispatchToProps(dispatch) {
+  return {
+    UserActions: bindActionCreators(authenticationActions, dispatch)
+  };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(loginPageStyle)(LoginPage));
+export default compose(
+  withStyles(loginPageStyle),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(LoginPage);

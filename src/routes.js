@@ -10,6 +10,7 @@ import ExtendedTables from "views/Tables/ExtendedTables.jsx";
 import FullScreenMap from "views/Maps/FullScreenMap.jsx";
 import GoogleMaps from "views/Maps/GoogleMaps.jsx";
 import GridSystem from "views/Components/GridSystem.jsx";
+import Home from "views/Home/Home.jsx";
 import HowToWorks from "views/Pages/HowToWorks.jsx";
 import Icons from "views/Components/Icons.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
@@ -49,6 +50,7 @@ import CardTravel from "@material-ui/icons/CardTravel";
 import Place from "@material-ui/icons/Place";
 import Timeline from "@material-ui/icons/Timeline";
 import WidgetsIcon from "@material-ui/icons/Widgets";
+import Lock from "@material-ui/icons/Lock";
 
 var dashRoutes = [
   {
@@ -56,8 +58,16 @@ var dashRoutes = [
     name: "Inicio",
     rtlName: "Home",
     icon: HomeIcon,
-    component: Dashboard,
-    layout: "/home"
+    component: Home,
+    layout: "/admin"
+  },
+  {
+    path: "/admin",
+    name: "Administración",
+    rtlName: "Admin",
+    icon: Lock,
+    component: Home,
+    layout: "/admin"
   },
   {
     collapse: true,
