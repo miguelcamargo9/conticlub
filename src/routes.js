@@ -1,3 +1,4 @@
+import AdminSlide from "views/Admin/Slides/AdminSlide.jsx";
 import Buttons from "views/Components/Buttons.jsx";
 import Calendar from "views/Calendar/Calendar.jsx";
 import Charts from "views/Charts/Charts.jsx";
@@ -62,12 +63,21 @@ var dashRoutes = [
     layout: "/admin"
   },
   {
-    path: "/admin",
+    collapse: true,
     name: "Administración",
     rtlName: "Admin",
     icon: Lock,
-    component: Home,
-    layout: "/admin"
+    views: [
+      {
+        path: "/admin-slides",
+        name: "Slides",
+        rtlName: "Admin Slides",
+        mini: "SL",
+        rtlMini: "SL",
+        layout: "/admin",
+        component: AdminSlide
+      }
+    ]
   },
   {
     collapse: true,
