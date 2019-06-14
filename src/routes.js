@@ -24,6 +24,7 @@ import ProductList from "views/Lists/Products/ProductList.jsx";
 import RTLSupport from "views/Pages/RTLSupport.jsx";
 import ReactTables from "views/Tables/ReactTables.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
+import RegisterUserForm from "views/Forms/Users/RegisterUserForm.jsx";
 import RegularForms from "views/Forms/RegularForms.jsx";
 import RegularTables from "views/Tables/RegularTables.jsx";
 import SweetAlert from "views/Components/SweetAlert.jsx";
@@ -164,6 +165,25 @@ var dashRoutes = [
     icon: Gavel,
     component: Politics,
     layout: "/admin"
+  },
+  {
+    path: "/register-page",
+    name: "Registrar Usuario",
+    rtlName: "User Register",
+    mini: "RU",
+    rtlMini: "UR",
+    component: RegisterUserForm,
+    layout: "/auth",
+    invisible: true
+  },
+  {
+    path: "/login-page",
+    name: "Login Page",
+    rtlName: "Login Page",
+    mini: "L",
+    rtlMini: "LP",
+    component: LoginPage,
+    layout: "/auth"
   }
 ];
 export default dashRoutes;
