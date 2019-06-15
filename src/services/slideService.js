@@ -1,8 +1,11 @@
 import axios from "axios";
+
 import * as serviceConst from "./index";
+import { SERVER_URL } from "../constants/server"
+
 
 export const slideService = () => {
-  const LOGIN_API_ENDPOINT = "http://conticlub.co:8000/api/slides/all";
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/slides/all`;
 
   const data = {
     headers: {
