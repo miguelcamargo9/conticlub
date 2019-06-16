@@ -45,6 +45,8 @@ class RegisterUserForm extends React.Component {
               finishButtonClick={e => console.log(e)}
               nextButtonText="Siguiente"
               color="warning"
+              finishButtonText="Guardar"
+              previousButtonText="Atrás"
             />
           </GridItem>
         </GridContainer>

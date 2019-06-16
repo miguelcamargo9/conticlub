@@ -93,7 +93,7 @@ var dashRoutes = [
         rtlName: "Create User",
         mini: "CU",
         rtlMini: "CU",
-        component: Wizard,
+        component: RegisterUserForm,
         layout: "/admin"
       },
       {
