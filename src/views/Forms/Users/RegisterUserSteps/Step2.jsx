@@ -2,10 +2,6 @@ import React from "react";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 // @material-ui/icons
@@ -28,7 +24,7 @@ const style = {
   ...customSelectStyle
 };
 
-class Step3 extends React.Component {
+class Step2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -212,4 +208,4 @@ class Step3 extends React.Component {
   }
 }
 
-export default withStyles(style)(Step3);
+export default withStyles(style)(Step2);

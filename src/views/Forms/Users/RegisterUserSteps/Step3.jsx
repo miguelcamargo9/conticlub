@@ -1,193 +1,164 @@
 import React from "react";
+import Select from "react-select";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import compose from "recompose/compose";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Checkbox from "@material-ui/core/Checkbox";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
+import CustomInput from "components/CustomInput/CustomInput.jsx";
 
-import customSelectStyle from "assets/jss/material-dashboard-pro-react/customSelectStyle.jsx";
-import customCheckboxRadioSwitch from "assets/jss/material-dashboard-pro-react/customCheckboxRadioSwitch.jsx";
+// @material-ui/icons
+import LocationCity from "@material-ui/icons/LocationCity";
+import Smartphone from "@material-ui/icons/Smartphone";
 
-const style = {
-  infoText: {
-    fontWeight: "300",
-    margin: "10px 0 30px",
-    textAlign: "center"
-  },
-  inputAdornmentIcon: {
-    color: "#555"
-  },
-  choiche: {
-    textAlign: "center",
-    cursor: "pointer",
-    marginTop: "20px"
-  },
-  ...customSelectStyle,
-  ...customCheckboxRadioSwitch
-};
+import registerUserFormStyle from "assets/jss/material-dashboard-pro-react/views/registerUserFormStyle.jsx";
 
-class Step2 extends React.Component {
+import * as subsidiaryActions from "../../../../actions/subsidiaryActions";
+
+class Step3 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       simpleSelect: "",
       desgin: false,
       code: false,
-      develop: false
+      develop: false,
+      selectedOption: null,
+      city: "Bogotá"
     };
   }
+
+  componentDidMount() {
+    this.props.SubsidiaryActions.getSubsidiariesData();
+  }
+  changeDataToSelect() {
+    const { subsidiaries } = this.props;
+    let selectData = [];
+
+    if (subsidiaries.length > 0) {
+      selectData = subsidiaries.map((subsidiary, index) => {
+        subsidiary.value = subsidiary.id;
+        subsidiary.label = subsidiary.name;
+        return subsidiary;
+      });
+      return selectData;
+    }
+  }
+  // function that verifies if a string has a given length or not
+  verifyLength(value, length) {
+    if (value.length >= length) {
+      return true;
+    }
+    return false;
+  }
+  handleChange = selectedOption => {
+    this.setState({ selectedOption, city: selectedOption.city.name });
+    console.log(`Option selected:`, selectedOption);
+  };
   sendState() {
     return this.state;
   }
   handleSimple = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
+  change(event, stateName, type, stateNameEqualTo, maxValue) {
+    switch (type) {
+      case "length":
+        if (this.verifyLength(event.target.value, stateNameEqualTo)) {
+          this.setState({ [stateName + "State"]: "success" });
+        } else {
+          this.setState({ [stateName + "State"]: "error" });
+        }
+        break;
+      default:
+        break;
+    }
+    this.setState({ [stateName]: event.target.value });
+  }
   isValidated() {
     return true;
   }
   render() {
     const { classes } = this.props;
+    const tableData = this.changeDataToSelect();
     return (
       <div>
-        <h4 className={classes.infoText}>What are you doing? (checkboxes)</h4>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={12} lg={10}>
             <GridContainer>
-              <GridItem xs={12} sm={4}>
-                <div className={classes.choiche}>
-                  <Checkbox
-                    tabIndex={-1}
-                    onClick={this.handleChange("desgin")}
-                    checkedIcon={
-                      <i
-                        className={
-                          "fas fa-pencil-alt " + classes.iconCheckboxIcon
-                        }
-                      />
-                    }
-                    icon={
-                      <i
-                        className={
-                          "fas fa-pencil-alt " + classes.iconCheckboxIcon
-                        }
-                      />
-                    }
-                    classes={{
-                      checked: classes.iconCheckboxChecked,
-                      root: classes.iconCheckbox
-                    }}
-                  />
-                  <h6>Design</h6>
-                </div>
+              <GridItem xs={12} sm={5}>
+                <InputLabel
+                  htmlFor="simple-select"
+                  className={classes.selectLabel}
+                >
+                  Seleccione una sucursal
+                </InputLabel>
+                <Select
+                  value={this.selectedOption}
+                  onChange={this.handleChange}
+                  options={this.props.subsidiaries}
+                />
               </GridItem>
-              <GridItem xs={12} sm={4}>
-                <div className={classes.choiche}>
-                  <Checkbox
-                    tabIndex={-1}
-                    onClick={this.handleChange("code")}
-                    checkedIcon={
-                      <i
-                        className={
-                          "fas fa-terminal " + classes.iconCheckboxIcon
-                        }
-                      />
-                    }
-                    icon={
-                      <i
-                        className={
-                          "fas fa-terminal " + classes.iconCheckboxIcon
-                        }
-                      />
-                    }
-                    classes={{
-                      checked: classes.iconCheckboxChecked,
-                      root: classes.iconCheckbox
-                    }}
-                  />
-                  <h6>Code</h6>
-                </div>
+              <GridItem xs={12} sm={5}>
+                <CustomInput
+                  success={this.state.cityState === "success"}
+                  error={this.state.cityState === "error"}
+                  labelText={
+                    <span>
+                      Ciudad <small>(requerido)</small>
+                    </span>
+                  }
+                  id="city"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: event => this.change(event, "city", "length", 5),
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        className={classes.inputAdornment}
+                      >
+                        <LocationCity className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    ),
+                    readOnly: true,
+                    value: this.state.city
+                  }}
+                />
               </GridItem>
-              <GridItem xs={12} sm={4}>
-                <div className={classes.choiche}>
-                  <Checkbox
-                    tabIndex={-1}
-                    onClick={this.handleChange("develop")}
-                    checkedIcon={
-                      <i
-                        className={"fas fa-laptop " + classes.iconCheckboxIcon}
-                      />
-                    }
-                    icon={
-                      <i
-                        className={"fas fa-laptop " + classes.iconCheckboxIcon}
-                      />
-                    }
-                    classes={{
-                      checked: classes.iconCheckboxChecked,
-                      root: classes.iconCheckbox
-                    }}
-                  />
-                  <h6>Develop</h6>
-                </div>
-                <FormControl fullWidth className={classes.selectFormControl}>
-                  <InputLabel
-                    htmlFor="simple-select"
-                    className={classes.selectLabel}
-                  >
-                    Choose City
-                  </InputLabel>
-                  <Select
-                    MenuProps={{
-                      className: classes.selectMenu
-                    }}
-                    classes={{
-                      select: classes.select
-                    }}
-                    value={this.state.simpleSelect}
-                    onChange={this.handleSimple}
-                    inputProps={{
-                      name: "simpleSelect",
-                      id: "simple-select"
-                    }}
-                  >
-                    <MenuItem
-                      disabled
-                      classes={{
-                        root: classes.selectMenuItem
-                      }}
-                    >
-                      Choose City
-                    </MenuItem>
-                    <MenuItem
-                      classes={{
-                        root: classes.selectMenuItem,
-                        selected: classes.selectMenuItemSelected
-                      }}
-                      value="2"
-                    >
-                      Paris
-                    </MenuItem>
-                    <MenuItem
-                      classes={{
-                        root: classes.selectMenuItem,
-                        selected: classes.selectMenuItemSelected
-                      }}
-                      value="3"
-                    >
-                      Bucharest
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+              <GridItem xs={12} sm={5}>
+                <CustomInput
+                  success={this.state.phoneState === "success"}
+                  error={this.state.phoneState === "error"}
+                  labelText={
+                    <span>
+                      Celular <small>(requerido)</small>
+                    </span>
+                  }
+                  id="phone"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    onChange: event => this.change(event, "phone", "length", 5),
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        className={classes.inputAdornment}
+                      >
+                        <Smartphone className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
               </GridItem>
             </GridContainer>
           </GridItem>
@@ -197,4 +168,22 @@ class Step2 extends React.Component {
   }
 }
 
-export default withStyles(style)(Step2);
+function mapStateToProps(state) {
+  return {
+    subsidiaries: state.subsidiary.subsidiaries
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    SubsidiaryActions: bindActionCreators(subsidiaryActions, dispatch)
+  };
+}
+
+export default compose(
+  withStyles(registerUserFormStyle),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Step3);
