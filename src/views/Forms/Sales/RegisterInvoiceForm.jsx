@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -23,10 +24,16 @@ import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
+import { getBrands } from "../../../services/brandService";
+import { getDesignsByBrandId } from "../../../services/designService";
+import { getWhellsByDesignId } from "../../../services/whellService";
+import { insertInvoice } from "../../../services/invoiceService";
+
 class registerInvoiceForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      wheels: [{}],
       // register form
       registerEmail: "",
       registerEmailState: "",
@@ -66,6 +73,64 @@ class registerInvoiceForm extends React.Component {
       maxValueState: ""
     };
     this.typeClick = this.typeClick.bind(this);
+  }
+  addWhell() {
+    // const currentWheels = this.state.wheels;
+    // currentWheels.push({});
+    // this.setState({ wheels: currentWheels });
+  }
+  handleChangeBrand = brand => {
+    let designSelectData = [];
+    getDesignsByBrandId(brand.id).then(designInfo => {
+      designSelectData = designInfo.data.map((design, index) => {
+        design.value = design.id;
+        design.label = design.name;
+        return design;
+      });
+      this.setState({ designs: designSelectData });
+    });
+  };
+  handleChangeDesign = design => {
+    let whellSelectData = [];
+    getWhellsByDesignId(design.id).then(whellInfo => {
+      whellSelectData = whellInfo.data.map((whell, index) => {
+        whell.value = whell.id;
+        whell.label = whell.name;
+        return whell;
+      });
+      this.setState({ selectWhells: whellSelectData });
+    });
+  };
+  handleChangeWhell = whell => {
+    this.setState({ selectWhell: whell });
+  };
+  handleSubmit() {
+    console.log(this.state);
+    let dataInvoice = {
+      invoiceNumber: this.state.invoiceNumber,
+      totalAmount: this.state.totalInvoice,
+      rines: [
+        {
+          amount: this.state.amount,
+          rin_id: this.state.selectWhell.id
+        }
+      ]
+    };
+    console.log(dataInvoice);
+    insertInvoice(dataInvoice).then(whellInfo => {
+      console.log("whellInfo", whellInfo.data);
+    });
+  }
+  componentDidMount() {
+    let brandSelectData = [];
+    getBrands().then(brandInfo => {
+      brandSelectData = brandInfo.data.map((brand, index) => {
+        brand.value = brand.id;
+        brand.label = brand.name;
+        return brand;
+      });
+      this.setState({ brands: brandSelectData });
+    });
   }
   // function that returns true if value is email, false otherwise
   verifyEmail(value) {
@@ -343,78 +408,83 @@ class registerInvoiceForm extends React.Component {
                       removeButtonText="Borrar"
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Identificación
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={7}>
-                    <CustomInput
-                      success={this.state.numberState === "success"}
-                      error={this.state.numberState === "error"}
-                      id="number"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event =>
-                          this.change(event, "number", "number"),
-                        type: "number",
-                        endAdornment:
-                          this.state.numberState === "error" ? (
-                            <InputAdornment position="end">
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            undefined
-                          )
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={3}>
-                    <FormLabel className={classes.labelLeftHorizontal}>
-                      <code>number</code>
-                    </FormLabel>
-                  </GridItem>
                 </GridContainer>
-                <GridContainer>
-                  <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>
-                      Perfil
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={7}>
-                    <CustomInput
-                      success={this.state.urlState === "success"}
-                      error={this.state.urlState === "error"}
-                      id="url"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event => this.change(event, "url", "url"),
-                        type: "text",
-                        endAdornment:
-                          this.state.urlState === "error" ? (
-                            <InputAdornment position="end">
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            undefined
-                          )
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={3}>
-                    <FormLabel className={classes.labelLeftHorizontal}>
-                      <code>select</code>
-                    </FormLabel>
-                  </GridItem>
-                </GridContainer>
+                {this.state.wheels.map((wheel, key) => {
+                  return (
+                    <div key={key}>
+                      <GridContainer>
+                        <GridItem xs={12} sm={3}>
+                          <Select
+                            value={this.selectedOption}
+                            onChange={this.handleChangeBrand}
+                            options={this.state.brands}
+                            placeholder={"Seleccione una marca"}
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={3}>
+                          <Select
+                            value={this.selectedOption}
+                            onChange={this.handleChangeDesign}
+                            options={this.state.designs}
+                            placeholder={"Seleccione un diseño"}
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={3}>
+                          <Select
+                            value={this.selectedOption}
+                            onChange={this.handleChangeWhell}
+                            options={this.state.selectWhells}
+                            placeholder={"Ancho | Perfil rins"}
+                          />
+                        </GridItem>
+                      </GridContainer>
+                      <GridContainer>
+                        <GridItem xs={12} sm={3}>
+                          <CustomInput
+                            success={this.state.amountlState === "success"}
+                            error={this.state.amountState === "error"}
+                            labelText={
+                              <span>
+                                Cantidad <small>(requerido)</small>
+                              </span>
+                            }
+                            id="amount"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                            inputProps={{
+                              onChange: event =>
+                                this.change(event, "amount", "number"),
+                              type: "number",
+                              endAdornment:
+                                this.state.amountlState === "error" ? (
+                                  <InputAdornment position="end">
+                                    <Close className={classes.danger} />
+                                  </InputAdornment>
+                                ) : (
+                                  undefined
+                                )
+                            }}
+                          />
+                        </GridItem>
+                        <GridItem xs={12} sm={3}>
+                          {/* <Button
+                            color="success"
+                            size="sm"
+                            className={classes.marginRight}
+                            onClick={this.addWhell()}
+                          >
+                            Agregar
+                          </Button> */}
+                        </GridItem>
+                      </GridContainer>
+                    </div>
+                  );
+                })}
               </form>
             </CardBody>
             <CardFooter className={classes.justifyContentCenter}>
-              <Button color="warning" onClick={this.typeClick}>
+              <Button color="warning" onClick={this.handleSubmit.bind(this)}>
                 Guardar
               </Button>
             </CardFooter>
