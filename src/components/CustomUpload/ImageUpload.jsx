@@ -53,7 +53,10 @@ class ImageUpload extends React.Component {
       avatar,
       addButtonProps,
       changeButtonProps,
-      removeButtonProps
+      removeButtonProps,
+      uploadButtonText,
+      changeButtonText,
+      removeButtonText
     } = this.props;
     return (
       <div className="fileinput text-center">
@@ -64,19 +67,19 @@ class ImageUpload extends React.Component {
         <div>
           {this.state.file === null ? (
             <Button {...addButtonProps} onClick={() => this.handleClick()}>
-              {avatar ? "Add Photo" : "Select image"}
+              {avatar ? "Add Photo" : uploadButtonText}
             </Button>
           ) : (
             <span>
               <Button {...changeButtonProps} onClick={() => this.handleClick()}>
-                Change
+                {changeButtonText}
               </Button>
               {avatar ? <br /> : null}
               <Button
                 {...removeButtonProps}
                 onClick={() => this.handleRemove()}
               >
-                <i className="fas fa-times" /> Remove
+                <i className="fas fa-times" /> {removeButtonText}
               </Button>
             </span>
           )}
@@ -86,11 +89,20 @@ class ImageUpload extends React.Component {
   }
 }
 
+ImageUpload.defaultProps = {
+  uploadButtonText: "Select Image",
+  changeButtonText: "Change",
+  removeButtonText: "Remove"
+};
+
 ImageUpload.propTypes = {
   avatar: PropTypes.bool,
   addButtonProps: PropTypes.object,
   changeButtonProps: PropTypes.object,
-  removeButtonProps: PropTypes.object
+  removeButtonProps: PropTypes.object,
+  uploadButtonText: PropTypes.string,
+  changeButtonText: PropTypes.string,
+  removeButtonText: PropTypes.string
 };
 
 export default ImageUpload;
