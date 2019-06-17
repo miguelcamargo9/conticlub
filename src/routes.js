@@ -24,6 +24,7 @@ import ProductList from "views/Lists/Products/ProductList.jsx";
 import RTLSupport from "views/Pages/RTLSupport.jsx";
 import ReactTables from "views/Tables/ReactTables.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
+import RegisterInvoiceForm from "views/Forms/Sales/RegisterInvoiceForm.jsx";
 import RegisterUserForm from "views/Forms/Users/RegisterUserForm.jsx";
 import RegularForms from "views/Forms/RegularForms.jsx";
 import RegularTables from "views/Tables/RegularTables.jsx";
@@ -120,7 +121,7 @@ var dashRoutes = [
         rtlName: "Register Sale",
         mini: "IV",
         rtlMini: "RS",
-        component: CreateUserForm,
+        component: RegisterInvoiceForm,
         layout: "/admin"
       },
       {

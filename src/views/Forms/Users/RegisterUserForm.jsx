@@ -15,6 +15,9 @@ import Step3 from "./RegisterUserSteps/Step3.jsx";
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 
 class RegisterUserForm extends React.Component {
+  saveUserInfo(e) {
+    console.log("info", e);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -42,7 +45,7 @@ class RegisterUserForm extends React.Component {
               ]}
               title="Registrar Usuario"
               subtitle="Esta información es necesaria para registrarse en el sistema"
-              finishButtonClick={e => console.log(e)}
+              finishButtonClick={e => this.saveUserInfo(e)}
               nextButtonText="Siguiente"
               color="warning"
               finishButtonText="Guardar"
