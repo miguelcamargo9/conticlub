@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -57,9 +57,11 @@ class Step3 extends React.Component {
     }
     return false;
   }
-  handleChange = selectedOption => {
-    this.setState({ selectedOption, city: selectedOption.city.name });
-    console.log(`Option selected:`, selectedOption);
+  handleChangeSubsidiary = subsidiary => {
+    this.setState({
+      subsidiary,
+      city: subsidiary.city.name
+    });
   };
   sendState() {
     return this.state;
@@ -183,7 +185,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(
-    withStyles(registerUserFormStyle)(Step3)
-  )
+  )(withStyles(registerUserFormStyle)(Step3))
 );
