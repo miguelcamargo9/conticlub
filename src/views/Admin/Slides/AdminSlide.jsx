@@ -26,25 +26,21 @@ import Person from "@material-ui/icons/Person";
 import Edit from "@material-ui/icons/Edit";
 import Remove from "@material-ui/icons/Remove";
 
-
 // utils
 
-import { SERVER_URL } from '../../../constants/server'
+import { SERVER_URL } from "../../../constants/server";
 
 class AdminSlide extends React.Component {
-
-  
   componentDidMount() {
     this.props.SlideActions.getSlidesAction();
   }
 
   render() {
-
     const { classes } = this.props;
 
-    const simpleButtons = this.createButtons()
+    const simpleButtons = this.createButtons();
 
-    const tableData = this.buildTableData(simpleButtons)
+    const tableData = this.buildTableData(simpleButtons);
 
     return this.props.slides.length > 0 ? (
       <GridContainer>
@@ -85,58 +81,51 @@ class AdminSlide extends React.Component {
   /**
    * Create the action buttons for the table
    */
-  createButtons(){
-    
+  createButtons() {
     const buttons = [
       { color: "info", icon: Person },
       { color: "success", icon: Edit },
       { color: "danger", icon: Remove }
-    ]
-    
-    
-    return buttons.map((prop, key) => 
-      (
-        <Button
-          color={prop.color}
-          simple
-          className={this.props.classes.actionButton}
-          key={key}
-        >
-          <prop.icon className={this.props.classes.icon} />
-        </Button>
-      )
-    );   
+    ];
+
+    return buttons.map((prop, key) => (
+      <Button
+        color={prop.color}
+        simple
+        className={this.props.classes.actionButton}
+        key={key}
+      >
+        <prop.icon className={this.props.classes.icon} />
+      </Button>
+    ));
   }
-  
+
   /**
    * build the data that will be rendered in the table
    * @param {Element} simpleButtons button element
    */
-  buildTableData(simpleButtons){
-    const { slides } = this.props
+  buildTableData(simpleButtons) {
+    const { slides } = this.props;
     let tableData = [];
-    
+
     if (slides.length > 0) {
-
       tableData = slides.map((slide, index) => {
+        const path = SERVER_URL + slide.path;
+        const imgElement = (
+          <img src={path} width="150px" height="80px" alt="imagenes slides" />
+        );
 
-        const path = SERVER_URL + slide.path
-        const imgElement = <img src={path} width="150px" height="80px" alt="imagenes slides" />
+        return [index, imgElement, slide.path, simpleButtons];
+      });
 
-        return [index, imgElement, slide.path, simpleButtons]
-      })
-
-      return tableData
+      return tableData;
     }
   }
 }
 
-
-
 function mapStateToProps(state) {
   return {
-    slides: state.slide.slides,
-    flag: state.slide.flag
+    slides: state.slide.slides
   };
 }
 

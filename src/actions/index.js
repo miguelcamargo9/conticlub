@@ -7,6 +7,7 @@ export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 
 export const GET_SLIDES = "GET_SLIDES";
-export const SET_SRCIMG = "SET_SRCIMG";
+
+export const GET_PRODS = "GET_PRODS";
 
 export const DATA_USER = "DATA_USER";
