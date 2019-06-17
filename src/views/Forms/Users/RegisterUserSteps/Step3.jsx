@@ -2,8 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import compose from "recompose/compose";
-
+import { withRouter } from "react-router-dom"
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -180,10 +179,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default compose(
-  withStyles(registerUserFormStyle),
+export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
+  )(
+    withStyles(registerUserFormStyle)(Step3)
   )
-)(Step3);
+);
