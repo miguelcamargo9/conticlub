@@ -29,7 +29,7 @@ class Step3 extends React.Component {
       desgin: false,
       code: false,
       develop: false,
-      selectedOption: null,
+      subsidiary: null,
       city: "Bogotá"
     };
   }
@@ -102,8 +102,8 @@ class Step3 extends React.Component {
                   Seleccione una sucursal
                 </InputLabel>
                 <Select
-                  value={this.selectedOption}
-                  onChange={this.handleChange}
+                  value={this.subsidiary}
+                  onChange={this.handleChangeSubsidiary}
                   options={this.props.subsidiaries}
                 />
               </GridItem>
