@@ -62,7 +62,6 @@ class Step3 extends React.Component {
       subsidiary,
       city: subsidiary.city.name
     });
-    console.log(`Option selected:`, selectedOption);
   };
   sendState() {
     return this.state;
