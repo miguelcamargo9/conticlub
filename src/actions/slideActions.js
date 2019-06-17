@@ -14,16 +14,6 @@ export const setSlideData = dataSlide => {
   };
 };
 
-export const setSrcImg = flag => {
-  console.log("flag in sdispatch " + flag);
-  return {
-    type: types.SET_SRCIMG,
-    payload: {
-      flag: flag
-    }
-  };
-};
-
 export const getSlidesAction = () => {
   return dispatch => {
     slideService().then(slideInfo => {

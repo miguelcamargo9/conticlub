@@ -1,8 +1,7 @@
 import axios from "axios";
 
 import * as serviceConst from "./index";
-import { SERVER_URL } from "../constants/server"
-
+import { SERVER_URL } from "../constants/server";
 
 export const slideService = () => {
   const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/slides/all`;

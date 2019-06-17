@@ -2,17 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import compose from "recompose/compose";
+import classNames from "classnames";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // @material-ui/icons
-// import InfoOutline from "@material-ui/icons/InfoOutline";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import Refresh from "@material-ui/icons/Refresh";
 import Edit from "@material-ui/icons/Edit";
-import Place from "@material-ui/icons/Place";
+import Search from "@material-ui/icons/Search";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -23,36 +23,50 @@ import Pagination from "components/Pagination/Pagination.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Button from "components/CustomButtons/Button.jsx";
+import CustomInput from "components/CustomInput/CustomInput.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle";
 
 import * as productActions from "../../../actions/productActions";
-
-import priceImage1 from "assets/img/llantascontinental/powercontact_2 (1).png";
-import priceImage2 from "assets/img/llantascontinental/premiumcontact_2 (2).png";
-import priceImage3 from "assets/img/llantascontinental/sportcontact_6-1.png";
 
 // utils
 
 import { SERVER_URL } from "../../../constants/server";
 
 class productList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      filteredProducts: []
+    };
+  }
   componentDidMount() {
     this.props.ProductActions.getProductsAction();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.products !== this.props.products) {
+      this.setState({
+        products: this.props.products,
+        filteredProducts: this.props.products
+      });
+    }
+  }
+
   buildGridData(classes) {
-    const { products } = this.props;
     let gridData = [];
-    if (products.length > 0) {
-      gridData = products.map((picture, index) => {
-        // const path = SERVER_URL + picture.path;
+
+    if (this.state.filteredProducts.length > 0) {
+      gridData = this.state.filteredProducts.map((picture, index) => {
+        let hrefValue = "#" + index;
+        const path = SERVER_URL + picture.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3}>
             <Card product className={classes.cardHover}>
               <CardHeader image className={classes.cardHeaderHover}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  <img src={picture.image.medium} alt={picture.name} />
+                <a href={hrefValue} onClick={e => e.preventDefault()}>
+                  <img src={path} alt={picture.name} />
                 </a>
               </CardHeader>
               <CardBody>
@@ -90,17 +104,16 @@ class productList extends React.Component {
                 </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Power Contact 2
+                    {picture.name}
                   </a>
                 </h4>
-                <p className={classes.cardProductDesciprion}>Descripción</p>
+                <p className={classes.cardProductDesciprion}>
+                  {picture.product_category.name}
+                </p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>$899</h4>
-                </div>
-                <div className={`${classes.stats} ${classes.productStats}`}>
-                  <Place /> Bogotá, Colombia
+                  <h4>{picture.points} pts.</h4>
                 </div>
               </CardFooter>
             </Card>
@@ -113,15 +126,67 @@ class productList extends React.Component {
     }
   }
 
+  change(event) {
+    let searchText = event.target.value.toLowerCase();
+    if (searchText.length > 3) {
+      let productData = this.props.products.filter(product => {
+        return product.name.toLowerCase().includes(searchText);
+      });
+      this.setState({
+        filteredProducts: productData
+      });
+    } else {
+      this.setState({
+        filteredProducts: this.state.products
+      });
+    }
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes, rtlActive } = this.props;
+    const searchButton =
+      classes.top +
+      " " +
+      classes.searchButton +
+      " " +
+      classNames({
+        [classes.searchRTL]: rtlActive
+      });
 
     const gridData = this.buildGridData(classes);
 
-    return this.props.products.length > 0 ? (
+    return this.state.products.length > 0 ? (
       <div>
-        <h3>Lista de Productos</h3>
-        <br />
+        <GridContainer justify="space-between">
+          <GridItem xs={12} sm={2}>
+            <h4>Lista de Productos</h4>
+          </GridItem>
+          <GridItem xs={12} sm={3}>
+            <CustomInput
+              id="required"
+              formControlProps={{
+                className: classes.top + " " + classes.search
+              }}
+              inputProps={{
+                placeholder: rtlActive ? "Search" : "Buscar",
+                onChange: event => this.change(event),
+                type: "search",
+                className: classes.searchInput
+              }}
+            />
+            <Button
+              color="white"
+              aria-label="edit"
+              justIcon
+              round
+              className={searchButton}
+            >
+              <Search
+                className={classes.headerLinksSvg + " " + classes.searchIcon}
+              />
+            </Button>
+          </GridItem>
+        </GridContainer>
         <GridContainer>{gridData}</GridContainer>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={6}>
@@ -172,5 +237,3 @@ export default compose(
     mapDispatchToProps
   )
 )(productList);
-
-// export default withStyles(dashboardStyle)(productList);
