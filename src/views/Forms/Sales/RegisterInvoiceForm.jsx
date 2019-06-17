@@ -303,9 +303,9 @@ class registerInvoiceForm extends React.Component {
             <CardBody>
               <form>
                 <GridContainer>
-                  <GridItem xs={12} sm={1}>
+                  <GridItem xs={12} sm={2}>
                     <FormLabel className={classes.labelHorizontal}>
-                      Fecha
+                      Fecha de Factura
                     </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={2}>
@@ -434,7 +434,7 @@ class registerInvoiceForm extends React.Component {
                             value={this.selectedOption}
                             onChange={this.handleChangeWhell}
                             options={this.state.selectWhells}
-                            placeholder={"Ancho | Perfil rins"}
+                            placeholder={"Ancho | Perfil rin"}
                           />
                         </GridItem>
                       </GridContainer>
