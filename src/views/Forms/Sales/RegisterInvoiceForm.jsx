@@ -79,6 +79,9 @@ class registerInvoiceForm extends React.Component {
     // currentWheels.push({});
     // this.setState({ wheels: currentWheels });
   }
+  handleChangeImage = image => {
+    this.setState({ image: image });
+  };
   handleChangeBrand = brand => {
     let designSelectData = [];
     getDesignsByBrandId(brand.id).then(designInfo => {
@@ -114,7 +117,8 @@ class registerInvoiceForm extends React.Component {
           amount: this.state.amount,
           rin_id: this.state.selectWhell.id
         }
-      ]
+      ],
+      image: this.state.image
     };
     console.log(dataInvoice);
     insertInvoice(dataInvoice).then(whellInfo => {
@@ -391,6 +395,7 @@ class registerInvoiceForm extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={4} md={4}>
                     <ImageUpload
+                      handleChangeImage={this.handleChangeImage}
                       addButtonProps={{
                         color: "warning",
                         round: true

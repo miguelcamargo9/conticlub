@@ -33,7 +33,7 @@ class RegisterUserForm extends React.Component {
     };
 
     console.log("data a post", data);
-    createUserService(data);
+    // createUserService(data);
   }
   render() {
     const { classes } = this.props;
