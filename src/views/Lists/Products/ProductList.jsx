@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import compose from "recompose/compose";
@@ -29,9 +30,20 @@ import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashbo
 
 import * as productActions from "../../../actions/productActions";
 
+import { getCategoriesService } from "../../../services/productCategoryService";
+
 // utils
 
 import { SERVER_URL } from "../../../constants/server";
+
+const selectStyles = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "999"
+  })
+};
 
 class productList extends React.Component {
   constructor(props) {
@@ -48,27 +60,30 @@ class productList extends React.Component {
 
   componentDidMount() {
     this.props.ProductActions.getProductsAction();
+
+    getCategoriesService().then(categories => {
+      categories = categories.data.map(category => {
+        category.value = category.id;
+        category.label = category.name;
+        return category;
+      });
+      this.setState({ categories: categories });
+    });
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.products !== this.props.products) {
-      const { allPerPage, currentPage } = this.state;
+      const { allPerPage } = this.state;
       const { products } = this.props;
       let totalPages = Math.ceil(products.length / allPerPage);
-      const currentProducts = this.buildPagination(
-        allPerPage,
-        currentPage,
-        products
-      );
-      let pagination = this.createPagination(currentPage, totalPages);
-
-      console.log(pagination);
-
+      const currentProducts = this.buildPagination(allPerPage, 1, products);
+      let pagination = this.createPagination(1, totalPages);
       this.setState({
         products: this.props.products,
         filteredProducts: currentProducts,
         pagination,
-        totalPages
+        totalPages,
+        currentPage: 1
       });
     }
   }
@@ -128,14 +143,18 @@ class productList extends React.Component {
     return currentProducts;
   }
 
+  handleChangeCategory = category => {
+    this.props.ProductActions.getProductsByCategoryId(category.id);
+  };
+
   buildGridData(classes) {
     let gridData = [];
 
     if (this.state.filteredProducts.length > 0) {
       gridData = this.state.filteredProducts.map((picture, index) => {
         let hrefValue = "#" + index;
-        // const path = SERVER_URL + picture.image;
-        const path = picture.image;
+        const path = SERVER_URL + picture.image;
+        // const path = picture.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
             <Card product className={classes.cardHover}>
@@ -220,8 +239,6 @@ class productList extends React.Component {
   render() {
     const { classes, rtlActive } = this.props;
     const searchButton =
-      classes.top +
-      " " +
       classes.searchButton +
       " " +
       classNames({
@@ -232,30 +249,29 @@ class productList extends React.Component {
 
     return this.state.products.length > 0 ? (
       <div>
-        <GridContainer justify="center">
-          <GridItem xs={12} sm={12} md={6}>
-            <Card>
-              <CardBody style={{ textAlign: "center" }}>
-                <Pagination pages={this.state.pagination} color="warning" />
-              </CardBody>
-            </Card>
-          </GridItem>
-        </GridContainer>
         <GridContainer justify="space-between">
           <GridItem xs={12} sm={2}>
             <h4>Lista de Productos</h4>
           </GridItem>
           <GridItem xs={12} sm={3}>
+            <Select
+              value={this.selectedOption}
+              onChange={this.handleChangeCategory}
+              options={this.state.categories}
+              placeholder={"Seleccione una categoria"}
+              styles={selectStyles}
+            />
+          </GridItem>
+          <GridItem xs={12} sm={3}>
             <CustomInput
               id="required"
               formControlProps={{
-                className: classes.top + " " + classes.search
+                className: classes.search
               }}
               inputProps={{
                 placeholder: rtlActive ? "Search" : "Buscar",
                 onChange: event => this.change(event),
-                type: "search",
-                className: classes.searchInput
+                type: "search"
               }}
             />
             <Button
@@ -272,6 +288,11 @@ class productList extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>{gridData}</GridContainer>
+        <GridContainer justify="center">
+          <GridItem xs={12} sm={12} md={6}>
+            <Pagination pages={this.state.pagination} color="warning" />
+          </GridItem>
+        </GridContainer>
       </div>
     ) : (
       <div>Loading...</div>
