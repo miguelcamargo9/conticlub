@@ -13,8 +13,8 @@ export const setPictureData = dataProduct => {
 export const getProductsAction = () => {
   return dispatch => {
     productService().then(dataProduct => {
-      let output = dataProduct.data.slice(0, 16);
-      dispatch(setPictureData(output));
+      // let output = dataProduct.data.slice(0, 12);
+      dispatch(setPictureData(dataProduct.data));
     });
   };
 };
