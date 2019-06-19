@@ -41,7 +41,8 @@ const selectStyles = {
     ...base,
     opacity: state.isDisabled ? ".5" : "1",
     backgroundColor: "transparent",
-    zIndex: "999"
+    zIndex: "999",
+    width: "70%"
   })
 };
 
@@ -239,6 +240,10 @@ class productList extends React.Component {
   render() {
     const { classes, rtlActive } = this.props;
     const searchButton =
+      selectStyles +
+      " " +
+      classes.top +
+      " " +
       classes.searchButton +
       " " +
       classNames({
@@ -253,16 +258,7 @@ class productList extends React.Component {
           <GridItem xs={12} sm={2}>
             <h4>Lista de Productos</h4>
           </GridItem>
-          <GridItem xs={12} sm={3}>
-            <Select
-              value={this.selectedOption}
-              onChange={this.handleChangeCategory}
-              options={this.state.categories}
-              placeholder={"Seleccione una categoria"}
-              styles={selectStyles}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={3}>
+          <GridItem xs={12} sm={4}>
             <CustomInput
               id="required"
               formControlProps={{
@@ -285,8 +281,16 @@ class productList extends React.Component {
                 className={classes.headerLinksSvg + " " + classes.searchIcon}
               />
             </Button>
+            <Select
+              value={this.selectedOption}
+              onChange={this.handleChangeCategory}
+              options={this.state.categories}
+              placeholder={"Seleccione una categoria"}
+              styles={selectStyles}
+            />
           </GridItem>
         </GridContainer>
+        <hr />
         <GridContainer>{gridData}</GridContainer>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={6}>
