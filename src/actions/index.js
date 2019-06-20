@@ -12,6 +12,7 @@ export const DATA_USER = "DATA_USER";
 //Slides
 export const GET_SLIDES = "GET_SLIDES";
 
+//Products
 export const GET_PRODS = "GET_PRODS";
 
 //Subsidiary

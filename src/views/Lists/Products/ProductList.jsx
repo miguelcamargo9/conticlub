@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import compose from "recompose/compose";
@@ -29,30 +30,123 @@ import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashbo
 
 import * as productActions from "../../../actions/productActions";
 
+import { getCategoriesService } from "../../../services/productCategoryService";
+
 // utils
 
 import { SERVER_URL } from "../../../constants/server";
+
+const selectStyles = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "999",
+    width: "70%"
+  })
+};
 
 class productList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [],
-      filteredProducts: []
+      filteredProducts: [],
+      currentPage: 1,
+      allPerPage: 16,
+      totalPages: 0,
+      pagination: [{ text: "ATRAS" }]
     };
   }
+
   componentDidMount() {
     this.props.ProductActions.getProductsAction();
+
+    getCategoriesService().then(categories => {
+      categories = categories.data.map(category => {
+        category.value = category.id;
+        category.label = category.name;
+        return category;
+      });
+      this.setState({ categories: categories });
+    });
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.products !== this.props.products) {
+      const { allPerPage } = this.state;
+      const { products } = this.props;
+      let totalPages = Math.ceil(products.length / allPerPage);
+      const currentProducts = this.buildPagination(allPerPage, 1, products);
+      let pagination = this.createPagination(1, totalPages);
       this.setState({
         products: this.props.products,
-        filteredProducts: this.props.products
+        filteredProducts: currentProducts,
+        pagination,
+        totalPages,
+        currentPage: 1
       });
     }
   }
+
+  createPagination(currentPage, totalPages) {
+    let pagination = [
+      { text: "ATRAS", onClick: this.handleClickPaginator.bind(this) }
+    ];
+    for (let i = 1; i <= totalPages; i++) {
+      pagination.push({
+        text: i,
+        active: currentPage == i ? true : false,
+        onClick: this.handleClickPaginator.bind(this)
+      });
+    }
+    pagination.push({
+      text: "SIGUIENTE",
+      onClick: this.handleClickPaginator.bind(this)
+    });
+    return pagination;
+  }
+
+  handleClickPaginator(index) {
+    if (index === "ATRAS") {
+      index =
+        this.state.currentPage == 1
+          ? this.state.currentPage
+          : this.state.currentPage - 1;
+    }
+    if (index === "SIGUIENTE") {
+      index =
+        this.state.currentPage == this.state.totalPages
+          ? this.state.currentPage
+          : this.state.currentPage + 1;
+    }
+    const { allPerPage, totalPages } = this.state;
+    const { products } = this.props;
+    const currentProducts = this.buildPagination(allPerPage, index, products);
+    let pagination = this.createPagination(index, totalPages);
+
+    this.setState({
+      filteredProducts: currentProducts,
+      pagination,
+      currentPage: index
+    });
+  }
+
+  buildPagination(allPerPage, currentPage, products) {
+    // Logic for displaying todos
+    const indexOfLastProduct = currentPage * allPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - allPerPage;
+    const currentProducts = products.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+
+    return currentProducts;
+  }
+
+  handleChangeCategory = category => {
+    this.props.ProductActions.getProductsByCategoryId(category.id);
+  };
 
   buildGridData(classes) {
     let gridData = [];
@@ -61,8 +155,9 @@ class productList extends React.Component {
       gridData = this.state.filteredProducts.map((picture, index) => {
         let hrefValue = "#" + index;
         const path = SERVER_URL + picture.image;
+        // const path = picture.image;
         const imgElement = (
-          <GridItem xs={12} sm={6} md={6} lg={3}>
+          <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
             <Card product className={classes.cardHover}>
               <CardHeader image className={classes.cardHeaderHover}>
                 <a href={hrefValue} onClick={e => e.preventDefault()}>
@@ -145,6 +240,8 @@ class productList extends React.Component {
   render() {
     const { classes, rtlActive } = this.props;
     const searchButton =
+      selectStyles +
+      " " +
       classes.top +
       " " +
       classes.searchButton +
@@ -161,17 +258,16 @@ class productList extends React.Component {
           <GridItem xs={12} sm={2}>
             <h4>Lista de Productos</h4>
           </GridItem>
-          <GridItem xs={12} sm={3}>
+          <GridItem xs={12} sm={4}>
             <CustomInput
               id="required"
               formControlProps={{
-                className: classes.top + " " + classes.search
+                className: classes.search
               }}
               inputProps={{
                 placeholder: rtlActive ? "Search" : "Buscar",
                 onChange: event => this.change(event),
-                type: "search",
-                className: classes.searchInput
+                type: "search"
               }}
             />
             <Button
@@ -185,30 +281,20 @@ class productList extends React.Component {
                 className={classes.headerLinksSvg + " " + classes.searchIcon}
               />
             </Button>
+            <Select
+              value={this.selectedOption}
+              onChange={this.handleChangeCategory}
+              options={this.state.categories}
+              placeholder={"Seleccione una categoria"}
+              styles={selectStyles}
+            />
           </GridItem>
         </GridContainer>
+        <hr />
         <GridContainer>{gridData}</GridContainer>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={6}>
-            <Card>
-              <CardBody style={{ textAlign: "center" }}>
-                <Pagination
-                  pages={[
-                    { text: "PREV" },
-                    { text: 1 },
-                    { text: 2 },
-                    {
-                      active: true,
-                      text: 3
-                    },
-                    { text: 4 },
-                    { text: 5 },
-                    { text: "NEXT" }
-                  ]}
-                  color="warning"
-                />
-              </CardBody>
-            </Card>
+            <Pagination pages={this.state.pagination} color="warning" />
           </GridItem>
         </GridContainer>
       </div>

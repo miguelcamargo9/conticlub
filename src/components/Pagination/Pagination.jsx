@@ -21,7 +21,12 @@ function Pagination({ ...props }) {
         return (
           <li className={classes.paginationItem} key={key}>
             {prop.onClick !== undefined ? (
-              <Button onClick={prop.onClick} className={paginationLink}>
+              <Button
+                onClick={() => {
+                  prop.onClick(prop.text);
+                }}
+                className={paginationLink}
+              >
                 {prop.text}
               </Button>
             ) : (
@@ -51,7 +56,7 @@ Pagination.propTypes = {
       disabled: PropTypes.bool,
       text: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.oneOf(["PREV", "NEXT", "..."])
+        PropTypes.oneOf(["PREV", "NEXT", "...", "ATRAS", "SIGUIENTE"])
       ]).isRequired,
       onClick: PropTypes.func
     })

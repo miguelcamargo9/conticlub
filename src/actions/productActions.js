@@ -1,5 +1,8 @@
 import * as types from "./index";
-import { productService } from "../services/productService";
+import {
+  productService,
+  getProductsByCategoryIdService
+} from "../services/productService";
 
 export const setPictureData = dataProduct => {
   return {
@@ -13,8 +16,17 @@ export const setPictureData = dataProduct => {
 export const getProductsAction = () => {
   return dispatch => {
     productService().then(dataProduct => {
-      let output = dataProduct.data.slice(0, 16);
-      dispatch(setPictureData(output));
+      // let output = dataProduct.data.slice(0, 12);
+      dispatch(setPictureData(dataProduct.data));
+    });
+  };
+};
+
+export const getProductsByCategoryId = idCategory => {
+  return dispatch => {
+    getProductsByCategoryIdService(idCategory).then(dataProduct => {
+      // let output = dataProduct.data.slice(0, 12);
+      dispatch(setPictureData(dataProduct.data));
     });
   };
 };
