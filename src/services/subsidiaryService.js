@@ -2,7 +2,7 @@ import axios from "axios";
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
-export const getSubsidiariesService = request => {
+export const getSubsidiariesService = () => {
   const API_ENDPOINT = `${SERVER_URL}/api/subsidiary/all`;
 
   const data = {

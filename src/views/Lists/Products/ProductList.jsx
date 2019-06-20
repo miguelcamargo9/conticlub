@@ -96,7 +96,7 @@ class productList extends React.Component {
     for (let i = 1; i <= totalPages; i++) {
       pagination.push({
         text: i,
-        active: currentPage == i ? true : false,
+        active: currentPage === i ? true : false,
         onClick: this.handleClickPaginator.bind(this)
       });
     }
@@ -110,13 +110,13 @@ class productList extends React.Component {
   handleClickPaginator(index) {
     if (index === "ATRAS") {
       index =
-        this.state.currentPage == 1
+        this.state.currentPage === 1
           ? this.state.currentPage
           : this.state.currentPage - 1;
     }
     if (index === "SIGUIENTE") {
       index =
-        this.state.currentPage == this.state.totalPages
+        this.state.currentPage === this.state.totalPages
           ? this.state.currentPage
           : this.state.currentPage + 1;
     }

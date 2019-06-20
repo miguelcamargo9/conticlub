@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
-import { createStore } from "redux";
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 
 import { createBrowserHistory } from "history";
 
@@ -11,7 +10,7 @@ import AuthLayout from "layouts/Auth.jsx";
 import RtlLayout from "layouts/RTL.jsx";
 import AdminLayout from "layouts/Admin.jsx";
 
-import configureStore from 'store/configureStore';
+import configureStore from "store/configureStore";
 
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 

@@ -88,7 +88,7 @@ class Step3 extends React.Component {
   }
   render() {
     const { classes } = this.props;
-    const tableData = this.changeDataToSelect();
+    this.changeDataToSelect();
     return (
       <div>
         <GridContainer justify="center">

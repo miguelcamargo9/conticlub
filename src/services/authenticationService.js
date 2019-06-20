@@ -1,13 +1,13 @@
-import axios from 'axios'
-import * as serviceConst from './index'
+import axios from "axios";
+import * as serviceConst from "./index";
 
-export const registerUserService = (request) => {
-  const REGISTER_API_ENDPOINT = 'http://localhost:4000/api/v1/register';
+export const registerUserService = request => {
+  const REGISTER_API_ENDPOINT = "http://localhost:4000/api/v1/register";
 
   const parameters = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(request.user)
   };
@@ -21,8 +21,8 @@ export const registerUserService = (request) => {
     });
 };
 
-export const loginUserService = (request) => {
-  const LOGIN_API_ENDPOINT = 'http://localhost:8000/api/login';
+export const loginUserService = request => {
+  const LOGIN_API_ENDPOINT = "http://localhost:8000/api/login";
 
   const data = {
     username: request.username,
@@ -30,13 +30,14 @@ export const loginUserService = (request) => {
     grant_type: serviceConst.GRANT_TYPE,
     client_id: serviceConst.CLIENT_ID,
     client_secret: serviceConst.CLIENT_SECRET
-  }
+  };
 
-  return axios.post(LOGIN_API_ENDPOINT, data)
-  .then(response => {
-    return response;
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+  return axios
+    .post(LOGIN_API_ENDPOINT, data)
+    .then(response => {
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 };

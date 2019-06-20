@@ -13,7 +13,6 @@ import gridSystemStyle from "assets/jss/material-dashboard-pro-react/views/gridS
 
 class Politics extends React.Component {
   render() {
-    const { classes } = this.props;
     return (
       <Card>
         <CardBody>

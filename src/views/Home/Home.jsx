@@ -11,10 +11,6 @@ import Slides from "../../components/Slides/Slides.jsx";
 import * as slideActions from "../../actions/slideActions";
 
 class Home extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.SlideActions.getSlidesAction();
   }

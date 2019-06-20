@@ -8,7 +8,6 @@ import Icon from "@material-ui/core/Icon";
 
 // @material-ui/icons
 import Face from "@material-ui/icons/Face";
-import Email from "@material-ui/icons/Email";
 // import LockOutline from "@material-ui/icons/LockOutline";
 
 // core components
@@ -69,7 +68,7 @@ class LoginPage extends React.Component {
     if (this.props.response.login.hasOwnProperty("response")) {
       const isSuccess = this.props.response.login.response.success;
       const message = this.props.response.login.response.message;
-
+      console.log("message", message);
       if (isSuccess) {
         localStorage.removeItem("token");
         localStorage.setItem("token", this.props.response.login.response.token);
