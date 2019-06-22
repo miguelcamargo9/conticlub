@@ -3,7 +3,7 @@ import { slideService } from "../services/slideService";
 
 export const setSlideData = dataSlide => {
   const paths = dataSlide.map(slide => {
-    return "http://conticlub.co:8000" + slide.path;
+    return "http://conticlub.co" + slide.path;
   });
   return {
     type: types.GET_SLIDES,

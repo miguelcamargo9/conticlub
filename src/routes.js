@@ -6,9 +6,9 @@ import HowToWorks from "views/Pages/HowToWorks.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
 import Politics from "views/Pages/Politics.jsx";
 import ProductList from "views/Lists/Products/ProductList.jsx";
-import ReactTables from "views/Tables/ReactTables.jsx";
 import RegisterInvoiceForm from "views/Forms/Sales/RegisterInvoiceForm.jsx";
 import RegisterUserForm from "views/Forms/Users/RegisterUserForm.jsx";
+import UserList from "./views/Lists/Users/UserList";
 
 // @material-ui/icons
 import HomeIcon from "@material-ui/icons/Home";
@@ -68,7 +68,7 @@ var dashRoutes = [
         rtlName: "User List",
         mini: "LU",
         rtlMini: "UL",
-        component: ReactTables,
+        component: UserList,
         layout: "/admin"
       }
     ]
