@@ -144,7 +144,7 @@ var dashRoutes = [
   },
   {
     path: "/login-page",
-    name: "Login Page",
+    name: "Iniciar Sesión",
     rtlName: "Login Page",
     mini: "L",
     rtlMini: "LP",

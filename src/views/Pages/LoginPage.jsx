@@ -85,11 +85,11 @@ class LoginPage extends React.Component {
                   className={`${classes.cardHeader} ${classes.textCenter}`}
                   color="warning"
                 >
-                  <h4 className={classes.cardTitle}>Log in</h4>
+                  <h4 className={classes.cardTitle}>Iniciar Sesión</h4>
                 </CardHeader>
                 <CardBody>
                   <CustomInput
-                    labelText="User"
+                    labelText="Usuario"
                     id="firstname"
                     formControlProps={{
                       fullWidth: true
@@ -103,12 +103,13 @@ class LoginPage extends React.Component {
                     }}
                   />
                   <CustomInput
-                    labelText="Password"
+                    labelText="Contraseña"
                     id="password"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
+                      type: "password",
                       endAdornment: (
                         <InputAdornment position="end">
                           <Icon className={classes.inputAdornmentIcon}>
