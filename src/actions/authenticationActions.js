@@ -1,5 +1,7 @@
 import * as types from "./index";
+
 import { loginUserService } from "../services/authenticationService";
+import { setMessageError } from "./errorActions";
 
 export const registerUserAction = user => {
   return {
@@ -18,7 +20,12 @@ export const setUserData = user => {
 export const loginUserAction = user => {
   return dispatch => {
     loginUserService(user).then(userInfo => {
-      dispatch(setUserData(userInfo));
+      if (userInfo.data.message) {
+        dispatch(setMessageError(userInfo.data.message));
+      } else {
+        dispatch(setUserData(userInfo.data[0]));
+        dispatch(setMessageError(null));
+      }
     });
   };
 };

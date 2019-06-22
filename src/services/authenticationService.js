@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import * as serviceConst from "./index";
-import { SERVER_URL_PROD } from "../constants/server";
+import { SERVER_URL } from "../constants/server";
 
 export const registerUserService = request => {
   const REGISTER_API_ENDPOINT = "http://localhost:4000/api/v1/register";
@@ -24,7 +24,7 @@ export const registerUserService = request => {
 };
 
 export const loginUserService = request => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL_PROD}/api/login`;
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/login`;
 
   const data = {
     username: request.username,

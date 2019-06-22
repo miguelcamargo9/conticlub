@@ -20,3 +20,6 @@ export const GET_USERS = "GET_USERS";
 
 //Subsidiary
 export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
+
+//Errors
+export const ERROR_MESSAGE = "ERROR_MESSAGE";

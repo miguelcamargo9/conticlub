@@ -149,7 +149,8 @@ var dashRoutes = [
     mini: "L",
     rtlMini: "LP",
     component: LoginPage,
-    layout: "/auth"
+    layout: "/auth",
+    invisible: true
   }
 ];
 export default dashRoutes;

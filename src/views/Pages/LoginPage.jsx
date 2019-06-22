@@ -19,6 +19,8 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
+
 import compose from "recompose/compose";
 
 import * as authenticationActions from "../../actions/authenticationActions";
@@ -63,17 +65,17 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, error } = this.props;
 
-    if (this.props.response.login.hasOwnProperty("response")) {
-      const isSuccess = this.props.response.login.response.success;
-      const message = this.props.response.login.response.message;
-      console.log("message", message);
-      if (isSuccess) {
-        localStorage.removeItem("token");
-        localStorage.setItem("token", this.props.response.login.response.token);
-      }
-    }
+    const errorDiv = error ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={error} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
 
     return (
       <div className={classes.container}>
@@ -129,6 +131,7 @@ class LoginPage extends React.Component {
             </form>
           </GridItem>
         </GridContainer>
+        {errorDiv}
       </div>
     );
   }
@@ -138,7 +141,21 @@ LoginPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-const mapStateToProps = response => ({ response });
+function mapStateToProps(state, props) {
+  const { user } = state.login;
+  if (user !== undefined) {
+    if (user.hasOwnProperty("access_token")) {
+      const token = user.access_token;
+      localStorage.removeItem("token");
+      localStorage.setItem("token", token);
+      props.history.push(`/admin/home`);
+    }
+  }
+  return {
+    error: state.error.message,
+    user: state.login.user
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
