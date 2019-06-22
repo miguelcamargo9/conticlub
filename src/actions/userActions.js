@@ -1,29 +1,20 @@
 import * as types from "./index";
-import { userService, getUserByIdService } from "../services/userService";
+import { userService } from "../services/userService";
 
-export const setUserData = dataProduct => {
+export const setUserData = dataUser => {
   return {
-    type: types.GET_PRODS,
+    type: types.GET_USERS,
     payload: {
-      dataProduct
+      dataUser
     }
   };
 };
 
-export const getProductsAction = () => {
+export const getUsersAction = () => {
   return dispatch => {
-    userService().then(dataProduct => {
+    userService().then(dataUsers => {
       // let output = dataProduct.data.slice(0, 12);
-      dispatch(setUserData(dataProduct.data));
-    });
-  };
-};
-
-export const getUserById = idUser => {
-  return dispatch => {
-    getUserByIdService(idUser).then(dataUser => {
-      // let output = dataProduct.data.slice(0, 12);
-      dispatch(setUserData(dataProduct.data));
+      dispatch(setUserData(dataUsers.data));
     });
   };
 };

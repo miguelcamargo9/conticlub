@@ -1,14 +1,20 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import compose from "recompose/compose";
+
 // react component for creating dynamic tables
 import ReactTable from "react-table";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+
 // @material-ui/icons
 import Assignment from "@material-ui/icons/Assignment";
 import Dvr from "@material-ui/icons/Dvr";
 import Favorite from "@material-ui/icons/Favorite";
 import Close from "@material-ui/icons/Close";
+
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -19,6 +25,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 
 import { dataTable } from "variables/general.jsx";
+import * as userActions from "../../../actions/userActions";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
@@ -30,132 +37,88 @@ const styles = {
   }
 };
 
-class ReactTables extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: dataTable.dataRows.map((prop, key) => {
-        return {
-          id: key,
-          name: prop[0],
-          position: prop[1],
-          office: prop[2],
-          age: prop[3],
-          actions: (
-            // we've added some custom button actions
-            <div className="actions-right">
-              {/* use this button to add a like kind of action */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  let obj = this.state.data.find(o => o.id === key);
-                  alert(
-                    "You've clicked LIKE button on \n{ \nName: " +
-                      obj.name +
-                      ", \nposition: " +
-                      obj.position +
-                      ", \noffice: " +
-                      obj.office +
-                      ", \nage: " +
-                      obj.age +
-                      "\n}."
-                  );
-                }}
-                color="info"
-                className="like"
-              >
-                <Favorite />
-              </Button>{" "}
-              {/* use this button to add a edit kind of action */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  let obj = this.state.data.find(o => o.id === key);
-                  alert(
-                    "You've clicked EDIT button on \n{ \nName: " +
-                      obj.name +
-                      ", \nposition: " +
-                      obj.position +
-                      ", \noffice: " +
-                      obj.office +
-                      ", \nage: " +
-                      obj.age +
-                      "\n}."
-                  );
-                }}
-                color="warning"
-                className="edit"
-              >
-                <Dvr />
-              </Button>{" "}
-              {/* use this button to remove the data row */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  var data = this.state.data;
-                  data.find((o, i) => {
-                    if (o.id === key) {
-                      // here you should add some custom code so you can delete the data
-                      // from this component and from your server as well
-                      data.splice(i, 1);
-                      return true;
-                    }
-                    return false;
-                  });
-                  this.setState({ data: data });
-                }}
-                color="danger"
-                className="remove"
-              >
-                <Close />
-              </Button>{" "}
-            </div>
-          )
-        };
-      })
-    };
+class UserList extends React.Component {
+  componentDidMount() {
+    this.props.UserActions.getUsersAction();
   }
+
+  buildDataTable() {
+    let data = [];
+    if (this.props.users.length > 0) {
+      data = this.props.users.map((user, index) => {
+        const dataTable = {
+          id: index,
+          name: user.name,
+          identification_number: user.identification_number,
+          identification_type: user.identification_type,
+          email: user.email,
+          phone: user.phone,
+          points: user.points,
+          profile: user.profile.name
+        };
+        return dataTable;
+      });
+      return data;
+    }
+
+    return data;
+  }
+
   render() {
     const { classes } = this.props;
+    const dataTable = this.buildDataTable();
     return (
       <GridContainer>
         <GridItem xs={12}>
           <Card>
-            <CardHeader color="primary" icon>
-              <CardIcon color="primary">
+            <CardHeader color="warning" icon>
+              <CardIcon color="warning">
                 <Assignment />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>React Table</h4>
+              <h4 className={classes.cardIconTitle}>Lista de Usuarios</h4>
             </CardHeader>
             <CardBody>
               <ReactTable
-                data={this.state.data}
+                previousText="Atrás"
+                nextText="Siguiente"
+                pageText="Página"
+                ofText="de"
+                rowsText="filas"
+                loadingText="Cargando..."
+                noDataText="No hay usuarios"
+                data={dataTable}
                 filterable
                 columns={[
                   {
-                    Header: "Name",
+                    Header: "Nombre",
                     accessor: "name"
                   },
                   {
-                    Header: "Position",
-                    accessor: "position"
+                    Header: "Documento",
+                    accessor: "identification_number"
                   },
                   {
-                    Header: "Office",
-                    accessor: "office"
+                    Header: "Tipo Doc.",
+                    accessor: "identification_type"
                   },
                   {
-                    Header: "Age",
-                    accessor: "age"
+                    Header: "Correo",
+                    accessor: "email"
                   },
                   {
-                    Header: "Actions",
+                    Header: "Teléfono",
+                    accessor: "phone"
+                  },
+                  {
+                    Header: "Puntos",
+                    accessor: "points"
+                  },
+                  {
+                    Header: "Perfil",
+                    accessor: "profile"
+                  },
+                  {
+                    Header: "Acciones",
                     accessor: "actions",
                     sortable: false,
                     filterable: false
@@ -174,4 +137,22 @@ class ReactTables extends React.Component {
   }
 }
 
-export default withStyles(styles)(ReactTables);
+function mapStateToProps(state) {
+  return {
+    users: state.user.users
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    UserActions: bindActionCreators(userActions, dispatch)
+  };
+}
+
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(UserList);

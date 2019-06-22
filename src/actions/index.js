@@ -15,5 +15,8 @@ export const GET_SLIDES = "GET_SLIDES";
 //Products
 export const GET_PRODS = "GET_PRODS";
 
+//Users
+export const GET_USERS = "GET_USERS";
+
 //Subsidiary
 export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
