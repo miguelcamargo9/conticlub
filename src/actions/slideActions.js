@@ -2,9 +2,11 @@ import * as types from "./index";
 import { slideService } from "../services/slideService";
 
 export const setSlideData = dataSlide => {
-  const paths = dataSlide.map(slide => {
-    return "http://conticlub.co" + slide.path;
-  });
+  const paths = dataSlide
+    .filter(slide => slide.show === 1)
+    .map(slide => {
+      return "http://conticlub.co" + slide.path;
+    });
   return {
     type: types.GET_SLIDES,
     payload: {

@@ -144,12 +144,13 @@ var dashRoutes = [
   },
   {
     path: "/login-page",
-    name: "Login Page",
+    name: "Iniciar Sesión",
     rtlName: "Login Page",
     mini: "L",
     rtlMini: "LP",
     component: LoginPage,
-    layout: "/auth"
+    layout: "/auth",
+    invisible: true
   }
 ];
 export default dashRoutes;

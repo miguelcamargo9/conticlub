@@ -58,7 +58,7 @@ class AuthNavbar extends React.Component {
           >
             <PersonAdd className={classes.listItemIcon} />
             <ListItemText
-              primary={"Register"}
+              primary={"Registrarse"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -73,7 +73,7 @@ class AuthNavbar extends React.Component {
           >
             <Fingerprint className={classes.listItemIcon} />
             <ListItemText
-              primary={"Login"}
+              primary={"Iniciar Sesión"}
               disableTypography={true}
               className={classes.listItemText}
             />
