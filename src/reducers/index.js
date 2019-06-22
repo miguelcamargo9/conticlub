@@ -3,6 +3,7 @@ import register from "./registerReducer";
 import login from "./loginReducer";
 import slide from "./slideReducer";
 import product from "./productReducer";
+import user from "./userReducer";
 import subsidiary from "./subsidiaryReducer";
 
 const rootReducer = combineReducers({
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
   login,
   slide,
   product,
-  subsidiary
+  subsidiary,
+  user
 });
 
 export default rootReducer;

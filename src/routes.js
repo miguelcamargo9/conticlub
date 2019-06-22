@@ -19,6 +19,7 @@ import Email from "@material-ui/icons/Email";
 import Gavel from "@material-ui/icons/Gavel";
 import CardTravel from "@material-ui/icons/CardTravel";
 import Lock from "@material-ui/icons/Lock";
+import UserList from "./views/Lists/Users/UserList";
 
 var dashRoutes = [
   {
@@ -68,7 +69,7 @@ var dashRoutes = [
         rtlName: "User List",
         mini: "LU",
         rtlMini: "UL",
-        component: ReactTables,
+        component: UserList,
         layout: "/admin"
       }
     ]
