@@ -28,6 +28,8 @@ import { bindActionCreators } from "redux";
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
+import logo from "assets/img/logo_1.png";
+
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -80,6 +82,9 @@ class LoginPage extends React.Component {
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
+          <GridItem xs={12} sm={6} md={4}>
+            <img src={logo} alt="logo" className={classes.img} />
+          </GridItem>
           <GridItem xs={12} sm={6} md={4}>
             <form onSubmit={this.onHandleLogin}>
               <Card login className={classes[this.state.cardAnimaton]}>
@@ -149,6 +154,7 @@ function mapStateToProps(state, props) {
       localStorage.removeItem("token");
       localStorage.setItem("token", token);
       localStorage.setItem("profile", user.profile.id);
+      localStorage.setItem("username", user.name);
       props.history.push(`/admin/home`);
     }
   }
