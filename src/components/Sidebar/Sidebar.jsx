@@ -362,7 +362,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Admin"}
+                primary={localStorage.getItem("username")}
                 secondary={
                   <b
                     className={
@@ -388,10 +388,10 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : "MP"}
+                      {rtlActive ? "MP" : "MP"}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "ملفي" : "My Profile"}
+                      primary={rtlActive ? "My Profile" : "Mi Perfil"}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -405,29 +405,10 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "هوع" : "EP"}
+                      {rtlActive ? "EP" : "EP"}
                     </span>
                     <ListItemText
-                      primary={
-                        rtlActive ? "تعديل الملف الشخصي" : "Edit Profile"
-                      }
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {rtlActive ? "و" : "S"}
-                    </span>
-                    <ListItemText
-                      primary={rtlActive ? "إعدادات" : "Settings"}
+                      primary={rtlActive ? "Edit Profile" : "Editar Perfil"}
                       disableTypography={true}
                       className={collapseItemText}
                     />

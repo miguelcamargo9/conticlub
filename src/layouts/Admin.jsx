@@ -13,14 +13,14 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+// import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
 import routes from "routes.js";
 
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
 
 import image from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/logo-white.svg";
+import logo from "assets/img/isotipo_ico.png";
 
 var ps;
 
@@ -31,7 +31,7 @@ class Dashboard extends React.Component {
       mobileOpen: false,
       miniActive: false,
       image: image,
-      color: "blue",
+      color: "orange",
       bgColor: "black",
       hasImage: true,
       fixedClasses: "dropdown"
@@ -173,7 +173,7 @@ class Dashboard extends React.Component {
             </div>
           )}
           {this.getRoute() ? <Footer fluid /> : null}
-          <FixedPlugin
+          {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
             handleColorClick={this.handleColorClick}
             handleBgColorClick={this.handleBgColorClick}
@@ -185,7 +185,7 @@ class Dashboard extends React.Component {
             fixedClasses={this.state.fixedClasses}
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
-          />
+          /> */}
         </div>
       </div>
     );
