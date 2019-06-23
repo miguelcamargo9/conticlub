@@ -148,6 +148,7 @@ function mapStateToProps(state, props) {
       const token = user.access_token;
       localStorage.removeItem("token");
       localStorage.setItem("token", token);
+      localStorage.setItem("profile", user.profile.id);
       props.history.push(`/admin/home`);
     }
   }
