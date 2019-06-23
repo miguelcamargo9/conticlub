@@ -1,115 +1,12 @@
-
 import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
-import ContactForm from "../views/Forms/ContactForm.jsx";
-import CreateUserForm from "../views/Forms/Users/CreateUserForm.jsx";
-import Home from "../views/Home/Home.jsx";
-import HowToWorks from "../views/Pages/HowToWorks.jsx";
-import LoginPage from "../views/Pages/LoginPage.jsx";
-import Politics from "../views/Pages/Politics.jsx";
-import ProductList from "../views/Lists/Products/ProductList.jsx";
-import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
 
 // @material-ui/icons
-import HomeIcon from "@material-ui/icons/Home";
 import Users from "@material-ui/icons/People";
-import Gift from "@material-ui/icons/CardGiftcard";
-import TouchApp from "@material-ui/icons/TouchApp";
-import Email from "@material-ui/icons/Email";
-import Gavel from "@material-ui/icons/Gavel";
-import CardTravel from "@material-ui/icons/CardTravel";
 import Lock from "@material-ui/icons/Lock";
 
-
-export const generalRoutes  = [
-  {
-    path: "/home",
-    name: "Inicio",
-    rtlName: "Home",
-    icon: HomeIcon,
-    component: Home,
-    layout: "/admin"
-  },
-  {
-    path: "/login-page",
-    name: "Iniciar Sesión",
-    rtlName: "Login Page",
-    mini: "L",
-    rtlMini: "LP",
-    component: LoginPage,
-    layout: "/auth",
-    invisible: true
-  }
-]
-
-export const defaultRoutes = [
-  ...generalRoutes,
-  {
-    path: "/products",
-    name: "Catálogo de Productos",
-    rtlName: "Products",
-    icon: Gift,
-    component: ProductList,
-    layout: "/admin"
-  },
-  {
-    path: "/howtoworks",
-    name: "Cómo Funciona",
-    rtlName: "How To Works",
-    icon: TouchApp,
-    component: HowToWorks,
-    layout: "/admin"
-  },
-  {
-    path: "/contact",
-    name: "Contáctanos",
-    rtlName: "Contact us",
-    icon: Email,
-    component: ContactForm,
-    layout: "/admin"
-  },
-  {
-    path: "/politics",
-    name: "Políticas Y Condiciones",
-    rtlName: "Politics",
-    icon: Gavel,
-    component: Politics,
-    layout: "/admin"
-  },
-  {
-    path: "/register-page",
-    name: "Registrar Usuario",
-    rtlName: "User Register",
-    mini: "RU",
-    rtlMini: "UR",
-    component: RegisterUserForm,
-    layout: "/auth",
-    invisible: true
-  },
-]
-
-
-export const sellRoutes = [
-  {
-    collapse: true,
-    name: "Ventas",
-    rtlName: "Sales",
-    icon: CardTravel,
-    state: "pageSaleCollapse",
-    views: [
-      {
-        path: "/register-sale",
-        name: "Ingresar Venta",
-        rtlName: "Register Sale",
-        mini: "IV",
-        rtlMini: "RS",
-        component: RegisterInvoiceForm,
-        layout: "/admin"
-      }
-    ]
-  }
-]
+import { generalRoutes } from "./generalRoutes";
 
 export const adminRoutes = [
   ...generalRoutes,
@@ -166,5 +63,5 @@ export const adminRoutes = [
     component: RegisterUserForm,
     layout: "/auth",
     invisible: true
-  }, 
-]
+  }
+];
