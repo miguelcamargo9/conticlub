@@ -12,6 +12,14 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Button from "components/CustomButtons/Button.jsx";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Slide from "@material-ui/core/Slide";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -21,40 +29,56 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 // @material-ui/icons
 import LocationCity from "@material-ui/icons/LocationCity";
 import Smartphone from "@material-ui/icons/Smartphone";
+import Check from "@material-ui/icons/Check";
+import Close from "@material-ui/icons/Close";
 
+import Politics from "../../../Pages/Politics";
+import HabeasData from "../../../Pages/HabeasData";
 import registerUserFormStyle from "assets/jss/material-dashboard-pro-react/views/registerUserFormStyle.jsx";
 
 import * as subsidiaryActions from "../../../../actions/subsidiaryActions";
+
+function Transition(props) {
+  return <Slide direction="down" {...props} />;
+}
 
 class Step3 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      simpleSelect: "",
-      desgin: false,
-      code: false,
-      develop: false,
       subsidiary: null,
       city: "Bogotá",
-      subsidiaryState: "error"
+      subsidiaryState: "error",
+      politicsState: "error",
+      habeasState: "error",
+      classicModal: false,
+      habeasModal: false
     };
   }
+  aceptPolitics() {
+    this.setState({
+      politicsState: "success"
+    });
+  }
 
+  aceptHabeas() {
+    this.setState({
+      habeasState: "success"
+    });
+  }
+
+  handleClickOpen(modal) {
+    var x = [];
+    x[modal] = true;
+    this.setState(x);
+  }
+  handleClose(modal) {
+    var x = [];
+    x[modal] = false;
+    this.setState(x);
+  }
   componentDidMount() {
     this.props.SubsidiaryActions.getSubsidiariesData();
-  }
-  changeDataToSelect() {
-    const { subsidiaries } = this.props;
-    let selectData = [];
-
-    if (subsidiaries.length > 0) {
-      selectData = subsidiaries.map((subsidiary, index) => {
-        subsidiary.value = subsidiary.id;
-        subsidiary.label = subsidiary.name;
-        return subsidiary;
-      });
-      return selectData;
-    }
   }
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
@@ -95,7 +119,9 @@ class Step3 extends React.Component {
     if (
       this.state.cityState === "success" &&
       this.state.phoneState === "success" &&
-      this.state.subsidiaryState === "success"
+      this.state.subsidiaryState === "success" &&
+      this.state.politicsState === "success" &&
+      this.state.habeasState === "success"
     ) {
       return true;
     } else {
@@ -108,22 +134,28 @@ class Step3 extends React.Component {
       if (this.state.subsidiaryState !== "success") {
         this.setState({ subsidiaryState: "error" });
       }
+      if (this.state.politicsState !== "success") {
+        this.setState({ politicsState: "error" });
+      }
+      if (this.state.habeasState !== "success") {
+        this.setState({ habeasState: "error" });
+      }
     }
     return false;
   }
   render() {
     const { classes } = this.props;
-    const { subsidiaryState } = this.state;
-    console.log("subsidiaryState", subsidiaryState);
+    const { subsidiaryState, politicsState, habeasState } = this.state;
     const labelClasses = classNames({
       [" " + classes.labelRootError]: subsidiaryState === "error",
       [" " + classes.labelRootSuccess]: subsidiaryState === "success"
     });
-    var helpTextClasses = classNames({
+    const helpTextClasses = classNames({
       [classes.labelRootError]: subsidiaryState === "error",
       [classes.labelRootSuccess]: subsidiaryState === "success"
     });
-    this.changeDataToSelect();
+    const politcsCheck = politicsState === "success" ? true : false;
+    const habeasCheck = habeasState === "success" ? true : false;
     return (
       <div>
         <GridContainer justify="center">
@@ -205,6 +237,186 @@ class Step3 extends React.Component {
                 />
               </GridItem>
             </GridContainer>
+            <GridContainer className={classes.inlineChecks}>
+              <GridItem xs={12} sm={6}>
+                <FormControlLabel
+                  disabled
+                  control={
+                    <Checkbox
+                      id="politicsState"
+                      tabIndex={-1}
+                      checked={politcsCheck}
+                      checkedIcon={<Check className={classes.checkedIcon} />}
+                      icon={<Check className={classes.uncheckedIcon} />}
+                      classes={{
+                        checked: classes.checked,
+                        root: classes.checkRoot
+                      }}
+                    />
+                  }
+                  classes={{
+                    label: classes.label,
+                    disabled: classes.disabledCheckboxAndRadio
+                  }}
+                />
+                <a onClick={() => this.handleClickOpen("classicModal")}>
+                  Aceptar políticas y condiciones
+                </a>
+                {politicsState === "error" ? (
+                  <FormHelperText
+                    id={"politicsState"}
+                    className={helpTextClasses}
+                  >
+                    {"Requerido"}
+                  </FormHelperText>
+                ) : null}
+              </GridItem>
+              <GridItem xs={12} sm={5}>
+                <FormControlLabel
+                  disabled
+                  control={
+                    <Checkbox
+                      id={"habeasState"}
+                      tabIndex={-1}
+                      checked={habeasCheck}
+                      checkedIcon={<Check className={classes.checkedIcon} />}
+                      icon={<Check className={classes.uncheckedIcon} />}
+                      classes={{
+                        checked: classes.checked,
+                        root: classes.checkRoot
+                      }}
+                    />
+                  }
+                  classes={{
+                    label: classes.label,
+                    disabled: classes.disabledCheckboxAndRadio
+                  }}
+                />
+                <a onClick={() => this.handleClickOpen("habeasModal")}>
+                  Aceptar habeas data
+                </a>
+                {habeasState === "error" ? (
+                  <FormHelperText
+                    id={"habeasState"}
+                    className={helpTextClasses}
+                  >
+                    {"Requerido"}
+                  </FormHelperText>
+                ) : null}
+              </GridItem>
+            </GridContainer>
+            <Dialog
+              classes={{
+                root: classes.center + " " + classes.modalRoot,
+                paper: classes.modal
+              }}
+              open={this.state.classicModal}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={() => this.handleClose("classicModal")}
+              aria-labelledby="classic-modal-slide-title"
+              aria-describedby="classic-modal-slide-description"
+            >
+              <DialogTitle
+                id="classic-modal-slide-title"
+                disableTypography
+                className={classes.modalHeader}
+              >
+                <Button
+                  justIcon
+                  className={classes.modalCloseButton}
+                  key="close"
+                  aria-label="Close"
+                  color="transparent"
+                  onClick={() => this.handleClose("classicModal")}
+                >
+                  <Close className={classes.modalClose} />
+                </Button>
+                <h4 className={classes.modalTitle}>Políticas y Condiciones</h4>
+              </DialogTitle>
+              <DialogContent
+                id="classic-modal-slide-description"
+                className={classes.modalBody}
+              >
+                <Politics />
+              </DialogContent>
+              <DialogActions className={classes.modalFooter}>
+                <Button
+                  onClick={() => {
+                    this.handleClose("classicModal");
+                    this.aceptPolitics();
+                  }}
+                  color="transparent"
+                >
+                  Aceptar
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.handleClose("classicModal");
+                  }}
+                  color="danger"
+                  simple
+                >
+                  Cancelar
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Dialog
+              classes={{
+                root: classes.center + " " + classes.modalRoot,
+                paper: classes.modal
+              }}
+              open={this.state.habeasModal}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={() => this.handleClose("habeasModal")}
+              aria-labelledby="classic-modal-slide-title"
+              aria-describedby="classic-modal-slide-description"
+            >
+              <DialogTitle
+                id="classic-modal-slide-title"
+                disableTypography
+                className={classes.modalHeader}
+              >
+                <Button
+                  justIcon
+                  className={classes.modalCloseButton}
+                  key="close"
+                  aria-label="Close"
+                  color="transparent"
+                  onClick={() => this.handleClose("habeasModal")}
+                >
+                  <Close className={classes.modalClose} />
+                </Button>
+                <h4 className={classes.modalTitle}>Habeas Data</h4>
+              </DialogTitle>
+              <DialogContent
+                id="classic-modal-slide-description"
+                className={classes.modalBody}
+              >
+                <HabeasData />
+              </DialogContent>
+              <DialogActions className={classes.modalFooter}>
+                <Button
+                  onClick={() => {
+                    this.handleClose("habeasModal");
+                    this.aceptHabeas();
+                  }}
+                  color="transparent"
+                >
+                  Aceptar
+                </Button>
+                <Button
+                  onClick={() => {
+                    this.handleClose("habeasModal");
+                  }}
+                  color="danger"
+                  simple
+                >
+                  Cancelar
+                </Button>
+              </DialogActions>
+            </Dialog>
           </GridItem>
         </GridContainer>
       </div>
@@ -213,8 +425,14 @@ class Step3 extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const { subsidiaries } = state.subsidiary;
+  const selectData = subsidiaries.map(subsidiary => {
+    subsidiary.value = subsidiary.id;
+    subsidiary.label = subsidiary.name;
+    return subsidiary;
+  });
   return {
-    subsidiaries: state.subsidiary.subsidiaries
+    subsidiaries: selectData
   };
 }
 
