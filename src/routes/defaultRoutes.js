@@ -3,17 +3,37 @@ import HowToWorks from "../views/Pages/HowToWorks.jsx";
 import Politics from "../views/Pages/Politics.jsx";
 import ProductList from "../views/Lists/Products/ProductList.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
+import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 
 // @material-ui/icons
 import Gift from "@material-ui/icons/CardGiftcard";
 import TouchApp from "@material-ui/icons/TouchApp";
 import Email from "@material-ui/icons/Email";
 import Gavel from "@material-ui/icons/Gavel";
+import CardTravel from "@material-ui/icons/CardTravel";
 
 import { generalRoutes } from "./generalRoutes";
 
 export const defaultRoutes = [
   ...generalRoutes,
+  {
+    collapse: true,
+    name: "Ventas",
+    rtlName: "Sales",
+    icon: CardTravel,
+    state: "pageSaleCollapse",
+    views: [
+      {
+        path: "/register-sale",
+        name: "Ingresar Venta",
+        rtlName: "Register Sale",
+        mini: "IV",
+        rtlMini: "RS",
+        component: RegisterInvoiceForm,
+        layout: "/admin"
+      }
+    ]
+  },
   {
     path: "/products",
     name: "Catálogo de Productos",
