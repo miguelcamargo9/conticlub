@@ -105,7 +105,7 @@ class Step1 extends React.Component {
     return (
       <GridContainer justify="center">
         <GridItem xs={12} sm={4}>
-          <PictureUpload />
+          <PictureUpload labelText="Subir Imágen" />
         </GridItem>
         <GridItem xs={12} sm={6}>
           <CustomInput

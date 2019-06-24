@@ -3,10 +3,15 @@ import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
+
+// nodejs library that concatenates classes
+import classNames from "classnames";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -30,7 +35,8 @@ class Step3 extends React.Component {
       code: false,
       develop: false,
       subsidiary: null,
-      city: "Bogotá"
+      city: "Bogotá",
+      subsidiaryState: "error"
     };
   }
 
@@ -60,7 +66,9 @@ class Step3 extends React.Component {
   handleChangeSubsidiary = subsidiary => {
     this.setState({
       subsidiary,
-      city: subsidiary.city.name
+      city: subsidiary.city.name,
+      subsidiaryState: "success",
+      cityState: "success"
     });
   };
   sendState() {
@@ -84,28 +92,63 @@ class Step3 extends React.Component {
     this.setState({ [stateName]: event.target.value });
   }
   isValidated() {
-    return true;
+    if (
+      this.state.cityState === "success" &&
+      this.state.phoneState === "success" &&
+      this.state.subsidiaryState === "success"
+    ) {
+      return true;
+    } else {
+      if (this.state.cityState !== "success") {
+        this.setState({ cityState: "error" });
+      }
+      if (this.state.phoneState !== "success") {
+        this.setState({ phoneState: "error" });
+      }
+      if (this.state.subsidiaryState !== "success") {
+        this.setState({ subsidiaryState: "error" });
+      }
+    }
+    return false;
   }
   render() {
     const { classes } = this.props;
+    const { subsidiaryState } = this.state;
+    console.log("subsidiaryState", subsidiaryState);
+    const labelClasses = classNames({
+      [" " + classes.labelRootError]: subsidiaryState === "error",
+      [" " + classes.labelRootSuccess]: subsidiaryState === "success"
+    });
+    var helpTextClasses = classNames({
+      [classes.labelRootError]: subsidiaryState === "error",
+      [classes.labelRootSuccess]: subsidiaryState === "success"
+    });
     this.changeDataToSelect();
     return (
       <div>
         <GridContainer justify="center">
           <GridItem xs={12} sm={12} md={12} lg={10}>
             <GridContainer>
-              <GridItem xs={12} sm={5}>
+              <GridItem xs={12} sm={7}>
                 <InputLabel
                   htmlFor="simple-select"
-                  className={classes.selectLabel}
+                  className={classes.selectLabel + " " + labelClasses}
                 >
-                  Seleccione una sucursal
+                  Seleccione una sucursal (Requerido)
                 </InputLabel>
                 <Select
+                  id="subsidiary"
+                  className={classes.selectMenu + " " + labelClasses}
                   value={this.subsidiary}
                   onChange={this.handleChangeSubsidiary}
                   options={this.props.subsidiaries}
+                  placeholder="Seleccione una sucursal"
                 />
+                {subsidiaryState === "error" ? (
+                  <FormHelperText id={"subsidiary"} className={helpTextClasses}>
+                    {"Requerido"}
+                  </FormHelperText>
+                ) : null}
               </GridItem>
               <GridItem xs={12} sm={5}>
                 <CustomInput

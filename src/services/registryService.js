@@ -12,9 +12,10 @@ export const createUserService = request => {
     name: request.username,
     password: request.password,
     email: request.email,
-    phone: "3004223675",
+    phone: request.phone,
     identification_number: request.identification_number,
-    subsidiary_id: request.subsidiary
+    subsidiary_id: request.subsidiary_id,
+    profiles_id: request.profiles_id
   };
 
   return axios
