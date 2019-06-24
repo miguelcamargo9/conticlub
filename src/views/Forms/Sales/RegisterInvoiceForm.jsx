@@ -307,9 +307,9 @@ class registerInvoiceForm extends React.Component {
             <CardBody>
               <form>
                 <GridContainer>
-                  <GridItem xs={12} sm={2}>
+                  <GridItem xs={12} sm={3}>
                     <FormLabel className={classes.labelHorizontal}>
-                      Fecha de Factura
+                      Fecha de Factura (Requerido)
                     </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={2}>
@@ -408,7 +408,7 @@ class registerInvoiceForm extends React.Component {
                         color: "danger",
                         round: true
                       }}
-                      uploadButtonText="Subir Factura"
+                      uploadButtonText="Subir Factura (Requerido)"
                       changeButtonText="Cambiar"
                       removeButtonText="Borrar"
                     />

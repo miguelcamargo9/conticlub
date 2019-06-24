@@ -4,7 +4,7 @@ import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const getWhellsByDesignId = designId => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/design/byDesign/${designId}`;
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/rin/byDesign/${designId}`;
 
   const data = {
     headers: {
