@@ -7,6 +7,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Wizard from "components/Wizard/Wizard.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import Step1 from "./RegisterUserSteps/Step1.jsx";
 import Step2 from "./RegisterUserSteps/Step2.jsx";
@@ -17,29 +18,82 @@ import { createUserService } from "../../../services/registryService";
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 
 class RegisterUserForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messageError: null,
+      successMessage: null
+    };
+  }
+
   saveUserInfo(e) {
+    console.log("data wizard", e);
     const username = e.about.firstname + " " + e.about.lastname;
     const password = e.address.password;
     const email = e.about.email;
     const identification_number = e.address.identificationNumber;
     const subsidiary_id = e.account.subsidiary.id;
+    const profiles_id = e.account.subsidiary.profiles_id;
+    const phone = e.account.phone;
 
     const data = {
       username,
       password,
       email,
       identification_number,
-      subsidiary_id
+      subsidiary_id,
+      profiles_id,
+      phone
     };
 
     console.log("data a post", data);
-    createUserService(data);
+    createUserService(data).then(userInfo => {
+      if (userInfo.data.message === "success") {
+        this.setState({
+          messageError: null,
+          successMessage: "Usuario Registrado con Éxito"
+        });
+        setTimeout(() => {
+          this.props.history.push(`/auth/login-page`);
+        }, 3000);
+      } else {
+        this.setState({
+          messageError: userInfo.data.message,
+          successMessage: null
+        });
+      }
+    });
   }
+
   render() {
     const { classes } = this.props;
+    const { messageError, successMessage } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
+          {errorDiv}
+          {successDiv}
           <GridItem xs={12} sm={8}>
             <Wizard
               validate
