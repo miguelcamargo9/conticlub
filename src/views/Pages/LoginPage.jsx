@@ -155,6 +155,7 @@ function mapStateToProps(state, props) {
       localStorage.setItem("token", token);
       localStorage.setItem("profile", user.profile.id);
       localStorage.setItem("username", user.name);
+      localStorage.setItem("points", user.points);
       props.history.push(`/admin/home`);
     }
   }
