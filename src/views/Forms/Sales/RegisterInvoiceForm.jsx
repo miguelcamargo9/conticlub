@@ -20,6 +20,7 @@ import CardText from "components/Card/CardText.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
@@ -29,50 +30,63 @@ import { getDesignsByBrandId } from "../../../services/designService";
 import { getWhellsByDesignId } from "../../../services/whellService";
 import { insertInvoice } from "../../../services/invoiceService";
 
+const selectStylesBrand = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "999",
+    width: "100%"
+  })
+};
+const selectStylesDesign = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "998",
+    width: "100%"
+  })
+};
+const selectStylesWheel = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "997",
+    width: "100%"
+  })
+};
+const selectStylesAmount = {
+  container: (base, state) => ({
+    ...base,
+    opacity: state.isDisabled ? ".5" : "1",
+    backgroundColor: "transparent",
+    zIndex: "996",
+    width: "100%"
+  })
+};
+
 class registerInvoiceForm extends React.Component {
   constructor(props) {
     super(props);
+    const amounts = [];
+    for (let i = 1; i <= 24; i++) {
+      amounts.push({ value: i, label: i });
+    }
     this.state = {
       wheels: [{}],
-      // register form
-      registerEmail: "",
-      registerEmailState: "",
-      registerPassword: "",
-      registerPasswordState: "",
-      registerConfirmPassword: "",
-      registerConfirmPasswordState: "",
-      registerCheckbox: false,
-      registerCheckboxState: "",
-      // login form
-      loginEmail: "",
-      loginEmailState: "",
-      loginPassword: "",
-      loginPasswordState: "",
-      // type validation
-      required: "",
-      requiredState: "",
-      typeEmail: "",
-      typeEmailState: "",
-      number: "",
-      numberState: "",
-      url: "",
-      urlState: "",
-      equalTo: "",
-      whichEqualTo: "",
-      equalToState: "",
-      // range validation
-      minLength: "",
-      minLengthState: "",
-      maxLength: "",
-      maxLengthState: "",
-      range: "",
-      rangeState: "",
-      minValue: "",
-      minValueState: "",
-      maxValue: "",
-      maxValueState: ""
+      dateState: "",
+      invoiceNumberState: "",
+      totalInvoiceState: "",
+      imageState: "",
+      brandState: "",
+      designState: "",
+      wheelState: "",
+      amounts: amounts,
+      amountState: ""
     };
-    this.typeClick = this.typeClick.bind(this);
+    this.isValidated = this.isValidated.bind(this);
   }
   addWhell() {
     // const currentWheels = this.state.wheels;
@@ -80,7 +94,11 @@ class registerInvoiceForm extends React.Component {
     // this.setState({ wheels: currentWheels });
   }
   handleChangeImage = image => {
-    this.setState({ image: image });
+    this.setState({ image: image, imageState: "success" });
+  };
+
+  handleRemoveImage = () => {
+    this.setState({ imageState: "error" });
   };
   handleChangeBrand = brand => {
     let designSelectData = [];
@@ -90,7 +108,7 @@ class registerInvoiceForm extends React.Component {
         design.label = design.name;
         return design;
       });
-      this.setState({ designs: designSelectData });
+      this.setState({ designs: designSelectData, brandState: "success" });
     });
   };
   handleChangeDesign = design => {
@@ -101,29 +119,47 @@ class registerInvoiceForm extends React.Component {
         whell.label = whell.name;
         return whell;
       });
-      this.setState({ selectWhells: whellSelectData });
+      this.setState({ selectWhells: whellSelectData, designState: "success" });
     });
   };
   handleChangeWhell = whell => {
-    this.setState({ selectWhell: whell });
+    this.setState({ selectWhell: whell, wheelState: "success" });
+  };
+  handleChangeAmount = amount => {
+    this.setState({ amount: amount.value, amountState: "success" });
   };
   handleSubmit() {
-    console.log(this.state);
-    let dataInvoice = {
-      invoiceNumber: this.state.invoiceNumber,
-      totalAmount: this.state.totalInvoice,
-      rines: [
-        {
-          amount: this.state.amount,
-          rin_id: this.state.selectWhell.id
+    if (this.isValidated()) {
+      console.log(this.state);
+      let dataInvoice = {
+        invoiceNumber: this.state.invoiceNumber,
+        totalAmount: this.state.totalInvoice,
+        rines: [
+          {
+            amount: this.state.amount,
+            rin_id: this.state.selectWhell.id
+          }
+        ],
+        image: this.state.image
+      };
+      console.log(dataInvoice);
+      insertInvoice(dataInvoice).then(whellInfo => {
+        if (whellInfo.data.message === "success") {
+          this.setState({
+            messageError: null,
+            successMessage: "Factura Creada con Éxito"
+          });
+          setTimeout(() => {
+            this.props.history.push(`/admin/home`);
+          }, 3000);
+        } else {
+          this.setState({
+            messageError: whellInfo.data.message,
+            successMessage: null
+          });
         }
-      ],
-      image: this.state.image
-    };
-    console.log(dataInvoice);
-    insertInvoice(dataInvoice).then(whellInfo => {
-      console.log("whellInfo", whellInfo.data);
-    });
+      });
+    }
   }
   componentDidMount() {
     let brandSelectData = [];
@@ -136,24 +172,9 @@ class registerInvoiceForm extends React.Component {
       this.setState({ brands: brandSelectData });
     });
   }
-  // function that returns true if value is email, false otherwise
-  verifyEmail(value) {
-    var emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (emailRex.test(value)) {
-      return true;
-    }
-    return false;
-  }
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
     if (value.length >= length) {
-      return true;
-    }
-    return false;
-  }
-  // function that verifies if two strings are equal
-  compare(string1, string2) {
-    if (string1 === string2) {
       return true;
     }
     return false;
@@ -166,45 +187,8 @@ class registerInvoiceForm extends React.Component {
     }
     return false;
   }
-  // verifies if value is a valid URL
-  verifyUrl(value) {
-    try {
-      new URL(value);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-  change(event, stateName, type, stateNameEqualTo, maxValue) {
+  change(event, stateName, type, stateNameEqualTo) {
     switch (type) {
-      case "email":
-        if (this.verifyEmail(event.target.value)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "password":
-        if (this.verifyLength(event.target.value, 1)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "equalTo":
-        if (this.compare(event.target.value, this.state[stateNameEqualTo])) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "checkbox":
-        if (event.target.checked) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
       case "number":
         if (this.verifyNumber(event.target.value)) {
           this.setState({ [stateName + "State"]: "success" });
@@ -226,77 +210,81 @@ class registerInvoiceForm extends React.Component {
           this.setState({ [stateName + "State"]: "error" });
         }
         break;
-      case "url":
-        if (this.verifyUrl(event.target.value)) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "min-value":
-        if (
-          this.verifyNumber(event.target.value) &&
-          event.target.value >= stateNameEqualTo
-        ) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "max-value":
-        if (
-          this.verifyNumber(event.target.value) &&
-          event.target.value <= stateNameEqualTo
-        ) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
-      case "range":
-        if (
-          this.verifyNumber(event.target.value) &&
-          event.target.value >= stateNameEqualTo &&
-          event.target.value <= maxValue
-        ) {
-          this.setState({ [stateName + "State"]: "success" });
-        } else {
-          this.setState({ [stateName + "State"]: "error" });
-        }
-        break;
       default:
         break;
     }
-    switch (type) {
-      case "checkbox":
-        this.setState({ [stateName]: event.target.checked });
-        break;
-      default:
-        this.setState({ [stateName]: event.target.value });
-        break;
-    }
+
+    this.setState({ [stateName]: event.target.value });
   }
-  typeClick() {
-    if (this.state.requiredState === "") {
-      this.setState({ requiredState: "error" });
+  isValidated() {
+    if (
+      this.state.dateState === "success" &&
+      this.state.invoiceNumberState === "success" &&
+      this.state.totalInvoiceState === "success" &&
+      this.state.imageState === "success" &&
+      this.state.brandState === "success" &&
+      this.state.designState === "success" &&
+      this.state.wheelState === "success" &&
+      this.state.amountState === "success"
+    ) {
+      return true;
+    } else {
+      if (this.state.dateState !== "success") {
+        this.setState({ dateState: "error" });
+      }
+      if (this.state.invoiceNumberState !== "success") {
+        this.setState({ invoiceNumberState: "error" });
+      }
+      if (this.state.totalInvoiceState !== "success") {
+        this.setState({ totalInvoiceState: "error" });
+      }
+      if (this.state.imageState !== "success") {
+        this.setState({ imageState: "error" });
+      }
+      if (this.state.brandState !== "success") {
+        this.setState({ brandState: "error" });
+      }
+      if (this.state.designState !== "success") {
+        this.setState({ designState: "error" });
+      }
+      if (this.state.wheelState !== "success") {
+        this.setState({ wheelState: "error" });
+      }
+      if (this.state.amountState !== "success") {
+        this.setState({ amountState: "error" });
+      }
     }
-    if (this.state.typeEmailState === "") {
-      this.setState({ typeEmailState: "error" });
-    }
-    if (this.state.numberState === "") {
-      this.setState({ numberState: "error" });
-    }
-    if (this.state.urlState === "") {
-      this.setState({ urlState: "error" });
-    }
-    if (this.state.equalToState === "") {
-      this.setState({ equalToState: "error" });
-    }
+    return false;
   }
   render() {
     const { classes } = this.props;
+
+    const { messageError, successMessage } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
     return (
       <GridContainer>
+        {errorDiv}
+        {successDiv}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning" text>
@@ -314,8 +302,8 @@ class registerInvoiceForm extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={2}>
                     <CustomInput
-                      success={this.state.requiredState === "success"}
-                      error={this.state.requiredState === "error"}
+                      success={this.state.dateState === "success"}
+                      error={this.state.dateState === "error"}
                       id="date"
                       formControlProps={{
                         fullWidth: true
@@ -325,7 +313,7 @@ class registerInvoiceForm extends React.Component {
                           this.change(event, "date", "length", 0),
                         type: "date",
                         endAdornment:
-                          this.state.requiredState === "error" ? (
+                          this.state.dateState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -337,8 +325,8 @@ class registerInvoiceForm extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={3}>
                     <CustomInput
-                      success={this.state.typeEmailState === "success"}
-                      error={this.state.typeEmailState === "error"}
+                      success={this.state.invoiceNumberState === "success"}
+                      error={this.state.invoiceNumberState === "error"}
                       labelText={
                         <span>
                           Número de Factura <small>(requerido)</small>
@@ -353,7 +341,7 @@ class registerInvoiceForm extends React.Component {
                           this.change(event, "invoiceNumber", "length", 5),
                         type: "text",
                         endAdornment:
-                          this.state.typeEmailState === "error" ? (
+                          this.state.invoiceNumberState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -365,8 +353,8 @@ class registerInvoiceForm extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={3}>
                     <CustomInput
-                      success={this.state.typeEmailState === "success"}
-                      error={this.state.typeEmailState === "error"}
+                      success={this.state.totalInvoiceState === "success"}
+                      error={this.state.totalInvoiceState === "error"}
                       labelText={
                         <span>
                           Costo Total de la Factura <small>(requerido)</small>
@@ -378,10 +366,10 @@ class registerInvoiceForm extends React.Component {
                       }}
                       inputProps={{
                         onChange: event =>
-                          this.change(event, "totalInvoice", "length", 5),
+                          this.change(event, "totalInvoice", "length", 1),
                         type: "text",
                         endAdornment:
-                          this.state.typeEmailState === "error" ? (
+                          this.state.totalInvoiceState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -396,6 +384,7 @@ class registerInvoiceForm extends React.Component {
                   <GridItem xs={12} sm={4} md={4}>
                     <ImageUpload
                       handleChangeImage={this.handleChangeImage}
+                      handleRemoveImage={this.handleRemoveImage}
                       addButtonProps={{
                         color: "warning",
                         round: true
@@ -412,8 +401,18 @@ class registerInvoiceForm extends React.Component {
                       changeButtonText="Cambiar"
                       removeButtonText="Borrar"
                     />
+
+                    {this.state.imageState === "error" ? (
+                      <InputAdornment position="end">
+                        Seleccione Una Imagen
+                        <Close className={classes.danger} />
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    )}
                   </GridItem>
                 </GridContainer>
+                <br />
                 {this.state.wheels.map((wheel, key) => {
                   return (
                     <div key={key}>
@@ -424,7 +423,17 @@ class registerInvoiceForm extends React.Component {
                             onChange={this.handleChangeBrand}
                             options={this.state.brands}
                             placeholder={"Seleccione una marca"}
+                            styles={selectStylesBrand}
                           />
+                          <br />
+                          {this.state.brandState === "error" ? (
+                            <InputAdornment position="end">
+                              Seleccione Una Marca
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            ""
+                          )}
                         </GridItem>
                         <GridItem xs={12} sm={3}>
                           <Select
@@ -432,7 +441,17 @@ class registerInvoiceForm extends React.Component {
                             onChange={this.handleChangeDesign}
                             options={this.state.designs}
                             placeholder={"Seleccione un diseño"}
+                            styles={selectStylesDesign}
                           />
+                          <br />
+                          {this.state.designState === "error" ? (
+                            <InputAdornment position="end">
+                              Seleccione Un Diseño
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            ""
+                          )}
                         </GridItem>
                         <GridItem xs={12} sm={3}>
                           <Select
@@ -440,37 +459,35 @@ class registerInvoiceForm extends React.Component {
                             onChange={this.handleChangeWhell}
                             options={this.state.selectWhells}
                             placeholder={"Ancho | Perfil rin"}
+                            styles={selectStylesWheel}
                           />
+                          <br />
+                          {this.state.wheelState === "error" ? (
+                            <InputAdornment position="end">
+                              Seleccione Un Rin
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            ""
+                          )}
                         </GridItem>
-                      </GridContainer>
-                      <GridContainer>
                         <GridItem xs={12} sm={3}>
-                          <CustomInput
-                            success={this.state.amountlState === "success"}
-                            error={this.state.amountState === "error"}
-                            labelText={
-                              <span>
-                                Cantidad <small>(requerido)</small>
-                              </span>
-                            }
-                            id="amount"
-                            formControlProps={{
-                              fullWidth: true
-                            }}
-                            inputProps={{
-                              onChange: event =>
-                                this.change(event, "amount", "number"),
-                              type: "number",
-                              endAdornment:
-                                this.state.amountlState === "error" ? (
-                                  <InputAdornment position="end">
-                                    <Close className={classes.danger} />
-                                  </InputAdornment>
-                                ) : (
-                                  undefined
-                                )
-                            }}
+                          <Select
+                            value={this.selectedOption}
+                            onChange={this.handleChangeAmount}
+                            options={this.state.amounts}
+                            placeholder={"Cantidad"}
+                            styles={selectStylesAmount}
                           />
+                          <br />
+                          {this.state.amountState === "error" ? (
+                            <InputAdornment position="end">
+                              Seleccione Una Cantidad
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            ""
+                          )}
                         </GridItem>
                         <GridItem xs={12} sm={3}>
                           {/* <Button
