@@ -405,6 +405,25 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
+                      {rtlActive ? "PT" : "PTS"}
+                    </span>
+                    <ListItemText
+                      primary={
+                        rtlActive ? "Points" : localStorage.getItem("points")
+                      }
+                      disableTypography={true}
+                      className={collapseItemText}
+                    />
+                  </NavLink>
+                </ListItem>
+                <ListItem className={classes.collapseItem}>
+                  <NavLink
+                    to="#"
+                    className={
+                      classes.itemLink + " " + classes.userCollapseLinks
+                    }
+                  >
+                    <span className={collapseItemMini}>
                       {rtlActive ? "EP" : "EP"}
                     </span>
                     <ListItemText

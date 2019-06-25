@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 // nodejs library that concatenates classes
 import classNames from "classnames";
@@ -259,9 +259,12 @@ class Step3 extends React.Component {
                     disabled: classes.disabledCheckboxAndRadio
                   }}
                 />
-                <a onClick={() => this.handleClickOpen("classicModal")}>
+                <Link
+                  to="#"
+                  onClick={() => this.handleClickOpen("classicModal")}
+                >
                   Aceptar políticas y condiciones
-                </a>
+                </Link>
                 {politicsState === "error" ? (
                   <FormHelperText
                     id={"politicsState"}
@@ -292,9 +295,12 @@ class Step3 extends React.Component {
                     disabled: classes.disabledCheckboxAndRadio
                   }}
                 />
-                <a onClick={() => this.handleClickOpen("habeasModal")}>
+                <Link
+                  to="#"
+                  onClick={() => this.handleClickOpen("habeasModal")}
+                >
                   Aceptar habeas data
-                </a>
+                </Link>
                 {habeasState === "error" ? (
                   <FormHelperText
                     id={"habeasState"}
