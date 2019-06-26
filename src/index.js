@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 import { Provider } from "react-redux";
+import { sessionService } from "redux-react-session";
 
 import { createBrowserHistory } from "history";
 
@@ -16,6 +17,31 @@ import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 
 const hist = createBrowserHistory();
 const store = configureStore();
+
+const validateSession = session => {
+  // check if your session is still valid
+  return true;
+};
+
+const options = {
+  refreshOnCheckAuth: true,
+  redirectPath: "/auth/login-page",
+  driver: "INDEXEDDB",
+  validateSession
+};
+
+sessionService
+  .initSessionService(store, options)
+  .then(() =>
+    console.log(
+      "Redux React Session is ready and a session was refreshed from your storage"
+    )
+  )
+  .catch(() =>
+    console.log(
+      "Redux React Session is ready and there is no session in your storage"
+    )
+  );
 
 ReactDOM.render(
   <Provider store={store}>
