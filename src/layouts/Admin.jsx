@@ -15,7 +15,7 @@ import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 // import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
+import { getAllRoutes } from "routes.js";
 
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
 
@@ -34,7 +34,8 @@ class Dashboard extends React.Component {
       color: "orange",
       bgColor: "black",
       hasImage: true,
-      fixedClasses: "dropdown"
+      fixedClasses: "dropdown",
+      routes: []
     };
     this.resizeFunction = this.resizeFunction.bind(this);
   }
@@ -47,6 +48,11 @@ class Dashboard extends React.Component {
       document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", this.resizeFunction);
+    getAllRoutes()
+      .then(routes => {
+        this.setState({ routes });
+      })
+      .catch(err => console.log(err));
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -141,7 +147,7 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          routes={routes}
+          routes={this.state.routes}
           logoText={"Conticlub 2.0"}
           logo={logo}
           image={this.state.image}
@@ -156,7 +162,7 @@ class Dashboard extends React.Component {
           <AdminNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
-            brandText={this.getActiveRoute(routes)}
+            brandText={this.getActiveRoute(this.state.routes)}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
@@ -164,12 +170,12 @@ class Dashboard extends React.Component {
           {this.getRoute() ? (
             <div className={classes.content}>
               <div className={classes.container}>
-                <Switch>{this.getRoutes(routes)}</Switch>
+                <Switch>{this.getRoutes(this.state.routes)}</Switch>
               </div>
             </div>
           ) : (
             <div className={classes.map}>
-              <Switch>{this.getRoutes(routes)}</Switch>
+              <Switch>{this.getRoutes(this.state.routes)}</Switch>
             </div>
           )}
           {this.getRoute() ? <Footer fluid /> : null}
