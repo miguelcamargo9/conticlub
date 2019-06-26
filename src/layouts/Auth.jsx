@@ -8,7 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
 
-import routes from "routes.js";
+import { defaultRoutes } from "../routes/";
 
 import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/authStyle.jsx";
 
@@ -68,13 +68,13 @@ class Pages extends React.Component {
     const { classes, ...rest } = this.props;
     return (
       <div>
-        <AuthNavbar brandText={this.getActiveRoute(routes)} {...rest} />
+        <AuthNavbar brandText={this.getActiveRoute(defaultRoutes)} {...rest} />
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}
             style={{ backgroundImage: "url(" + this.getBgImage() + ")" }}
           >
-            <Switch>{this.getRoutes(routes)}</Switch>
+            <Switch>{this.getRoutes(defaultRoutes)}</Switch>
           </div>
         </div>
       </div>

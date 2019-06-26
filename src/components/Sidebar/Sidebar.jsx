@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { sessionService } from "redux-react-session";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
@@ -60,9 +61,18 @@ class Sidebar extends React.Component {
     this.state = {
       openAvatar: false,
       miniActive: true,
+      user: {},
       ...this.getCollapseStates(props.routes)
     };
   }
+  componentDidMount = () => {
+    sessionService
+      .loadUser()
+      .then(user => {
+        this.setState({ user });
+      })
+      .catch(err => console.log(err));
+  };
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
   getCollapseStates = routes => {
@@ -362,7 +372,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={localStorage.getItem("username")}
+                primary={this.state.user.name}
                 secondary={
                   <b
                     className={
@@ -408,9 +418,7 @@ class Sidebar extends React.Component {
                       {rtlActive ? "PT" : "PTS"}
                     </span>
                     <ListItemText
-                      primary={
-                        rtlActive ? "Points" : localStorage.getItem("points")
-                      }
+                      primary={rtlActive ? "Points" : this.state.user.points}
                       disableTypography={true}
                       className={collapseItemText}
                     />
