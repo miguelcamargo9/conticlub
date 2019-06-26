@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { bindActionCreators } from "redux";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -26,7 +27,6 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 import compose from "recompose/compose";
 
 import * as authenticationActions from "../../actions/authenticationActions";
-import { bindActionCreators } from "redux";
 
 import loginPageStyle from "assets/jss/material-dashboard-pro-react/views/loginPageStyle.jsx";
 
@@ -174,18 +174,6 @@ LoginPage.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-  // const { user } = state.login;
-  // if (user !== undefined) {
-  //   if (user.hasOwnProperty("access_token")) {
-  //     const token = user.access_token;
-  //     localStorage.removeItem("token");
-  //     localStorage.setItem("token", token);
-  //     localStorage.setItem("profile", user.profile.id);
-  //     localStorage.setItem("username", user.name);
-  //     localStorage.setItem("points", user.points);
-  //     props.history.push(`/admin/home`);
-  //   }
-  // }
   return {
     error: state.error.message
   };

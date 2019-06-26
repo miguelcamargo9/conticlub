@@ -3,6 +3,7 @@ import * as types from "./index";
 
 import { loginUserService } from "../services/authenticationService";
 import { setMessageError } from "./errorActions";
+import { setPoints } from "./sessionActions";
 
 export const registerUserAction = user => {
   return {
@@ -36,6 +37,7 @@ export const loginUserAction = (user, history) => {
       if (userInfo.data.message) {
         dispatch(setMessageError(userInfo.data.message));
       } else {
+        dispatch(setPoints(userInfo.data[0].points));
         dispatch(setUserData(userInfo.data[0], history));
         dispatch(setMessageError(null));
       }

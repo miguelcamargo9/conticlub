@@ -2,6 +2,9 @@ import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
+import { compose } from "redux";
+import { connect } from "react-redux";
+
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -156,6 +159,7 @@ class Dashboard extends React.Component {
           color={this.state.color}
           bgColor={this.state.bgColor}
           miniActive={this.state.miniActive}
+          points={this.props.points}
           {...rest}
         />
         <div className={mainPanel} ref="mainPanel">
@@ -202,4 +206,20 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(Dashboard);
+function mapStateToProps(state) {
+  const points =
+    state.localSession.points === 0
+      ? state.session.user.points
+      : state.localSession.points;
+  return {
+    points: points
+  };
+}
+
+export default compose(
+  withStyles(appStyle),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(Dashboard);

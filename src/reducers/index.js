@@ -6,6 +6,7 @@ import product from "./productReducer";
 import user from "./userReducer";
 import subsidiary from "./subsidiaryReducer";
 import error from "./errorReducer";
+import localSession from "./localSessionReducer";
 import { sessionReducer } from "redux-react-session";
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   subsidiary,
   user,
   error,
-  session: sessionReducer
+  session: sessionReducer,
+  localSession
 });
 
 export default rootReducer;
