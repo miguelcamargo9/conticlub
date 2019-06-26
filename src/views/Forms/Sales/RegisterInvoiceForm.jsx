@@ -1,6 +1,8 @@
 import React from "react";
 import Select from "react-select";
 
+import { sessionService } from "redux-react-session";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import FormLabel from "@material-ui/core/FormLabel";
@@ -134,6 +136,8 @@ class registerInvoiceForm extends React.Component {
       let dataInvoice = {
         invoiceNumber: this.state.invoiceNumber,
         totalAmount: this.state.totalInvoice,
+        userId: this.state.userId,
+        date: this.state.date,
         rines: [
           {
             amount: this.state.amount,
@@ -147,7 +151,9 @@ class registerInvoiceForm extends React.Component {
         if (whellInfo.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: "Factura Creada con Éxito"
+            successMessage: `Factura Creada con Éxito, Se le han agregado ${
+              whellInfo.data.points
+            } puntos`
           });
           setTimeout(() => {
             this.props.history.push(`/admin/home`);
@@ -171,6 +177,12 @@ class registerInvoiceForm extends React.Component {
       });
       this.setState({ brands: brandSelectData });
     });
+    sessionService
+      .loadUser()
+      .then(user => {
+        this.setState({ userId: user.id });
+      })
+      .catch(err => console.log(err));
   }
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
@@ -338,7 +350,7 @@ class registerInvoiceForm extends React.Component {
                       }}
                       inputProps={{
                         onChange: event =>
-                          this.change(event, "invoiceNumber", "length", 5),
+                          this.change(event, "invoiceNumber", "length", 3),
                         type: "text",
                         endAdornment:
                           this.state.invoiceNumberState === "error" ? (

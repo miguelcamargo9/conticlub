@@ -13,10 +13,10 @@ export const insertInvoice = invoiceData => {
     "Content-Type": "application/x-www-form-urlencoded"
   };
   const data = {
-    sale_date: "2019-06-17",
+    sale_date: invoiceData.date,
     number: invoiceData.invoiceNumber,
     price: invoiceData.totalAmount,
-    users_id: 10
+    users_id: invoiceData.userId
   };
   const rines = invoiceData.rines;
 
