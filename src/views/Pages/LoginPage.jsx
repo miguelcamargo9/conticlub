@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -35,8 +37,14 @@ class LoginPage extends React.Component {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimaton: "cardHidden",
+      user: {
+        username: "",
+        password: ""
+      }
     };
+    this.onSubmit = this.onHandleLogin.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
@@ -52,21 +60,23 @@ class LoginPage extends React.Component {
     this.timeOutFunction = null;
   }
 
-  onHandleLogin = event => {
-    event.preventDefault();
+  onChange(e) {
+    const { value, name } = e.target;
 
-    const username = event.target.firstname.value;
-    const password = event.target.password.value;
+    const { user } = this.state;
+    user[name] = value;
+    this.setState({ user });
+  }
 
-    const data = {
-      username,
-      password
-    };
-
-    this.props.UserActions.loginUserAction(data);
+  onHandleLogin = history => {
+    const { user } = this.state;
+    this.props.UserActions.loginUserAction(user, history);
   };
 
   render() {
+    const {
+      user: { username, password }
+    } = this.state;
     const { classes, error } = this.props;
 
     const errorDiv = error ? (
@@ -79,6 +89,19 @@ class LoginPage extends React.Component {
       ""
     );
 
+    const SubmitButton = withRouter(({ history }) => (
+      <Button
+        type="submit"
+        onClick={() => this.onHandleLogin(history)}
+        color="warning"
+        simple
+        size="lg"
+        block
+      >
+        Enviar
+      </Button>
+    ));
+
     return (
       <div className={classes.container}>
         <GridContainer justify="center">
@@ -86,54 +109,58 @@ class LoginPage extends React.Component {
             <img src={logo} alt="logo" className={classes.img} />
           </GridItem>
           <GridItem xs={12} sm={6} md={4}>
-            <form onSubmit={this.onHandleLogin}>
-              <Card login className={classes[this.state.cardAnimaton]}>
-                <CardHeader
-                  className={`${classes.cardHeader} ${classes.textCenter}`}
-                  color="warning"
-                >
-                  <h4 className={classes.cardTitle}>Iniciar Sesión</h4>
-                </CardHeader>
-                <CardBody>
-                  <CustomInput
-                    labelText="Usuario"
-                    id="firstname"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Face className={classes.inputAdornmentIcon} />
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                  <CustomInput
-                    labelText="Contraseña"
-                    id="password"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      type: "password",
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <Icon className={classes.inputAdornmentIcon}>
-                            lock_outline
-                          </Icon>
-                        </InputAdornment>
-                      )
-                    }}
-                  />
-                </CardBody>
-                <CardFooter className={classes.justifyContentCenter}>
-                  <Button type="submit" color="warning" simple size="lg" block>
-                    Enviar
-                  </Button>
-                </CardFooter>
-              </Card>
-            </form>
+            <Card login className={classes[this.state.cardAnimaton]}>
+              <CardHeader
+                className={`${classes.cardHeader} ${classes.textCenter}`}
+                color="warning"
+              >
+                <h4 className={classes.cardTitle}>Iniciar Sesión</h4>
+              </CardHeader>
+              <CardBody>
+                <CustomInput
+                  labelText="Usuario"
+                  id="firstname"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    name: "username",
+                    value: username,
+                    onChange: event => this.onChange(event),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Face className={classes.inputAdornmentIcon} />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <CustomInput
+                  labelText="Contraseña"
+                  id="password"
+                  onChange={this.onChange}
+                  value={password}
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    name: "password",
+                    value: password,
+                    type: "password",
+                    onChange: event => this.onChange(event),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Icon className={classes.inputAdornmentIcon}>
+                          lock_outline
+                        </Icon>
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </CardBody>
+              <CardFooter className={classes.justifyContentCenter}>
+                <SubmitButton />
+              </CardFooter>
+            </Card>
           </GridItem>
         </GridContainer>
         {errorDiv}
@@ -147,21 +174,20 @@ LoginPage.propTypes = {
 };
 
 function mapStateToProps(state, props) {
-  const { user } = state.login;
-  if (user !== undefined) {
-    if (user.hasOwnProperty("access_token")) {
-      const token = user.access_token;
-      localStorage.removeItem("token");
-      localStorage.setItem("token", token);
-      localStorage.setItem("profile", user.profile.id);
-      localStorage.setItem("username", user.name);
-      localStorage.setItem("points", user.points);
-      props.history.push(`/admin/home`);
-    }
-  }
+  // const { user } = state.login;
+  // if (user !== undefined) {
+  //   if (user.hasOwnProperty("access_token")) {
+  //     const token = user.access_token;
+  //     localStorage.removeItem("token");
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("profile", user.profile.id);
+  //     localStorage.setItem("username", user.name);
+  //     localStorage.setItem("points", user.points);
+  //     props.history.push(`/admin/home`);
+  //   }
+  // }
   return {
-    error: state.error.message,
-    user: state.login.user
+    error: state.error.message
   };
 }
 
