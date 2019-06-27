@@ -93,7 +93,6 @@ class Step2 extends React.Component {
     this.setState({ [stateName]: event.target.value });
   }
   isValidated() {
-    console.log(this.state.identificationNumberState);
     if (
       this.state.identificationNumberState === "success" &&
       this.state.passwordState === "success" &&

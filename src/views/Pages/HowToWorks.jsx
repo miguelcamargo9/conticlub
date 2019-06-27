@@ -91,48 +91,48 @@ class howToWorks extends React.Component {
                       </CardBody>
                     </Card>
                   )
-                },
-                {
-                  tabButton: "Preguntas frecuentes",
-                  tabIcon: LiveHelp,
-                  tabContent: (
-                    <Card>
-                      <CardHeader>
-                        <h4 className={classes.cardTitle}>
-                            Preguntas frecuentes
-                        </h4>
-                        <p className={classes.cardCategory}>
-                            Preguntas frecuentes
-                        </p>
-                      </CardHeader>
-                      <CardBody>
-                        <div>
-                            <div><strong>Si deseas conocer como manejar la plataforma, descarga el manual de usuario en el siguiente link:</strong></div>
-                            <div><a href='http://conticlub.co/sites/default/files/MANUAL_DE_USUARIO.pdf' rel="noopener noreferrer" target='_blank'>Descargar manual de usuario</a></div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Cómo consulto el estado de aprobación de mi solicitud para redimir? </strong></div>
-                            <div>Rta: Para consultar el estado de aprobación, se debe ingresar al perfil y en el apartado “mis pedidos y lista de deseos” ahí podrá verificar el estado de su solicitud hasta su entrega.</div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Cúal es el máximo de puntos que puedo redimir? </strong></div>
-                            <div>Rta: No existe un límite para la cantidad de puntos a redimir</div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Cúal es el mínimo de puntos que puedo redimir? </strong></div>
-                            <div>Rta: No existe un límite para la cantidad de puntos a redimir, el mínimo de puntos está dado por el producto con menos puntaje.</div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Puedo ingresar facturas que no estén a mi nombre? </strong></div>
-                            <div>Rta: No es posible, sólo se pueden ingresar&nbsp;facturas que estén a nombre del titular de la cuenta.</div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Puedo cambiar de producto una vez redimido? </strong></div>
-                            <div>Rta: No es posible cambiar el producto una vez redimido.</div>
-                            <div>&nbsp;</div>
-                            <div><strong>¿Es posible redimir más de una marca en las referencias de vivenciales? </strong></div>
-                            <div>Rta: No es posible, sólo será válido para una sola marca de las mencionadas en la imagen.</div>
-                            <div>&nbsp;</div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  )
                 }
+                // {
+                //   tabButton: "Preguntas frecuentes",
+                //   tabIcon: LiveHelp,
+                //   tabContent: (
+                //     <Card>
+                //       <CardHeader>
+                //         <h4 className={classes.cardTitle}>
+                //             Preguntas frecuentes
+                //         </h4>
+                //         <p className={classes.cardCategory}>
+                //             Preguntas frecuentes
+                //         </p>
+                //       </CardHeader>
+                //       <CardBody>
+                //         <div>
+                //             <div><strong>Si deseas conocer como manejar la plataforma, descarga el manual de usuario en el siguiente link:</strong></div>
+                //             <div><a href='http://conticlub.co/sites/default/files/MANUAL_DE_USUARIO.pdf' rel="noopener noreferrer" target='_blank'>Descargar manual de usuario</a></div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Cómo consulto el estado de aprobación de mi solicitud para redimir? </strong></div>
+                //             <div>Rta: Para consultar el estado de aprobación, se debe ingresar al perfil y en el apartado “mis pedidos y lista de deseos” ahí podrá verificar el estado de su solicitud hasta su entrega.</div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Cúal es el máximo de puntos que puedo redimir? </strong></div>
+                //             <div>Rta: No existe un límite para la cantidad de puntos a redimir</div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Cúal es el mínimo de puntos que puedo redimir? </strong></div>
+                //             <div>Rta: No existe un límite para la cantidad de puntos a redimir, el mínimo de puntos está dado por el producto con menos puntaje.</div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Puedo ingresar facturas que no estén a mi nombre? </strong></div>
+                //             <div>Rta: No es posible, sólo se pueden ingresar&nbsp;facturas que estén a nombre del titular de la cuenta.</div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Puedo cambiar de producto una vez redimido? </strong></div>
+                //             <div>Rta: No es posible cambiar el producto una vez redimido.</div>
+                //             <div>&nbsp;</div>
+                //             <div><strong>¿Es posible redimir más de una marca en las referencias de vivenciales? </strong></div>
+                //             <div>Rta: No es posible, sólo será válido para una sola marca de las mencionadas en la imagen.</div>
+                //             <div>&nbsp;</div>
+                //         </div>
+                //       </CardBody>
+                //     </Card>
+                //   )
+                // }
               ]}
             />
           </GridItem>

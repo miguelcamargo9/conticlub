@@ -23,3 +23,6 @@ export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
 
 //Errors
 export const ERROR_MESSAGE = "ERROR_MESSAGE";
+
+//Session
+export const SET_SESSION_POINTS = "SET_SESSION_POINTS";

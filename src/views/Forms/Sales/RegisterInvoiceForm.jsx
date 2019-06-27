@@ -2,6 +2,8 @@ import React from "react";
 import Select from "react-select";
 
 import { sessionService } from "redux-react-session";
+import { compose, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -31,6 +33,8 @@ import { getBrands } from "../../../services/brandService";
 import { getDesignsByBrandId } from "../../../services/designService";
 import { getWhellsByDesignId } from "../../../services/whellService";
 import { insertInvoice } from "../../../services/invoiceService";
+
+import * as sessionActions from "../../../actions/sessionActions";
 
 const selectStylesBrand = {
   container: (base, state) => ({
@@ -147,12 +151,15 @@ class registerInvoiceForm extends React.Component {
         image: this.state.image
       };
       console.log(dataInvoice);
-      insertInvoice(dataInvoice).then(whellInfo => {
-        if (whellInfo.data.message === "success") {
+      insertInvoice(dataInvoice).then(responseSaveInvoice => {
+        if (responseSaveInvoice.data.message === "success") {
+          this.props.SessionActions.setPoints(
+            responseSaveInvoice.data.currentPoints
+          );
           this.setState({
             messageError: null,
             successMessage: `Factura Creada con Éxito, Se le han agregado ${
-              whellInfo.data.points
+              responseSaveInvoice.data.points
             } puntos`
           });
           setTimeout(() => {
@@ -160,7 +167,7 @@ class registerInvoiceForm extends React.Component {
           }, 3000);
         } else {
           this.setState({
-            messageError: whellInfo.data.message,
+            messageError: responseSaveInvoice.data.message,
             successMessage: null
           });
         }
@@ -529,4 +536,16 @@ class registerInvoiceForm extends React.Component {
   }
 }
 
-export default withStyles(validationFormsStyle)(registerInvoiceForm);
+function mapDispatchToProps(dispatch) {
+  return {
+    SessionActions: bindActionCreators(sessionActions, dispatch)
+  };
+}
+
+export default compose(
+  withStyles(validationFormsStyle),
+  connect(
+    null,
+    mapDispatchToProps
+  )
+)(registerInvoiceForm);

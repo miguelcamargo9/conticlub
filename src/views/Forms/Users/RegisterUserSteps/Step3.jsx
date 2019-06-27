@@ -239,30 +239,30 @@ class Step3 extends React.Component {
             </GridContainer>
             <GridContainer className={classes.inlineChecks}>
               <GridItem xs={12} sm={6}>
-                <FormControlLabel
-                  disabled
-                  control={
-                    <Checkbox
-                      id="politicsState"
-                      tabIndex={-1}
-                      checked={politcsCheck}
-                      checkedIcon={<Check className={classes.checkedIcon} />}
-                      icon={<Check className={classes.uncheckedIcon} />}
-                      classes={{
-                        checked: classes.checked,
-                        root: classes.checkRoot
-                      }}
-                    />
-                  }
-                  classes={{
-                    label: classes.label,
-                    disabled: classes.disabledCheckboxAndRadio
-                  }}
-                />
                 <Link
                   to="#"
                   onClick={() => this.handleClickOpen("classicModal")}
                 >
+                  <FormControlLabel
+                    disabled
+                    control={
+                      <Checkbox
+                        id="politicsState"
+                        tabIndex={-1}
+                        checked={politcsCheck}
+                        checkedIcon={<Check className={classes.checkedIcon} />}
+                        icon={<Check className={classes.uncheckedIcon} />}
+                        classes={{
+                          checked: classes.checked,
+                          root: classes.checkRoot
+                        }}
+                      />
+                    }
+                    classes={{
+                      label: classes.label,
+                      disabled: classes.disabledCheckboxAndRadio
+                    }}
+                  />
                   Aceptar políticas y condiciones
                 </Link>
                 {politicsState === "error" ? (
@@ -275,30 +275,30 @@ class Step3 extends React.Component {
                 ) : null}
               </GridItem>
               <GridItem xs={12} sm={5}>
-                <FormControlLabel
-                  disabled
-                  control={
-                    <Checkbox
-                      id={"habeasState"}
-                      tabIndex={-1}
-                      checked={habeasCheck}
-                      checkedIcon={<Check className={classes.checkedIcon} />}
-                      icon={<Check className={classes.uncheckedIcon} />}
-                      classes={{
-                        checked: classes.checked,
-                        root: classes.checkRoot
-                      }}
-                    />
-                  }
-                  classes={{
-                    label: classes.label,
-                    disabled: classes.disabledCheckboxAndRadio
-                  }}
-                />
                 <Link
                   to="#"
                   onClick={() => this.handleClickOpen("habeasModal")}
                 >
+                  <FormControlLabel
+                    disabled
+                    control={
+                      <Checkbox
+                        id={"habeasState"}
+                        tabIndex={-1}
+                        checked={habeasCheck}
+                        checkedIcon={<Check className={classes.checkedIcon} />}
+                        icon={<Check className={classes.uncheckedIcon} />}
+                        classes={{
+                          checked: classes.checked,
+                          root: classes.checkRoot
+                        }}
+                      />
+                    }
+                    classes={{
+                      label: classes.label,
+                      disabled: classes.disabledCheckboxAndRadio
+                    }}
+                  />
                   Aceptar habeas data
                 </Link>
                 {habeasState === "error" ? (

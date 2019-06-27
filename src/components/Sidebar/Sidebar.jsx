@@ -418,7 +418,7 @@ class Sidebar extends React.Component {
                       {rtlActive ? "PT" : "PTS"}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "Points" : this.state.user.points}
+                      primary={rtlActive ? "Points" : this.props.points}
                       disableTypography={true}
                       className={collapseItemText}
                     />
