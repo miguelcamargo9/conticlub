@@ -24,34 +24,21 @@ class Home extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12}>
-            <Slides slides={this.props.slides} />
+            <img
+              src={"http://conticlub.co:8000/slides/slide_5.jpg"}
+              height="100%"
+              width="100%"
+            />
           </GridItem>
         </GridContainer>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
         <GridContainer>
           <GridItem xs={12} sm={12}>
             <WheelsList />
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12} sm={12}>
+            <Slides slides={this.props.slides} />
           </GridItem>
         </GridContainer>
       </div>
