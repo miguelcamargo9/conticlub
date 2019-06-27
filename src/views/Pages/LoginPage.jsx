@@ -118,7 +118,7 @@ class LoginPage extends React.Component {
               </CardHeader>
               <CardBody>
                 <CustomInput
-                  labelText="Usuario"
+                  labelText="Ingrese Su Cédula"
                   id="firstname"
                   formControlProps={{
                     fullWidth: true
