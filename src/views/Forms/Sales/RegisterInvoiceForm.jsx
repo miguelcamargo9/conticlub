@@ -477,7 +477,7 @@ class registerInvoiceForm extends React.Component {
                             value={this.selectedOption}
                             onChange={this.handleChangeWhell}
                             options={this.state.selectWhells}
-                            placeholder={"Ancho | Perfil rin"}
+                            placeholder={"Ancho | Perfil | Rin"}
                             styles={selectStylesWheel}
                           />
                           <br />
