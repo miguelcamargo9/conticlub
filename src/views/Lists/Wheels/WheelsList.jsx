@@ -77,14 +77,14 @@ class WheelsList extends React.Component {
                 </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    Contisportcontact5
+                    ContiSportContact 5
                   </a>
                 </h4>
                 <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>contisportcontact5</h4>
+                  <h4>ContiSportContact 5</h4>
                 </div>
               </CardFooter>
             </Card>
@@ -129,14 +129,14 @@ class WheelsList extends React.Component {
                 </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    crosscontactatr
+                    CrossContact ATR
                   </a>
                 </h4>
                 <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>crosscontactatr</h4>
+                  <h4>CrossContact ATR</h4>
                 </div>
               </CardFooter>
             </Card>
@@ -181,14 +181,14 @@ class WheelsList extends React.Component {
                 </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    crosscontactat50
+                    TerrainContact AT-50
                   </a>
                 </h4>
                 <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>crosscontactat50</h4>
+                  <h4>TerrainContact AT-50</h4>
                 </div>
               </CardFooter>
             </Card>
@@ -233,14 +233,14 @@ class WheelsList extends React.Component {
                 </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    crosscontactat50
+                    CrossContact UHP
                   </a>
                 </h4>
                 <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>crosscontactat50</h4>
+                  <h4>CrossContact UHP</h4>
                 </div>
               </CardFooter>
             </Card>
