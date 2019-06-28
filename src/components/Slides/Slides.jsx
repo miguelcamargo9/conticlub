@@ -1,29 +1,23 @@
 import React from "react";
-import Slideshow from "react-slidez";
+import { Zoom } from "react-slideshow-image";
 
-// core components
-import GridContainer from "components/Grid/GridContainer.jsx";
-import GridItem from "components/Grid/GridItem.jsx";
+const zoomOutProperties = {
+  duration: 5000,
+  transitionDuration: 500,
+  infinite: true,
+  indicators: true,
+  scale: 0.4,
+  arrows: true
+};
 
 class Slides extends React.Component {
   render() {
     return this.props.slides ? (
-      <GridContainer justify="center">
-        <GridItem xs={12} sm={12} md={11}>
-          <Slideshow
-            showArrows
-            autoplay
-            enableKeyboard
-            useDotIndex={false}
-            slideInterval={5000}
-            defaultIndex={1}
-            slides={this.props.slides}
-            effect={"bounce-left"}
-            height={"50%"}
-            width={"90%"}
-          />
-        </GridItem>
-      </GridContainer>
+      <Zoom {...zoomOutProperties}>
+        {this.props.slides.map((each, index) => (
+          <img key={index} style={{ width: "100%" }} src={each} />
+        ))}
+      </Zoom>
     ) : (
       <div>Loading...</div>
     );
