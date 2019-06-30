@@ -4,50 +4,35 @@ import cx from "classnames";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import GridContainer from "components/Grid/GridContainer.jsx";
+import GridItem from "components/Grid/GridItem.jsx";
 
 import footerStyle from "assets/jss/material-dashboard-pro-react/components/footerStyle";
+import logo1 from "assets/img/logo.png";
+import logo2 from "assets/img/logo2.png";
 
 function Footer({ ...props }) {
-  const { classes, fluid, white, rtlActive } = props;
+  const { classes, fluid, white, black } = props;
   var container = cx({
     [classes.container]: !fluid,
     [classes.containerFluid]: fluid,
-    [classes.whiteColor]: white
+    [classes.blackColor]: black
   });
   var block = cx({
+    [classes.center]: true,
     [classes.block]: true,
     [classes.whiteColor]: white
   });
   return (
     <footer className={classes.footer}>
-      <div className={container}>
-        <div className={classes.left}>
-          <List className={classes.list}>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#home" className={block}>
-                {rtlActive ? "الصفحة الرئيسية" : "Home"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#company" className={block}>
-                {rtlActive ? "شركة" : "Company"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#portfolio" className={block}>
-                {rtlActive ? "بعدسة" : "Portfolio"}
-              </a>
-            </ListItem>
-            <ListItem className={classes.inlineBlock}>
-              <a href="#blog" className={block}>
-                {rtlActive ? "مدونة" : "Blog"}
-              </a>
-            </ListItem>
-          </List>
-        </div>
-      </div>
+      <GridContainer className={container} justify="space-between">
+        <GridItem xs={12} sm={4} className={block}>
+          <img src={logo1} height="90%" width="90%" alt="Slide" />
+        </GridItem>
+        <GridItem xs={12} sm={4} className={block}>
+          <img src={logo2} height="90%" width="90%" alt="Slide" />
+        </GridItem>
+      </GridContainer>
     </footer>
   );
 }
