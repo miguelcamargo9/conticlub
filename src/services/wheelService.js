@@ -3,7 +3,7 @@ import axios from "axios";
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
-export const getWhellsByDesignId = designId => {
+export const getWheelsByDesignId = designId => {
   const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/rin/byDesign/${designId}`;
 
   const data = {
@@ -15,7 +15,6 @@ export const getWhellsByDesignId = designId => {
   return axios
     .get(LOGIN_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
