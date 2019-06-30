@@ -18,7 +18,7 @@ import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 const hist = createBrowserHistory();
 const store = configureStore();
 
-const validateSession = session => {
+const validateSession = () => {
   // check if your session is still valid
   return true;
 };

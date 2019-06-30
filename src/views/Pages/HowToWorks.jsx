@@ -4,7 +4,7 @@ import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
-import LiveHelp from "@material-ui/icons/LiveHelp";
+// import LiveHelp from "@material-ui/icons/LiveHelp";
 import Gavel from "@material-ui/icons/Gavel";
 
 // core components

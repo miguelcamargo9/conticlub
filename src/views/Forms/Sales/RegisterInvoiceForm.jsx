@@ -454,7 +454,6 @@ class registerInvoiceForm extends React.Component {
                         inputProps={{ placeholder: "Fecha de Factura" }}
                         onChange={this.handleChangeDate}
                         closeOnSelect
-                        timeFormat={false}
                       />
                     </FormControl>
                     <br />

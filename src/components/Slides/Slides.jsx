@@ -15,7 +15,7 @@ class Slides extends React.Component {
     return this.props.slides ? (
       <Zoom {...zoomOutProperties}>
         {this.props.slides.map((each, index) => (
-          <img key={index} style={{ width: "100%" }} src={each} />
+          <img key={index} style={{ width: "100%" }} src={each} alt="Slide" />
         ))}
       </Zoom>
     ) : (

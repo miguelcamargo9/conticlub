@@ -28,6 +28,7 @@ class Home extends React.Component {
               src={"http://conticlub.co:8000/slides/slide_5.jpg"}
               height="100%"
               width="100%"
+              alt="Slide"
             />
           </GridItem>
         </GridContainer>
