@@ -15,7 +15,6 @@ export const getDesignsByBrandId = brandId => {
   return axios
     .get(LOGIN_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
