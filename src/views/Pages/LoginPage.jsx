@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { bindActionCreators } from "redux";
+import { bindActionCreators, compose } from "redux";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -23,8 +23,6 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
-
-import compose from "recompose/compose";
 
 import * as authenticationActions from "../../actions/authenticationActions";
 

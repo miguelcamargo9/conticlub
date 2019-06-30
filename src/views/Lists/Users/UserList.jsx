@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import compose from "recompose/compose";
+import { bindActionCreators, compose } from "redux";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
