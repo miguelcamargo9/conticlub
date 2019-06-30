@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import Datetime from "react-datetime";
 
 import { sessionService } from "redux-react-session";
 import { compose, bindActionCreators } from "redux";
@@ -7,8 +8,9 @@ import { connect } from "react-redux";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import FormLabel from "@material-ui/core/FormLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // material ui icons
 import Close from "@material-ui/icons/Close";
@@ -31,47 +33,10 @@ import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/
 
 import { getBrands } from "../../../services/brandService";
 import { getDesignsByBrandId } from "../../../services/designService";
-import { getWhellsByDesignId } from "../../../services/whellService";
+import { getWheelsByDesignId } from "../../../services/wheelService";
 import { insertInvoice } from "../../../services/invoiceService";
 
 import * as sessionActions from "../../../actions/sessionActions";
-
-const selectStylesBrand = {
-  container: (base, state) => ({
-    ...base,
-    opacity: state.isDisabled ? ".5" : "1",
-    backgroundColor: "transparent",
-    zIndex: "999",
-    width: "100%"
-  })
-};
-const selectStylesDesign = {
-  container: (base, state) => ({
-    ...base,
-    opacity: state.isDisabled ? ".5" : "1",
-    backgroundColor: "transparent",
-    zIndex: "998",
-    width: "100%"
-  })
-};
-const selectStylesWheel = {
-  container: (base, state) => ({
-    ...base,
-    opacity: state.isDisabled ? ".5" : "1",
-    backgroundColor: "transparent",
-    zIndex: "997",
-    width: "100%"
-  })
-};
-const selectStylesAmount = {
-  container: (base, state) => ({
-    ...base,
-    opacity: state.isDisabled ? ".5" : "1",
-    backgroundColor: "transparent",
-    zIndex: "996",
-    width: "100%"
-  })
-};
 
 class registerInvoiceForm extends React.Component {
   constructor(props) {
@@ -81,76 +46,122 @@ class registerInvoiceForm extends React.Component {
       amounts.push({ value: i, label: i });
     }
     this.state = {
-      wheels: [{}],
+      wheels: [
+        {
+          brandState: "",
+          designState: "",
+          wheelState: "",
+          amountState: "",
+          amount: 0
+        }
+      ],
       dateState: "",
       invoiceNumberState: "",
       totalInvoiceState: "",
       imageState: "",
-      brandState: "",
-      designState: "",
-      wheelState: "",
-      amounts: amounts,
-      amountState: ""
+      amounts: amounts
     };
     this.isValidated = this.isValidated.bind(this);
+    this.addWheel = this.addWheel.bind(this);
+    this.deleteWheel = this.deleteWheel.bind(this);
+    this.handleChangeDate = this.handleChangeDate.bind(this);
   }
-  addWhell() {
-    // const currentWheels = this.state.wheels;
-    // currentWheels.push({});
-    // this.setState({ wheels: currentWheels });
+  addWheel() {
+    const currentWheels = this.state.wheels;
+    const lastWheelIndex = currentWheels.length - 1;
+    const lastWheel = currentWheels[lastWheelIndex];
+    if (lastWheel.rin_id === undefined) {
+      const lastWheelIndex = currentWheels.length - 1;
+      currentWheels[lastWheelIndex].brandState = "error";
+      currentWheels[lastWheelIndex].designState = "error";
+      currentWheels[lastWheelIndex].wheelState = "error";
+    } else {
+      if (lastWheel.amount === 0) {
+        currentWheels[lastWheelIndex].amountState = "error";
+      } else {
+        currentWheels.push({
+          brandState: "",
+          designState: "",
+          wheelState: "",
+          amountState: "",
+          amount: 0
+        });
+      }
+    }
+    this.setState({ wheels: currentWheels });
+  }
+  deleteWheel(index) {
+    const currentWheels = this.state.wheels;
+    if (index > 0) {
+      currentWheels.splice(index, 1);
+    }
+    this.setState({ wheels: currentWheels });
   }
   handleChangeImage = image => {
     this.setState({ image: image, imageState: "success" });
+  };
+  handleChangeDate = date => {
+    if (date._d !== undefined) {
+      const selectDate = date._d.toISOString().substr(0, 10);
+      this.setState({ date: selectDate, dateState: "success" });
+    } else {
+      this.setState({ date: null, dateState: "error" });
+    }
   };
 
   handleRemoveImage = () => {
     this.setState({ imageState: "error" });
   };
-  handleChangeBrand = brand => {
-    let designSelectData = [];
+  handleChangeBrand = (brand, index) => {
     getDesignsByBrandId(brand.id).then(designInfo => {
-      designSelectData = designInfo.data.map((design, index) => {
+      const designSelectData = designInfo.data.map(design => {
         design.value = design.id;
         design.label = design.name;
         return design;
       });
-      this.setState({ designs: designSelectData, brandState: "success" });
+      const currentWheels = this.state.wheels;
+      currentWheels[index].brandState = "success";
+      currentWheels[index].selectBrand = brand;
+      this.setState({ designs: designSelectData, wheels: currentWheels });
     });
   };
-  handleChangeDesign = design => {
-    let whellSelectData = [];
-    getWhellsByDesignId(design.id).then(whellInfo => {
-      whellSelectData = whellInfo.data.map((whell, index) => {
-        whell.value = whell.id;
-        whell.label = whell.name;
-        return whell;
+  handleChangeDesign = (design, index) => {
+    getWheelsByDesignId(design.id).then(wheelInfo => {
+      const wheelSelectData = wheelInfo.data.map(wheel => {
+        wheel.value = wheel.id;
+        wheel.label = wheel.name;
+        return wheel;
       });
-      this.setState({ selectWhells: whellSelectData, designState: "success" });
+      const currentWheels = this.state.wheels;
+      currentWheels[index].designState = "success";
+      currentWheels[index].selectDesign = design;
+      this.setState({ selectWheels: wheelSelectData, wheels: currentWheels });
     });
   };
-  handleChangeWhell = whell => {
-    this.setState({ selectWhell: whell, wheelState: "success" });
+  handleChangeWheel = (wheel, index) => {
+    const currentWheels = this.state.wheels;
+    currentWheels[index].wheelState = "success";
+    currentWheels[index].rin_id = wheel.id;
+    currentWheels[index].selectWheel = wheel;
+    this.setState({ wheels: currentWheels });
   };
-  handleChangeAmount = amount => {
-    this.setState({ amount: amount.value, amountState: "success" });
+  handleChangeAmount = (amount, index) => {
+    const currentWheels = this.state.wheels;
+    currentWheels[index].amountState = "success";
+    currentWheels[index].amount = amount.value;
+    currentWheels[index].selectedAmount = amount;
+    this.setState({ wheels: currentWheels });
   };
   handleSubmit() {
     if (this.isValidated()) {
-      console.log(this.state);
-      let dataInvoice = {
+      const dataInvoice = {
         invoiceNumber: this.state.invoiceNumber,
         totalAmount: this.state.totalInvoice,
         userId: this.state.userId,
         date: this.state.date,
-        rines: [
-          {
-            amount: this.state.amount,
-            rin_id: this.state.selectWhell.id
-          }
-        ],
+        rines: this.state.wheels,
         image: this.state.image
       };
-      console.log(dataInvoice);
       insertInvoice(dataInvoice).then(responseSaveInvoice => {
         if (responseSaveInvoice.data.message === "success") {
           this.props.SessionActions.setPoints(
@@ -175,11 +186,11 @@ class registerInvoiceForm extends React.Component {
     }
   }
   componentDidMount() {
-    let brandSelectData = [];
     getBrands().then(brandInfo => {
-      brandSelectData = brandInfo.data.map((brand, index) => {
+      const brandSelectData = brandInfo.data.map(brand => {
         brand.value = brand.id;
         brand.label = brand.name;
+        brand.key = 0;
         return brand;
       });
       this.setState({ brands: brandSelectData });
@@ -235,16 +246,46 @@ class registerInvoiceForm extends React.Component {
 
     this.setState({ [stateName]: event.target.value });
   }
+  isWheelsValidate() {
+    let error = "error";
+    const { wheels } = this.state;
+    const currentWheels = wheels.map(wheel => {
+      if (
+        wheel.brandState === "success" &&
+        wheel.designState === "success" &&
+        wheel.wheelState === "success" &&
+        wheel.amountState === "success"
+      ) {
+        error = "success";
+        return wheel;
+      } else {
+        if (wheel.brandState !== "success") {
+          wheel.brandState = "error";
+        }
+        if (wheel.designState !== "success") {
+          wheel.designState = "error";
+        }
+        if (wheel.wheelState !== "success") {
+          wheel.wheelState = "error";
+        }
+        if (wheel.amountState !== "success") {
+          wheel.amountState = "error";
+        }
+        return wheel;
+      }
+    });
+    this.setState({ wheels: currentWheels });
+    return error;
+  }
   isValidated() {
+    const wheelsState = this.isWheelsValidate();
+    this.setState({ wheelsState: wheelsState });
     if (
       this.state.dateState === "success" &&
       this.state.invoiceNumberState === "success" &&
       this.state.totalInvoiceState === "success" &&
       this.state.imageState === "success" &&
-      this.state.brandState === "success" &&
-      this.state.designState === "success" &&
-      this.state.wheelState === "success" &&
-      this.state.amountState === "success"
+      this.state.wheelsState === "success"
     ) {
       return true;
     } else {
@@ -259,18 +300,6 @@ class registerInvoiceForm extends React.Component {
       }
       if (this.state.imageState !== "success") {
         this.setState({ imageState: "error" });
-      }
-      if (this.state.brandState !== "success") {
-        this.setState({ brandState: "error" });
-      }
-      if (this.state.designState !== "success") {
-        this.setState({ designState: "error" });
-      }
-      if (this.state.wheelState !== "success") {
-        this.setState({ wheelState: "error" });
-      }
-      if (this.state.amountState !== "success") {
-        this.setState({ amountState: "error" });
       }
     }
     return false;
@@ -300,6 +329,106 @@ class registerInvoiceForm extends React.Component {
       ""
     );
 
+    const wheels = this.state.wheels.map((wheel, key) => {
+      return (
+        <div key={key}>
+          <GridContainer>
+            <GridItem xs={12} sm={3}>
+              <Select
+                value={wheel.selectBrand}
+                onChange={selectedOption =>
+                  this.handleChangeBrand(selectedOption, key)
+                }
+                options={this.state.brands}
+                placeholder={"Seleccione una marca"}
+              />
+              <br />
+              {wheel.brandState === "error" ? (
+                <InputAdornment position="end" className={classes.danger}>
+                  Seleccione Una Marca
+                  <Close />
+                </InputAdornment>
+              ) : (
+                ""
+              )}
+              <br />
+            </GridItem>
+            <GridItem xs={12} sm={3}>
+              <Select
+                value={wheel.selectedDesign}
+                onChange={selectedOption =>
+                  this.handleChangeDesign(selectedOption, key)
+                }
+                options={this.state.designs}
+                placeholder={"Seleccione un diseño"}
+              />
+              <br />
+              {wheel.designState === "error" ? (
+                <InputAdornment position="end" className={classes.danger}>
+                  Seleccione Un Diseño
+                  <Close />
+                </InputAdornment>
+              ) : (
+                ""
+              )}
+              <br />
+            </GridItem>
+            <GridItem xs={12} sm={3}>
+              <Select
+                value={wheel.selectWheel}
+                onChange={selectedOption =>
+                  this.handleChangeWheel(selectedOption, key)
+                }
+                options={this.state.selectWheels}
+                placeholder={"Ancho | Perfil | Rin"}
+              />
+              <br />
+              {wheel.wheelState === "error" ? (
+                <InputAdornment position="end" className={classes.danger}>
+                  Seleccione Un Rin
+                  <Close />
+                </InputAdornment>
+              ) : (
+                ""
+              )}
+              <br />
+            </GridItem>
+            <GridItem xs={12} sm={2}>
+              <Select
+                value={wheel.selectedAmount}
+                onChange={selectedOption =>
+                  this.handleChangeAmount(selectedOption, key)
+                }
+                options={this.state.amounts}
+                placeholder={"Cantidad"}
+              />
+              <br />
+              {wheel.amountState === "error" ? (
+                <InputAdornment position="end" className={classes.danger}>
+                  Seleccione Una Cantidad
+                  <Close />
+                </InputAdornment>
+              ) : (
+                ""
+              )}
+              <br />
+            </GridItem>
+            <GridItem xs={12} sm={1}>
+              <Button
+                color="danger"
+                size="sm"
+                className={classes.marginRight}
+                onClick={e => this.deleteWheel(key)}
+              >
+                X
+              </Button>
+              <br />
+            </GridItem>
+          </GridContainer>
+        </div>
+      );
+    });
+
     return (
       <GridContainer>
         {errorDiv}
@@ -315,32 +444,29 @@ class registerInvoiceForm extends React.Component {
               <form>
                 <GridContainer>
                   <GridItem xs={12} sm={3}>
-                    <FormLabel className={classes.labelHorizontal}>
+                    <InputLabel className={classes.label}>
                       Fecha de Factura (Requerido)
-                    </FormLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={2}>
-                    <CustomInput
-                      success={this.state.dateState === "success"}
-                      error={this.state.dateState === "error"}
-                      id="date"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event =>
-                          this.change(event, "date", "length", 0),
-                        type: "date",
-                        endAdornment:
-                          this.state.dateState === "error" ? (
-                            <InputAdornment position="end">
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            undefined
-                          )
-                      }}
-                    />
+                    </InputLabel>
+                    <br />
+                    <FormControl fullWidth>
+                      <Datetime
+                        timeFormat={false}
+                        inputProps={{ placeholder: "Fecha de Factura" }}
+                        onChange={this.handleChangeDate}
+                        closeOnSelect
+                        timeFormat={false}
+                      />
+                    </FormControl>
+                    <br />
+                    <br />
+                    {this.state.dateState === "error" ? (
+                      <InputAdornment position="end" className={classes.danger}>
+                        Seleccione Una Fecha
+                        <Close />
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    )}
                   </GridItem>
                   <GridItem xs={12} sm={3}>
                     <CustomInput
@@ -398,9 +524,7 @@ class registerInvoiceForm extends React.Component {
                       }}
                     />
                   </GridItem>
-                </GridContainer>
-                <GridContainer>
-                  <GridItem xs={12} sm={4} md={4}>
+                  <GridItem xs={12} sm={3} md={3}>
                     <ImageUpload
                       handleChangeImage={this.handleChangeImage}
                       handleRemoveImage={this.handleRemoveImage}
@@ -422,9 +546,9 @@ class registerInvoiceForm extends React.Component {
                     />
 
                     {this.state.imageState === "error" ? (
-                      <InputAdornment position="end">
+                      <InputAdornment position="end" className={classes.danger}>
                         Seleccione Una Imagen
-                        <Close className={classes.danger} />
+                        <Close />
                       </InputAdornment>
                     ) : (
                       ""
@@ -432,96 +556,19 @@ class registerInvoiceForm extends React.Component {
                   </GridItem>
                 </GridContainer>
                 <br />
-                {this.state.wheels.map((wheel, key) => {
-                  return (
-                    <div key={key}>
-                      <GridContainer>
-                        <GridItem xs={12} sm={3}>
-                          <Select
-                            value={this.selectedOption}
-                            onChange={this.handleChangeBrand}
-                            options={this.state.brands}
-                            placeholder={"Seleccione una marca"}
-                            styles={selectStylesBrand}
-                          />
-                          <br />
-                          {this.state.brandState === "error" ? (
-                            <InputAdornment position="end">
-                              Seleccione Una Marca
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            ""
-                          )}
-                        </GridItem>
-                        <GridItem xs={12} sm={3}>
-                          <Select
-                            value={this.selectedOption}
-                            onChange={this.handleChangeDesign}
-                            options={this.state.designs}
-                            placeholder={"Seleccione un diseño"}
-                            styles={selectStylesDesign}
-                          />
-                          <br />
-                          {this.state.designState === "error" ? (
-                            <InputAdornment position="end">
-                              Seleccione Un Diseño
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            ""
-                          )}
-                        </GridItem>
-                        <GridItem xs={12} sm={3}>
-                          <Select
-                            value={this.selectedOption}
-                            onChange={this.handleChangeWhell}
-                            options={this.state.selectWhells}
-                            placeholder={"Ancho | Perfil | Rin"}
-                            styles={selectStylesWheel}
-                          />
-                          <br />
-                          {this.state.wheelState === "error" ? (
-                            <InputAdornment position="end">
-                              Seleccione Un Rin
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            ""
-                          )}
-                        </GridItem>
-                        <GridItem xs={12} sm={3}>
-                          <Select
-                            value={this.selectedOption}
-                            onChange={this.handleChangeAmount}
-                            options={this.state.amounts}
-                            placeholder={"Cantidad"}
-                            styles={selectStylesAmount}
-                          />
-                          <br />
-                          {this.state.amountState === "error" ? (
-                            <InputAdornment position="end">
-                              Seleccione Una Cantidad
-                              <Close className={classes.danger} />
-                            </InputAdornment>
-                          ) : (
-                            ""
-                          )}
-                        </GridItem>
-                        <GridItem xs={12} sm={3}>
-                          {/* <Button
-                            color="success"
-                            size="sm"
-                            className={classes.marginRight}
-                            onClick={this.addWhell()}
-                          >
-                            Agregar
-                          </Button> */}
-                        </GridItem>
-                      </GridContainer>
-                    </div>
-                  );
-                })}
+                {wheels}
+                <GridContainer>
+                  <GridItem xs={12} sm={3}>
+                    <Button
+                      color="success"
+                      size="sm"
+                      className={classes.marginRight}
+                      onClick={this.addWheel}
+                    >
+                      Agregar
+                    </Button>
+                  </GridItem>
+                </GridContainer>
               </form>
             </CardBody>
             <CardFooter className={classes.justifyContentCenter}>
