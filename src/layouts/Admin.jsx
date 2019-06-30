@@ -182,7 +182,7 @@ class Dashboard extends React.Component {
               <Switch>{this.getRoutes(this.state.routes)}</Switch>
             </div>
           )}
-          {/* {this.getRoute() ? <Footer fluid /> : null} */}
+          {this.getRoute() ? <Footer fluid /> : null}
           {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
             handleColorClick={this.handleColorClick}
