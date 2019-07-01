@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import compose from "recompose/compose";
+import { bindActionCreators, compose } from "redux";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";

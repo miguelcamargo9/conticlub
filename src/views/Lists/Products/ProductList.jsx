@@ -1,8 +1,7 @@
 import React from "react";
 import Select from "react-select";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import compose from "recompose/compose";
+import { bindActionCreators, compose } from "redux";
 import classNames from "classnames";
 
 // @material-ui/core components

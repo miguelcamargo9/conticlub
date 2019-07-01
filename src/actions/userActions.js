@@ -1,5 +1,8 @@
 import * as types from "./index";
-import { userService } from "../services/userService";
+import {
+  userService,
+  getInvoiceHistoryByUserService
+} from "../services/userService";
 
 export const setUserData = dataUser => {
   return {
@@ -10,11 +13,27 @@ export const setUserData = dataUser => {
   };
 };
 
+export const setInvoiceHistoryData = dataInvoices => {
+  return {
+    type: types.SET_HISTORY_INVOICE_BY_USER,
+    payload: {
+      dataInvoices
+    }
+  };
+};
+
 export const getUsersAction = () => {
   return dispatch => {
     userService().then(dataUsers => {
-      // let output = dataProduct.data.slice(0, 12);
       dispatch(setUserData(dataUsers.data));
+    });
+  };
+};
+
+export const getInvoiceHistoryByUser = userId => {
+  return dispatch => {
+    getInvoiceHistoryByUserService(userId).then(dataInvoices => {
+      dispatch(setInvoiceHistoryData(dataInvoices.data));
     });
   };
 };

@@ -2,6 +2,7 @@
 import HowToWorks from "../views/Pages/HowToWorks.jsx";
 import Politics from "../views/Pages/Politics.jsx";
 import ProductList from "../views/Lists/Products/ProductList.jsx";
+import InvoicesList from "../views/Lists/Invoices/InvoicesList.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 
@@ -30,6 +31,15 @@ export const defaultRoutes = [
         mini: "IV",
         rtlMini: "RS",
         component: RegisterInvoiceForm,
+        layout: "/admin"
+      },
+      {
+        path: "/invoices-list",
+        name: "Lista de Ventas",
+        rtlName: "Invoices List",
+        mini: "LV",
+        rtlMini: "IL",
+        component: InvoicesList,
         layout: "/admin"
       }
     ]

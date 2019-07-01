@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
+import { sessionService } from "redux-react-session";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -22,6 +23,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import * as userActions from "../../../actions/userActions";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+import { SERVER_URL } from "../../../constants/server";
 
 const styles = {
   cardIconTitle: {
@@ -31,24 +33,42 @@ const styles = {
   }
 };
 
-class UserList extends React.Component {
+class InvoicesList extends React.Component {
   componentDidMount() {
-    this.props.UserActions.getUsersAction();
+    sessionService
+      .loadUser()
+      .then(user => {
+        this.props.UserActions.getInvoiceHistoryByUser(user.id);
+        this.setState({ userId: user.id });
+      })
+      .catch(err => console.log(err));
   }
 
   buildDataTable() {
     let data = [];
-    if (this.props.users.length > 0) {
-      data = this.props.users.map((user, index) => {
+    if (this.props.invoices.length > 0) {
+      data = this.props.invoices.map((invoice, index) => {
+        const totalPoints = invoice.invoice_references.reduce(
+          (acc, invoiceRef) => {
+            return acc + parseFloat(invoiceRef.points);
+          },
+          0
+        );
         const dataTable = {
           id: index,
-          name: user.name,
-          identification_number: user.identification_number,
-          identification_type: user.identification_type,
-          email: user.email,
-          phone: user.phone,
-          points: user.points,
-          profile: user.profile.name
+          sale_date: invoice.sale_date,
+          number: invoice.number,
+          price: invoice.price,
+          totalPoints: totalPoints,
+          image: (
+            <a
+              href={SERVER_URL + invoice.image}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Ver Factura
+            </a>
+          )
         };
         return dataTable;
       });
@@ -63,13 +83,13 @@ class UserList extends React.Component {
     const dataTable = this.buildDataTable();
     return (
       <GridContainer>
-        <GridItem xs={12}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning" icon>
               <CardIcon color="warning">
                 <Assignment />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>Lista de Usuarios</h4>
+              <h4 className={classes.cardIconTitle}>Lista de Ventas</h4>
             </CardHeader>
             <CardBody>
               <ReactTable
@@ -79,37 +99,29 @@ class UserList extends React.Component {
                 ofText="de"
                 rowsText="filas"
                 loadingText="Cargando..."
-                noDataText="No hay usuarios"
+                noDataText="No ha ingresado ventas"
                 data={dataTable}
                 filterable
                 columns={[
                   {
-                    Header: "Nombre",
-                    accessor: "name"
+                    Header: "Fecha",
+                    accessor: "sale_date"
                   },
                   {
-                    Header: "Documento",
-                    accessor: "identification_number"
+                    Header: "# Factura",
+                    accessor: "number"
                   },
                   {
-                    Header: "Tipo Doc.",
-                    accessor: "identification_type"
-                  },
-                  {
-                    Header: "Correo",
-                    accessor: "email"
-                  },
-                  {
-                    Header: "Teléfono",
-                    accessor: "phone"
+                    Header: "Total",
+                    accessor: "price"
                   },
                   {
                     Header: "Puntos",
-                    accessor: "points"
+                    accessor: "totalPoints"
                   },
                   {
-                    Header: "Perfil",
-                    accessor: "profile"
+                    Header: "Imagen",
+                    accessor: "image"
                   },
                   {
                     Header: "Acciones",
@@ -132,8 +144,12 @@ class UserList extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const invoices =
+    state.user.invoices.invoices !== undefined
+      ? state.user.invoices.invoices
+      : state.user.invoices;
   return {
-    users: state.user.users
+    invoices: invoices
   };
 }
 
@@ -149,4 +165,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(UserList);
+)(InvoicesList);
