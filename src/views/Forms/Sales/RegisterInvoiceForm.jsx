@@ -174,7 +174,7 @@ class registerInvoiceForm extends React.Component {
             } puntos`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/home`);
+            this.props.history.push(`/admin/invoices-list`);
           }, 3000);
         } else {
           this.setState({
@@ -183,6 +183,8 @@ class registerInvoiceForm extends React.Component {
           });
         }
       });
+    } else {
+      console.log("que paso?");
     }
   }
   componentDidMount() {
@@ -279,13 +281,12 @@ class registerInvoiceForm extends React.Component {
   }
   isValidated() {
     const wheelsState = this.isWheelsValidate();
-    this.setState({ wheelsState: wheelsState });
     if (
       this.state.dateState === "success" &&
       this.state.invoiceNumberState === "success" &&
       this.state.totalInvoiceState === "success" &&
       this.state.imageState === "success" &&
-      this.state.wheelsState === "success"
+      wheelsState === "success"
     ) {
       return true;
     } else {
