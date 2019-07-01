@@ -22,3 +22,23 @@ export const userService = () => {
       console.log(error);
     });
 };
+
+export const getInvoiceHistoryByUserService = userId => {
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/historyinvoice/${userId}`;
+
+  const data = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .get(LOGIN_API_ENDPOINT, data)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
