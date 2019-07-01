@@ -2,7 +2,8 @@ import * as types from "../actions";
 
 export default function(
   state = {
-    users: []
+    users: [],
+    invoices: []
   },
   action
 ) {
@@ -11,6 +12,11 @@ export default function(
       return {
         ...state,
         users: action.payload.dataUser
+      };
+    case types.SET_HISTORY_INVOICE_BY_USER:
+      return {
+        ...state,
+        invoices: action.payload.dataInvoices
       };
     default:
       return state;
