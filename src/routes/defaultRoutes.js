@@ -13,7 +13,7 @@ import TouchApp from "@material-ui/icons/TouchApp";
 import Gavel from "@material-ui/icons/Gavel";
 import CardTravel from "@material-ui/icons/CardTravel";
 
-import { generalRoutes } from "./generalRoutes";
+import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
 export const defaultRoutes = [
   ...generalRoutes,
@@ -85,5 +85,6 @@ export const defaultRoutes = [
     component: RegisterUserForm,
     layout: "/auth",
     invisible: true
-  }
+  },
+  ...generaFinallRoutes
 ];

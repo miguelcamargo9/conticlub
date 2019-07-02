@@ -6,7 +6,7 @@ import UserList from "../views/Lists/Users/UserList";
 import Users from "@material-ui/icons/People";
 import Lock from "@material-ui/icons/Lock";
 
-import { generalRoutes } from "./generalRoutes";
+import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
 export const adminRoutes = [
   ...generalRoutes,
@@ -63,5 +63,6 @@ export const adminRoutes = [
     component: RegisterUserForm,
     layout: "/auth",
     invisible: true
-  }
+  },
+  ...generaFinallRoutes
 ];

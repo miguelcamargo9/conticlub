@@ -1,8 +1,10 @@
 import Home from "../views/Home/Home.jsx";
 import LoginPage from "../views/Pages/LoginPage.jsx";
+import LogoutPage from "../views/Pages/LogoutPage.jsx";
 
 // @material-ui/icons
 import HomeIcon from "@material-ui/icons/Home";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 export const generalRoutes = [
   {
@@ -22,5 +24,16 @@ export const generalRoutes = [
     component: LoginPage,
     layout: "/auth",
     invisible: true
+  }
+];
+
+export const generaFinallRoutes = [
+  {
+    path: "/logout-page",
+    name: "Cerrar Sesión",
+    rtlName: "Logout Page",
+    icon: ExitToApp,
+    component: LogoutPage,
+    layout: "/auth"
   }
 ];
