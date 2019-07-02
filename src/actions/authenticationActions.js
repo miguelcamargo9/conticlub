@@ -2,6 +2,7 @@ import { sessionService } from "redux-react-session";
 import * as types from "./index";
 
 import { loginUserService } from "../services/authenticationService";
+
 import { setMessageError } from "./errorActions";
 import { setPoints } from "./sessionActions";
 
@@ -45,21 +46,10 @@ export const loginUserAction = (user, history) => {
   };
 };
 
-export const login = (user, history) => {
+export const logoutUserAction = history => {
   return () => {
-    return loginUserService(user).then(response => {
-      const { token } = response;
-      sessionService
-        .saveSession({ token })
-        .then(() => {
-          sessionService
-            .saveUser(response.data)
-            .then(() => {
-              history.push("/");
-            })
-            .catch(err => console.error(err));
-        })
-        .catch(err => console.error(err));
-    });
+    sessionService.deleteSession();
+    sessionService.deleteUser();
+    history.push("/auth/login-page");
   };
 };

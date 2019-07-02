@@ -1,10 +1,11 @@
-// import routes
-import LoginPage from "./views/Pages/LoginPage.jsx";
-
 import { sessionService } from "redux-react-session";
 
-import { adminRoutes, defaultRoutes, sellRoutes } from "./routes/";
-import RegisterUserForm from "./views/Forms/Users/RegisterUserForm.jsx";
+import {
+  adminRoutes,
+  defaultRoutes,
+  sellRoutes,
+  generalRoutes
+} from "./routes/";
 
 export const getAllRoutes = () => {
   return sessionService
@@ -27,30 +28,13 @@ export const getAllRoutes = () => {
             break;
         }
       } else {
-        dashRoutes = [
-          {
-            path: "/login-page",
-            name: "Iniciar Sesión",
-            rtlName: "Login Page",
-            mini: "L",
-            rtlMini: "LP",
-            component: LoginPage,
-            layout: "/auth",
-            invisible: true
-          },
-          {
-            path: "/register-page",
-            name: "Registrar Usuario",
-            rtlName: "User Register",
-            mini: "RU",
-            rtlMini: "UR",
-            component: RegisterUserForm,
-            layout: "/auth",
-            invisible: true
-          }
-        ];
+        dashRoutes = [...generalRoutes];
       }
       return dashRoutes;
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      const dashRoutes = [...generalRoutes];
+      return dashRoutes;
+    });
 };

@@ -3,7 +3,7 @@ import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 // @material-ui/icons
 import CardTravel from "@material-ui/icons/CardTravel";
 
-import { generalRoutes } from "./generalRoutes";
+import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
 export const sellRoutes = [
   ...generalRoutes,
@@ -24,5 +24,6 @@ export const sellRoutes = [
         layout: "/admin"
       }
     ]
-  }
+  },
+  ...generaFinallRoutes
 ];

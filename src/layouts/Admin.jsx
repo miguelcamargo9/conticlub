@@ -30,6 +30,7 @@ var ps;
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this._isMounted = false;
     this.state = {
       mobileOpen: false,
       miniActive: false,
@@ -43,6 +44,10 @@ class Dashboard extends React.Component {
     this.resizeFunction = this.resizeFunction.bind(this);
   }
   componentDidMount() {
+    this._isMounted = true;
+    if (!this.props.authenticated) {
+      this.props.history.push("/auth/logout-page");
+    }
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
@@ -51,13 +56,15 @@ class Dashboard extends React.Component {
       document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", this.resizeFunction);
-    getAllRoutes()
-      .then(routes => {
-        this.setState({ routes });
-      })
-      .catch(err => console.log(err));
+    this._isMounted &&
+      getAllRoutes()
+        .then(routes => {
+          this._isMounted && this.setState({ routes });
+        })
+        .catch(err => console.log(err));
   }
   componentWillUnmount() {
+    this._isMounted = false;
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
     }
@@ -206,13 +213,13 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
+function mapStateToProps({ localSession, session }) {
   const points =
-    state.localSession.points === 0
-      ? state.session.user.points
-      : state.localSession.points;
+    localSession.points === 0 ? session.user.points : localSession.points;
   return {
-    points: points
+    points: points,
+    checked: session.checked,
+    authenticated: session.authenticated
   };
 }
 

@@ -1,9 +1,9 @@
 //import all routes files
-import { generalRoutes } from "./generalRoutes";
 import { adminRoutes } from "./adminRoutes";
 import { defaultRoutes } from "./defaultRoutes";
 import { sellRoutes } from "./sellRoutes";
+import { generalRoutes } from "./generalRoutes";
 
 // export all the routes
 
-export { generalRoutes, adminRoutes, defaultRoutes, sellRoutes };
+export { adminRoutes, defaultRoutes, sellRoutes, generalRoutes };
