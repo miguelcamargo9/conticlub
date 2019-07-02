@@ -52,5 +52,31 @@ export const getAllRoutes = () => {
       }
       return dashRoutes;
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      const dashRoutes = [
+        {
+          path: "/login-page",
+          name: "Iniciar Sesión",
+          rtlName: "Login Page",
+          mini: "L",
+          rtlMini: "LP",
+          component: LoginPage,
+          layout: "/auth",
+          invisible: true
+        },
+        {
+          path: "/register-page",
+          name: "Registrar Usuario",
+          rtlName: "User Register",
+          mini: "RU",
+          rtlMini: "UR",
+          component: RegisterUserForm,
+          layout: "/auth",
+          invisible: true
+        }
+      ];
+
+      return dashRoutes;
+    });
 };
