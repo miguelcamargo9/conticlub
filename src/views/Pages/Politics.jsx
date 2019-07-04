@@ -48,7 +48,7 @@ class Politics extends React.Component {
                   informaciones concernientes a nuestras marcas, políticas o
                   temas relacionados al programa a cualquiera de los datos de
                   contacto ingresado por los participantes pues hacen parte del
-                  mismo.&nbsp;
+                  mismo.
                 </p>
                 <p>
                   <strong>
@@ -62,8 +62,8 @@ class Politics extends React.Component {
                   participantes mensualmente sin excepción, es decir, deberán
                   ingresar las ventas del mes en curso durante el transcurso del
                   mismo, de lo contrario, dichas ventas no tendrán ninguna
-                  validez dentro del programa.&nbsp;Del mismo modo, CONTINENTAL
-                  por medio de cualquiera de sus funcionarios tendrá derecho de
+                  validez dentro del programa. Del mismo modo, CONTINENTAL por
+                  medio de cualquiera de sus funcionarios tendrá derecho de
                   realizar auditoria de las informaciones ingresadas antes de
                   ser redimido cualquier tipo de premio, en caso de que se
                   encuentre cualquier irregularidad o no sea permitido realizar
@@ -122,22 +122,22 @@ class Politics extends React.Component {
                 </p>
                 <p>
                   La entrega de los premios del programa será realiza por medio
-                  de un&nbsp;transporte por lo que CONTINENTAL no se hace
-                  responsable del estado de entrega de los mismos o perdida de
-                  los premios durante el embalaje o trasporte. CONTINENTAL no
-                  aceptará devoluciones de los premios por imperfectos, fallas o
-                  daños de los productos que sean entregados dentro del
-                  programa, en caso de ocurrir alguno de estos eventos, se le
-                  brindará la información del proveedor del producto al
-                  participante para que este sea quien realice directamente la/s
-                  reclamaciones que considere prudente/s.&nbsp;Los tiempos de
-                  entrega se podrán modificar dependiendo de la ubicación
-                  geográfica del participante y podrán exceder la vigencia del
-                  programa, el punto de entrega podrá variar entre la dirección
-                  de residencia o la del distribuidor según CONTINENTAL
-                  consideré. En caso de ser entregado el premio en el
-                  distribuidor CONTINENTAL no se hará responsable ni asumirá
-                  ningún costo adicional por traslados que sean requeridos.
+                  de un transporte por lo que CONTINENTAL no se hace responsable
+                  del estado de entrega de los mismos o perdida de los premios
+                  durante el embalaje o trasporte. CONTINENTAL no aceptará
+                  devoluciones de los premios por imperfectos, fallas o daños de
+                  los productos que sean entregados dentro del programa, en caso
+                  de ocurrir alguno de estos eventos, se le brindará la
+                  información del proveedor del producto al participante para
+                  que este sea quien realice directamente la/s reclamaciones que
+                  considere prudente/s. Los tiempos de entrega se podrán
+                  modificar dependiendo de la ubicación geográfica del
+                  participante y podrán exceder la vigencia del programa, el
+                  punto de entrega podrá variar entre la dirección de residencia
+                  o la del distribuidor según CONTINENTAL consideré. En caso de
+                  ser entregado el premio en el distribuidor CONTINENTAL no se
+                  hará responsable ni asumirá ningún costo adicional por
+                  traslados que sean requeridos.
                 </p>
                 <p>
                   <strong>
@@ -146,40 +146,30 @@ class Politics extends React.Component {
                   </strong>
                 </p>
                 <p>
-                  7.1.&nbsp;&nbsp;La vigencia del programa será desde que se
-                  realice la comunicación formal del programa por parte de
-                  CONTINENTAL al distribuidor y estará vigente hasta que la
-                  compañía lo considere&nbsp;y lo comunique formalmente.
+                  7.1. La vigencia del programa será desde que se realice la
+                  comunicación formal del programa por parte de CONTINENTAL al
+                  distribuidor y estará vigente hasta que la compañía lo
+                  considere y lo comunique formalmente.
                 </p>
                 <p>
-                  7.2.&nbsp;&nbsp;Para ingresar por primera vez y crear el
-                  usuario en la página web se tendrá un plazo máximo de una
-                  semana hábil desde el momento en que CONTINENTAL haga la
-                  comunicación del programa, en caso de no realizarlo dentro de
-                  los plazos el sistema no les permitirá crear el usuario y se
-                  perderá el derecho a participar del programa.
+                  7.2. Sólo podrán participar en el programa la fuerza de ventas
+                  de los distribuidores previamente autorizados por CONTINENTAL.
                 </p>
                 <p>
-                  7.3.&nbsp;&nbsp;Sólo podrán participar en el programa la
-                  fuerza de ventas de los distribuidores previamente autorizados
-                  por CONTINENTAL.
+                  7.3. No sé podrán trasferir, cambiar o reclamar ningún tipo de
+                  premio por nadie diferente al participante.
                 </p>
                 <p>
                   <br />
-                  7.4.&nbsp; No sé podrán trasferir, cambiar o reclamar ningún
-                  tipo de premio por nadie diferente al participante.
+                  7.4. Si el participante no continua dentro del distribuidor
+                  durante la vigencia del programa, se perderán todos los
+                  puntos, beneficios o premios que no se hayan redimido y no sé
+                  podrán trasferir, cambiar o reclamar ninguna venta o premio
+                  por nadie diferente al participante.
                 </p>
                 <p>
                   <br />
-                  7.5.&nbsp;&nbsp;Si el participante no continua dentro del
-                  distribuidor durante la vigencia del programa, se perderán
-                  todos los puntos, beneficios o premios que no se hayan
-                  redimiendo y no sé podrán trasferir, cambiar o reclamar
-                  ninguna venta o premio o por nadie diferente al participante.
-                </p>
-                <p>
-                  <br />
-                  7.6.&nbsp;&nbsp;Si el distribuidor desea que ingrese un nuevo
+                  7.5. Si el distribuidor desea que ingrese un nuevo
                   participante después de los plazos de inscripción deberá
                   solicitar por escrito a CONTINENTAL autorización explicando
                   las razones del porque se debería ingresar, CONTINENTAL está
@@ -188,17 +178,17 @@ class Politics extends React.Component {
                 </p>
                 <p>
                   <br />
-                  7.7.&nbsp; Se deberán ingresar mensualmente las ventas sin
+                  7.6. Se deberán ingresar mensualmente las ventas sin
                   excepción, es decir, deberán ingresar las ventas del mes en
                   curso durante el transcurso del mismo, de la contrarío, dichas
                   ventas no tendrán ninguna validez dentro del programa.
                 </p>
                 <p>
                   <br />
-                  7.8. Todos los campos para el registro de las ventas son
-                  obligatorios (día, mes año, numero de factura, costo total de
-                  factura, marca, diseño, ancho-perfil-rin, ciudad) así como
-                  subir la foto de la respectiva factura.
+                  7.7. Todos los campos para el registro de las ventas son
+                  obligatorios (día, mes año de venta, numero de factura, costo
+                  total de factura, marca, diseño, ancho-perfil-rin, cantidad)
+                  así como subir la foto de la respectiva factura de venta.
                 </p>
                 <p>
                   <em>
@@ -208,44 +198,43 @@ class Politics extends React.Component {
                 </p>
                 <p>
                   <br />
-                  7.9.&nbsp;&nbsp;No se tendrá en cuenta&nbsp;las ventas
-                  realizadas por licitación o pruebas de producto.
+                  7.8. No se tendrá en cuenta las ventas realizadas por
+                  licitación o pruebas de producto.
                 </p>
                 <p>
                   <br />
-                  7.10.&nbsp;&nbsp;Solo se tendrán en cuenta las ventas de
-                  llantas de la marca Continental y/o General Tire para
-                  automóvil y camioneta. En caso de ingresar ventas de otras
-                  marcas (así sea del grupo CONTINENTAL) o de otras líneas de
-                  producto no serán tenidas en cuenta.
+                  7.9. Solo se tendrán en cuenta las ventas de llantas de la
+                  marca Continental y/o General Tire para automóvil y camioneta.
+                  En caso de ingresar ventas que correspondan a otras marcas
+                  (así sea del grupo CONTINENTAL) o de otras líneas de producto
+                  no serán tenidas en cuenta.
                 </p>
                 <p>
                   <br />
-                  7.11. &nbsp;Solo se tendrá derecho a contar con un usuario por
+                  7.10. Solo se tendrá derecho a contar con un usuario por
                   participante.
                 </p>
                 <p>
                   <br />
-                  7.12.&nbsp;&nbsp;Las llantas de la marca Continental y General
-                  Tire que CONTINENTAL decida dar puntuación adicional solo
-                  aplicará durante el periodo que se defina.
+                  7.12. Las llantas de la marca Continental y General Tire que
+                  CONTINENTAL decida dar puntuación adicional solo aplicará
+                  durante el periodo que se defina.
                 </p>
                 <p>
                   <br />
-                  7.13. &nbsp;Las ventas se deben ingresar mensualmente sin
-                  excepción, es decir, deberán ingresar las ventas del mes en
-                  curso durante el transcurso del mismo, de la contrarío, dichas
-                  ventas no tendrán ninguna validez dentro del programa.
+                  7.13. Las ventas se deben ingresar mensualmente sin excepción,
+                  es decir, deberán ingresar las ventas del mes en curso durante
+                  el transcurso del mismo, de la contrarío, dichas ventas no
+                  tendrán ninguna validez dentro del programa.
                 </p>
                 <p>
-                  7.14. &nbsp;CONTINENTAL no aceptará devoluciones de los
-                  premios por imperfectos, fallas o daños de los productos que
-                  sean entregados dentro del programa.
+                  7.14. CONTINENTAL no aceptará devoluciones de los premios por
+                  imperfectos, fallas o daños de los productos que sean
+                  entregados dentro del programa.
                 </p>
                 <p>
-                  7.15. &nbsp;CONTINENTAL establece un plazo máximo de un mes
-                  para la entrega de los premios desde el momento de la
-                  redención.
+                  7.15. CONTINENTAL establece un plazo máximo de un mes para la
+                  entrega de los premios desde el momento de la redención.
                 </p>
               </div>
             </GridItem>

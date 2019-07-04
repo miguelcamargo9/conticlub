@@ -49,8 +49,8 @@ class HabeasData extends React.Component {
                   que sea procedente en los términos del decreto 1377 de 2013.
                   Para efectos de lo anterior, los canales de comunicación
                   establecidos para lo relacionado con el tratamiento de datos
-                  personales son: la línea en Bogotá 7451358, correo electrónico
-                  contacto@conticlub.co
+                  personales son: la línea en Bogotá 3013211294, correo
+                  electrónico contacto@conticlub.co
                 </p>
               </div>
             </GridItem>
