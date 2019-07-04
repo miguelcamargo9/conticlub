@@ -2,8 +2,13 @@ import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
 
+//Profiles
+import CreateProfile from "../views/Admin/Profiles/CreateProfile";
+import ProfilesList from "../views/Admin/Profiles/ProfilesList";
+
 // @material-ui/icons
-import Users from "@material-ui/icons/People";
+import People from "@material-ui/icons/People";
+import Person from "@material-ui/icons/Person";
 import Lock from "@material-ui/icons/Lock";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
@@ -31,7 +36,7 @@ export const adminRoutes = [
     collapse: true,
     name: "Usuarios",
     rtlName: "Users",
-    icon: Users,
+    icon: Person,
     state: "pageCollapse",
     views: [
       {
@@ -50,6 +55,33 @@ export const adminRoutes = [
         mini: "LU",
         rtlMini: "UL",
         component: UserList,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Perfiles",
+    rtlName: "Profiles",
+    icon: People,
+    state: "pageProfileCollapse",
+    views: [
+      {
+        path: "/create-profile",
+        name: "Crear Perfil",
+        rtlName: "Create Profile",
+        mini: "CP",
+        rtlMini: "CP",
+        component: CreateProfile,
+        layout: "/admin"
+      },
+      {
+        path: "/list-profiles",
+        name: "Lista Perfiles",
+        rtlName: "Profiles List",
+        mini: "LP",
+        rtlMini: "PL",
+        component: ProfilesList,
         layout: "/admin"
       }
     ]
