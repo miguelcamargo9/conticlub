@@ -94,7 +94,7 @@ class AuthNavbar extends React.Component {
           <Hidden mdUp>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">
-                MD Pro React
+                {brandText}
               </Button>
             </div>
           </Hidden>
