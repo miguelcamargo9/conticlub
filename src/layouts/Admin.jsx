@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { sessionService } from "redux-react-session";
 
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -45,9 +46,13 @@ class Dashboard extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    if (!this.props.authenticated) {
-      this.props.history.push("/auth/logout-page");
-    }
+    sessionService
+      .loadSession()
+      .then(currentSession => {})
+      .catch(err => {
+        console.log(err);
+        this.props.history.push("/auth/logout-page");
+      });
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
@@ -217,9 +222,7 @@ function mapStateToProps({ localSession, session }) {
   const points =
     localSession.points === 0 ? session.user.points : localSession.points;
   return {
-    points: points,
-    checked: session.checked,
-    authenticated: session.authenticated
+    points: points
   };
 }
 
