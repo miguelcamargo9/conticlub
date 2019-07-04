@@ -1,5 +1,5 @@
 // import ContactForm from "../views/Forms/ContactForm.jsx";
-import HowToWorks from "../views/Pages/HowToWorks.jsx";
+// import HowToWorks from "../views/Pages/HowToWorks.jsx";
 import Politics from "../views/Pages/Politics.jsx";
 import ProductList from "../views/Lists/Products/ProductList.jsx";
 import InvoicesList from "../views/Lists/Invoices/InvoicesList.jsx";
@@ -8,7 +8,7 @@ import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 
 // @material-ui/icons
 import Gift from "@material-ui/icons/CardGiftcard";
-import TouchApp from "@material-ui/icons/TouchApp";
+// import TouchApp from "@material-ui/icons/TouchApp";
 // import Email from "@material-ui/icons/Email";
 import Gavel from "@material-ui/icons/Gavel";
 import CardTravel from "@material-ui/icons/CardTravel";
@@ -52,14 +52,14 @@ export const defaultRoutes = [
     component: ProductList,
     layout: "/admin"
   },
-  {
-    path: "/howtoworks",
-    name: "Cómo Funciona",
-    rtlName: "How To Works",
-    icon: TouchApp,
-    component: HowToWorks,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/howtoworks",
+  //   name: "Cómo Funciona",
+  //   rtlName: "How To Works",
+  //   icon: TouchApp,
+  //   component: HowToWorks,
+  //   layout: "/admin"
+  // },
   // {
   //   path: "/contact",
   //   name: "Contáctanos",
