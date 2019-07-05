@@ -42,3 +42,46 @@ export const insertCategory = categoryData => {
       console.log(error);
     });
 };
+
+export const updateCategory = categoryData => {
+  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/update/${
+    categoryData.id
+  }`;
+
+  const headers = {
+    Authorization: serviceConst.AUTH
+  };
+  const dataCategory = {
+    name: categoryData.name
+  };
+
+  return axios
+    .put(CATEGORY_API_ENDPOINT, dataCategory, { headers: headers })
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
+export const getCategoryById = categoryId => {
+  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/get/${categoryId}`;
+
+  const data = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .get(CATEGORY_API_ENDPOINT, data)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};

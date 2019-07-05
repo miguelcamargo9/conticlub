@@ -6,9 +6,11 @@ import UserList from "../views/Lists/Users/UserList";
 import CreateProfile from "../views/Admin/Profiles/CreateProfile";
 import EditProfile from "../views/Admin/Profiles/EditProfile";
 import ProfilesList from "../views/Admin/Profiles/ProfilesList";
+
 //Product Categories
 import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
 import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
+import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 
 // @material-ui/icons
 import People from "@material-ui/icons/People";
@@ -67,7 +69,6 @@ export const adminRoutes = [
   },
   {
     collapse: true,
-<<<<<<< HEAD
     name: "Perfiles",
     rtlName: "Profiles",
     icon: People,
@@ -99,7 +100,12 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
-=======
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
     name: "Categorias",
     rtlName: "Categories",
     icon: Category,
@@ -115,13 +121,22 @@ export const adminRoutes = [
         layout: "/admin"
       },
       {
+        path: "/edit-category",
+        name: "Editar Categoría",
+        rtlName: "Edit Category",
+        mini: "EC",
+        rtlMini: "EC",
+        component: EditCategory,
+        layout: "/admin",
+        invisible: true
+      },
+      {
         path: "/list-categories",
         name: "Lista Categorias",
         rtlName: "Category List",
         mini: "LC",
         rtlMini: "LC",
         component: ListCategories,
->>>>>>> categories/crud
         layout: "/admin"
       }
     ]

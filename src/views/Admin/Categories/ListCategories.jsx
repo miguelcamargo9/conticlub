@@ -49,10 +49,10 @@ class ListCategories extends React.Component {
   buildDataTable() {
     let data = [];
     if (this.state.productCategories.length > 0) {
-      data = this.state.productCategories.map((prod, key) => {
+      data = this.state.productCategories.map((productCategory, key) => {
         const dataTable = {
           id: key,
-          name: prod.name,
+          name: productCategory.name,
           actions: (
             // we've added some custom button actions
             <div className="actions-right">
@@ -62,14 +62,16 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  let obj = this.state.productCategories.find(
-                    o => o.id === prod.id
+                  let categorySelect = this.state.productCategories.find(
+                    findCategory => findCategory.id === productCategory.id
                   );
-                  alert(
-                    "You've clicked EDIT button on \n{ \nName: " +
-                      obj.name +
-                      "\n}."
-                  );
+                  this.props.history.push({
+                    pathname: `/admin/edit-category`,
+                    state: {
+                      categoryName: productCategory.name,
+                      id: categorySelect.id
+                    }
+                  });
                 }}
                 color="warning"
                 className="edit"
@@ -84,7 +86,7 @@ class ListCategories extends React.Component {
                 onClick={() => {
                   var data = this.state.productCategories;
                   data.find((o, i) => {
-                    if (o.id === prod.id) {
+                    if (o.id === productCategory.id) {
                       // here you should add some custom code so you can delete the data
                       // from this component and from your server as well
                       data.splice(i, 1);
@@ -92,7 +94,7 @@ class ListCategories extends React.Component {
                     }
                     return false;
                   });
-                  this.setState({ data: data });
+                  this.setState({ productCategories: data });
                 }}
                 color="danger"
                 className="remove"
