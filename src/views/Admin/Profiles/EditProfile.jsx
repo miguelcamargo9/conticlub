@@ -22,9 +22,9 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
-import { insertProfile } from "../../../services/profileService";
+import { updateProfile } from "../../../services/profileService";
 
-class createProfile extends React.Component {
+class editProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,16 +32,18 @@ class createProfile extends React.Component {
     };
     this.isValidated = this.isValidated.bind(this);
   }
+
   handleSubmit() {
     if (this.isValidated()) {
       const dataProfile = {
+        id: this.props.match.params.id,
         name: this.state.profileName
       };
-      insertProfile(dataProfile).then(responseSaveProfile => {
+      updateProfile(dataProfile).then(responseSaveProfile => {
         if (responseSaveProfile.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Perfil ${this.state.profileName} Creado con Éxito`
+            successMessage: `Perfil ${this.state.profileName} Editado con Éxito`
           });
           setTimeout(() => {
             this.props.history.push(`/admin/profiles-list`);
@@ -120,7 +122,7 @@ class createProfile extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Crear Perfil</h4>
+                <h4 className={classes.cardTitle}>Editar Perfil</h4>
               </CardText>
             </CardHeader>
             <CardBody>
@@ -140,6 +142,7 @@ class createProfile extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
+                        defaultValue: this.props.location.state.profileName,
                         onChange: event =>
                           this.change(event, "profileName", "length", 3),
                         type: "text",
@@ -169,4 +172,4 @@ class createProfile extends React.Component {
   }
 }
 
-export default withStyles(validationFormsStyle)(createProfile);
+export default withStyles(validationFormsStyle)(editProfile);

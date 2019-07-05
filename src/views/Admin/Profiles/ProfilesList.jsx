@@ -61,12 +61,13 @@ class profilesList extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  let obj = this.state.profiles.find(o => o.id === profile.id);
-                  alert(
-                    "You've clicked EDIT button on \n{ \nName: " +
-                      obj.name +
-                      "\n}."
+                  let profileSelect = this.state.profiles.find(
+                    findProfile => findProfile.id === profile.id
                   );
+                  this.props.history.push({
+                    pathname: `/admin/edit-profile/${profileSelect.id}`,
+                    state: { profileName: profile.name }
+                  });
                 }}
                 color="warning"
                 className="edit"
