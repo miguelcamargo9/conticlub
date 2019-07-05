@@ -47,6 +47,26 @@ export const updateProfile = profileData => {
     });
 };
 
+export const deleteProfileService = profileId => {
+  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/delete/${profileId}`;
+
+  const dataProfile = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .delete(PROFILE_API_ENDPOINT, dataProfile)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
 export const getProfileById = profileId => {
   const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/get/${profileId}`;
 
