@@ -2,9 +2,15 @@ import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
 
+//Product Categories
+import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
+import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
+
 // @material-ui/icons
 import Users from "@material-ui/icons/People";
 import Lock from "@material-ui/icons/Lock";
+
+import Category from "@material-ui/icons/CategorySharp";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -50,6 +56,33 @@ export const adminRoutes = [
         mini: "LU",
         rtlMini: "UL",
         component: UserList,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Categorias",
+    rtlName: "Categories",
+    icon: Category,
+    state: "pageCategoriesCollapse",
+    views: [
+      {
+        path: "/create-category",
+        name: "Crear Categoria",
+        rtlName: "Create Category",
+        mini: "CP",
+        rtlMini: "CP",
+        component: CreateCategory,
+        layout: "/admin"
+      },
+      {
+        path: "/list-categories",
+        name: "Lista Categorias",
+        rtlName: "Category List",
+        mini: "LC",
+        rtlMini: "LC",
+        component: ListCategories,
         layout: "/admin"
       }
     ]
