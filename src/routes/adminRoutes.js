@@ -4,6 +4,7 @@ import UserList from "../views/Lists/Users/UserList";
 
 //Profiles
 import CreateProfile from "../views/Admin/Profiles/CreateProfile";
+import EditProfile from "../views/Admin/Profiles/EditProfile";
 import ProfilesList from "../views/Admin/Profiles/ProfilesList";
 
 // @material-ui/icons
@@ -76,7 +77,17 @@ export const adminRoutes = [
         layout: "/admin"
       },
       {
-        path: "/list-profiles",
+        path: "/edit-profile/:id",
+        name: "Editar Perfil",
+        rtlName: "Edit Profile",
+        mini: "EP",
+        rtlMini: "EP",
+        component: EditProfile,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/profiles-list",
         name: "Lista Perfiles",
         rtlName: "Profiles List",
         mini: "LP",
