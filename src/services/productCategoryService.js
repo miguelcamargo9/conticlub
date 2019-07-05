@@ -22,3 +22,23 @@ export const getCategoriesService = () => {
       console.log(error);
     });
 };
+
+export const insertCategory = categoryData => {
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/category/create`;
+  const headers = {
+    Authorization: serviceConst.AUTH
+  };
+  const data = {
+    name: categoryData.categoryText
+  };
+
+  return axios
+    .post(LOGIN_API_ENDPOINT, data, { headers: headers })
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};

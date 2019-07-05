@@ -6,11 +6,16 @@ import UserList from "../views/Lists/Users/UserList";
 import CreateProfile from "../views/Admin/Profiles/CreateProfile";
 import EditProfile from "../views/Admin/Profiles/EditProfile";
 import ProfilesList from "../views/Admin/Profiles/ProfilesList";
+//Product Categories
+import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
+import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
 
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
 import Lock from "@material-ui/icons/Lock";
+
+import Category from "@material-ui/icons/CategorySharp";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -62,6 +67,7 @@ export const adminRoutes = [
   },
   {
     collapse: true,
+<<<<<<< HEAD
     name: "Perfiles",
     rtlName: "Profiles",
     icon: People,
@@ -93,6 +99,29 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
+=======
+    name: "Categorias",
+    rtlName: "Categories",
+    icon: Category,
+    state: "pageCategoriesCollapse",
+    views: [
+      {
+        path: "/create-category",
+        name: "Crear Categoria",
+        rtlName: "Create Category",
+        mini: "CP",
+        rtlMini: "CP",
+        component: CreateCategory,
+        layout: "/admin"
+      },
+      {
+        path: "/list-categories",
+        name: "Lista Categorias",
+        rtlName: "Category List",
+        mini: "LC",
+        rtlMini: "LC",
+        component: ListCategories,
+>>>>>>> categories/crud
         layout: "/admin"
       }
     ]
