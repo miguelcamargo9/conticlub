@@ -3,6 +3,9 @@ import React from "react";
 // react component for creating dynamic tables
 import ReactTable from "react-table";
 
+// react component used to create sweet alerts
+import SweetAlert from "react-bootstrap-sweetalert";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -22,25 +25,123 @@ import Button from "components/CustomButtons/Button.jsx";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
-import { getProfiles } from "../../../services/profileService";
+import {
+  getProfiles,
+  deleteProfileService
+} from "../../../services/profileService";
+
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
 const styles = {
   cardIconTitle: {
     ...cardTitle,
     marginTop: "15px",
     marginBottom: "0px"
-  }
+  },
+  ...sweetAlertStyle
 };
 
 class profilesList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { profiles: [] };
+    this.state = { profiles: [], alert: null, show: false };
+    this.warningWithConfirmMessage = this.warningWithConfirmMessage.bind(this);
+    this.hideAlert = this.hideAlert.bind(this);
   }
 
   componentDidMount() {
     getProfiles().then(profilesInfo => {
       this.setState({ profiles: profilesInfo.data });
+    });
+  }
+
+  warningWithConfirmMessage(profileId) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Esta seguro que desea borrar este perfil?"
+          onConfirm={() => this.deleteProfile(profileId)}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Sí, borrar!"
+          cancelBtnText="Cancelar"
+          showCancel
+        >
+          Después de que se borre no podrá recuperar la Información
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete(profileId) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Eliminado!"
+          onConfirm={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          El Perfil con ID: {profileId} ha sido eliminado.
+        </SweetAlert>
+      )
+    });
+  }
+
+  cancelDetele(text) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          {text}
+        </SweetAlert>
+      )
+    });
+  }
+
+  deleteProfile(profileId) {
+    deleteProfileService(profileId)
+      .then(profileInfo => {
+        if (profileInfo.data.message === "success") {
+          const profiles = this.state.profiles;
+          profiles.find((profile, i) => {
+            if (profile.id === profileId) {
+              profiles.splice(i, 1);
+              return true;
+            }
+            return false;
+          });
+          this.setState({ profiles: profiles });
+          this.successDelete(profileId);
+        } else {
+          return this.cancelDetele(profileInfo.data.detail);
+        }
+      })
+      .catch(e => {
+        console.log("Error eliminado perfil id: profileId");
+      });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
     });
   }
 
@@ -80,17 +181,7 @@ class profilesList extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  var data = this.state.profiles;
-                  data.find((o, i) => {
-                    if (o.id === profile.id) {
-                      // here you should add some custom code so you can delete the data
-                      // from this component and from your server as well
-                      data.splice(i, 1);
-                      return true;
-                    }
-                    return false;
-                  });
-                  this.setState({ profiles: data });
+                  this.warningWithConfirmMessage(profile.id);
                 }}
                 color="danger"
                 className="remove"
@@ -111,51 +202,54 @@ class profilesList extends React.Component {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
     return (
-      <GridContainer>
-        <GridItem xs={12}>
-          <Card>
-            <CardHeader color="warning" icon>
-              <CardIcon color="warning">
-                <Assignment />
-              </CardIcon>
-              <h4 className={classes.cardIconTitle}>Lista de Perfiles</h4>
-            </CardHeader>
-            <CardBody>
-              <ReactTable
-                previousText="Atrás"
-                nextText="Siguiente"
-                pageText="Página"
-                ofText="de"
-                rowsText="filas"
-                loadingText="Cargando..."
-                noDataText="No hay perfiles"
-                data={dataTable}
-                filterable
-                columns={[
-                  {
-                    Header: "Id",
-                    accessor: "code"
-                  },
-                  {
-                    Header: "Nombre",
-                    accessor: "name"
-                  },
-                  {
-                    Header: "Acciones",
-                    accessor: "actions",
-                    sortable: false,
-                    filterable: false
-                  }
-                ]}
-                defaultPageSize={10}
-                showPaginationTop
-                showPaginationBottom={false}
-                className="-striped -highlight"
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <div>
+        {this.state.alert}
+        <GridContainer>
+          <GridItem xs={12}>
+            <Card>
+              <CardHeader color="warning" icon>
+                <CardIcon color="warning">
+                  <Assignment />
+                </CardIcon>
+                <h4 className={classes.cardIconTitle}>Lista de Perfiles</h4>
+              </CardHeader>
+              <CardBody>
+                <ReactTable
+                  previousText="Atrás"
+                  nextText="Siguiente"
+                  pageText="Página"
+                  ofText="de"
+                  rowsText="filas"
+                  loadingText="Cargando..."
+                  noDataText="No hay perfiles"
+                  data={dataTable}
+                  filterable
+                  columns={[
+                    {
+                      Header: "Id",
+                      accessor: "code"
+                    },
+                    {
+                      Header: "Nombre",
+                      accessor: "name"
+                    },
+                    {
+                      Header: "Acciones",
+                      accessor: "actions",
+                      sortable: false,
+                      filterable: false
+                    }
+                  ]}
+                  defaultPageSize={10}
+                  showPaginationTop
+                  showPaginationBottom={false}
+                  className="-striped -highlight"
+                />
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
     );
   }
 }
