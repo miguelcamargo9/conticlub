@@ -44,7 +44,7 @@ class createProfile extends React.Component {
             successMessage: `Perfil ${this.state.profileName} Creado con Éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/invoices-list`);
+            this.props.history.push(`/admin/profiles-list`);
           }, 3000);
         } else {
           this.setState({
@@ -53,8 +53,6 @@ class createProfile extends React.Component {
           });
         }
       });
-    } else {
-      console.log("que paso?");
     }
   }
   // function that verifies if a string has a given length or not
