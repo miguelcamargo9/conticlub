@@ -7,6 +7,9 @@ import CreateProfile from "../views/Admin/Profiles/CreateProfile";
 import EditProfile from "../views/Admin/Profiles/EditProfile";
 import ProfilesList from "../views/Admin/Profiles/ProfilesList";
 
+//Products
+import ProductListAdmin from "../views/Admin/Products/ProductListAdmin";
+
 //Product Categories
 import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
 import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
@@ -16,7 +19,7 @@ import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
 import Lock from "@material-ui/icons/Lock";
-
+import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
@@ -115,8 +118,8 @@ export const adminRoutes = [
         path: "/create-category",
         name: "Crear Categoria",
         rtlName: "Create Category",
-        mini: "CP",
-        rtlMini: "CP",
+        mini: "CPC",
+        rtlMini: "CPC",
         component: CreateCategory,
         layout: "/admin"
       },
@@ -137,6 +140,43 @@ export const adminRoutes = [
         mini: "LC",
         rtlMini: "LC",
         component: ListCategories,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Productos",
+    rtlName: "Products",
+    icon: Store,
+    state: "pageProductsCollapse",
+    views: [
+      {
+        path: "/create-product",
+        name: "Crear Producto",
+        rtlName: "Create Product",
+        mini: "CP",
+        rtlMini: "CP",
+        component: CreateCategory,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-product",
+        name: "Editar Producto",
+        rtlName: "Edit Product",
+        mini: "EP",
+        rtlMini: "EP",
+        component: EditCategory,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-products",
+        name: "Lista Productos",
+        rtlName: "List Products",
+        mini: "LP",
+        rtlMini: "LP",
+        component: ProductListAdmin,
         layout: "/admin"
       }
     ]

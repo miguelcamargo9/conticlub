@@ -42,3 +42,46 @@ export const getProductsByCategoryIdService = idCategory => {
       console.log(error);
     });
 };
+
+export const updateProduct = productData => {
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/product/update/${
+    productData.id
+  }`;
+
+  const headers = {
+    Authorization: serviceConst.AUTH
+  };
+  const dataCategory = {
+    name: productData.name
+  };
+
+  return axios
+    .put(PRODUCT_API_ENDPOINT, dataCategory, { headers: headers })
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
+export const deleteProductService = productId => {
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/product/delete/${productId}`;
+
+  const dataProduct = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .delete(PRODUCT_API_ENDPOINT, dataProduct)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
