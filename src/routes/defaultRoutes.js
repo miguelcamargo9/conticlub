@@ -5,6 +5,7 @@ import ProductList from "../views/Lists/Products/ProductList.jsx";
 import InvoicesList from "../views/Lists/Invoices/InvoicesList.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
+import RedeemProducts from "../views/Forms/Products/RedeemProducts";
 
 // @material-ui/icons
 import Gift from "@material-ui/icons/CardGiftcard";
@@ -84,6 +85,16 @@ export const defaultRoutes = [
     rtlMini: "UR",
     component: RegisterUserForm,
     layout: "/auth",
+    invisible: true
+  },
+  {
+    path: "/redeem-product",
+    name: "Redimir Porducto",
+    rtlName: "Redeem Product",
+    mini: "RP",
+    rtlMini: "RP",
+    component: RedeemProducts,
+    layout: "/admin",
     invisible: true
   },
   ...generaFinallRoutes

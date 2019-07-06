@@ -6,13 +6,10 @@ import classNames from "classnames";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import Tooltip from "@material-ui/core/Tooltip";
 
 // @material-ui/icons
-import ArtTrack from "@material-ui/icons/ArtTrack";
-import Refresh from "@material-ui/icons/Refresh";
-import Edit from "@material-ui/icons/Edit";
 import Search from "@material-ui/icons/Search";
+import StarRate from "@material-ui/icons/StarRate";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -157,45 +154,13 @@ class productList extends React.Component {
         // const path = picture.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
-            <Card product className={classes.cardHover}>
-              <CardHeader image className={classes.cardHeaderHover}>
+            <Card product>
+              <CardHeader image>
                 <a href={hrefValue} onClick={e => e.preventDefault()}>
                   <img src={path} alt={picture.name} />
                 </a>
               </CardHeader>
               <CardBody>
-                <div className={classes.cardHoverUnder}>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="View"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <ArtTrack className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Edit"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="success" simple justIcon>
-                      <Refresh className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Remove"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="danger" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                </div>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
                     {picture.name}
@@ -209,6 +174,35 @@ class productList extends React.Component {
                 <div className={classes.price}>
                   <h4>{picture.points} pts.</h4>
                 </div>
+                <Button
+                  color="warning"
+                  size="sm"
+                  className={classes.marginRight}
+                  onClick={e => {
+                    this.props.history.push({
+                      pathname: `/admin/redeem-product/`,
+                      state: {
+                        product: {
+                          id: picture.id,
+                          name: picture.name,
+                          path: path,
+                          points: picture.points,
+                          categoryName: picture.product_category.name
+                        }
+                      }
+                    });
+                  }}
+                >
+                  Redimir
+                </Button>
+                <Button
+                  color="danger"
+                  size="sm"
+                  className={classes.marginRight}
+                  onClick={e => this.deleteWheel()}
+                >
+                  <StarRate />
+                </Button>
               </CardFooter>
             </Card>
           </GridItem>
