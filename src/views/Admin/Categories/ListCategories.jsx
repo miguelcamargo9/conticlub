@@ -3,6 +3,9 @@ import React from "react";
 // react component for creating dynamic tables
 import ReactTable from "react-table";
 
+// react component used to create sweet alerts
+import SweetAlert from "react-bootstrap-sweetalert";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -20,24 +23,34 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
-import { getCategoriesService } from "../../../services/productCategoryService";
-
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
+
+import {
+  getCategoriesService,
+  deleteProductCategoryService
+} from "../../../services/productCategoryService";
+
+import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
 const styles = {
   cardIconTitle: {
     ...cardTitle,
     marginTop: "15px",
     marginBottom: "0px"
-  }
+  },
+  ...sweetAlertStyle
 };
 
 class ListCategories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productCategories: []
+      productCategories: [],
+      alert: null,
+      show: false
     };
+    this.warningWithConfirmMessage = this.warningWithConfirmMessage.bind(this);
+    this.hideAlert = this.hideAlert.bind(this);
   }
   componentDidMount() {
     getCategoriesService()
@@ -46,6 +59,100 @@ class ListCategories extends React.Component {
       })
       .catch();
   }
+
+  warningWithConfirmMessage(categoryId) {
+    console.log("recibo id", categoryId);
+    this.setState({
+      alert: (
+        <SweetAlert
+          warning
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Esta seguro que desea borrar esta Categoría?"
+          onConfirm={() => this.deleteProductCategory(categoryId)}
+          onCancel={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+          cancelBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.danger
+          }
+          confirmBtnText="Sí, borrar!"
+          cancelBtnText="Cancelar"
+          showCancel
+        >
+          Después de eliminada no podrá recuperar la Información
+        </SweetAlert>
+      )
+    });
+  }
+
+  successDelete(categoryId) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          success
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Eliminado!"
+          onConfirm={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          La categoría con ID: {categoryId} ha sido eliminada.
+        </SweetAlert>
+      )
+    });
+  }
+
+  cancelDetele(text) {
+    this.setState({
+      alert: (
+        <SweetAlert
+          danger
+          style={{ display: "block", marginTop: "-200px" }}
+          title="Cancelled"
+          onConfirm={() => this.hideAlert()}
+          confirmBtnCssClass={
+            this.props.classes.button + " " + this.props.classes.success
+          }
+        >
+          {text}
+        </SweetAlert>
+      )
+    });
+  }
+
+  deleteProductCategory(categoryId) {
+    deleteProductCategoryService(categoryId)
+      .then(productCategoryInfo => {
+        if (productCategoryInfo.data.message === "success") {
+          const productCategories = this.state.productCategories;
+          productCategories.find((productCategory, i) => {
+            if (productCategory.id === categoryId) {
+              productCategories.splice(i, 1);
+              return true;
+            }
+            return false;
+          });
+          this.setState({ productCategories: productCategories });
+          this.successDelete(categoryId);
+        } else {
+          return this.cancelDetele(productCategoryInfo.data.detail);
+        }
+      })
+      .catch(e => {
+        console.log(
+          "Error eliminando categoria de producto con id: categoryId"
+        );
+      });
+  }
+
+  hideAlert() {
+    this.setState({
+      alert: null
+    });
+  }
+
   buildDataTable() {
     let data = [];
     if (this.state.productCategories.length > 0) {
@@ -84,17 +191,7 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  var data = this.state.productCategories;
-                  data.find((o, i) => {
-                    if (o.id === productCategory.id) {
-                      // here you should add some custom code so you can delete the data
-                      // from this component and from your server as well
-                      data.splice(i, 1);
-                      return true;
-                    }
-                    return false;
-                  });
-                  this.setState({ productCategories: data });
+                  this.warningWithConfirmMessage(productCategory.id);
                 }}
                 color="danger"
                 className="remove"
@@ -115,51 +212,54 @@ class ListCategories extends React.Component {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
     return (
-      <GridContainer>
-        <GridItem xs={12}>
-          <Card>
-            <CardHeader color="warning" icon>
-              <CardIcon color="warning">
-                <Assignment />
-              </CardIcon>
-              <h4 className={classes.cardIconTitle}>Lista de Categorias</h4>
-            </CardHeader>
-            <CardBody>
-              <ReactTable
-                previousText="Atrás"
-                nextText="Siguiente"
-                pageText="Página"
-                ofText="de"
-                rowsText="filas"
-                loadingText="Cargando..."
-                noDataText="No hay usuarios"
-                data={dataTable}
-                filterable
-                columns={[
-                  {
-                    Header: "ID",
-                    accessor: "id"
-                  },
-                  {
-                    Header: "Categoria",
-                    accessor: "name"
-                  },
-                  {
-                    Header: "Acciones",
-                    accessor: "actions",
-                    sortable: false,
-                    filterable: false
-                  }
-                ]}
-                defaultPageSize={10}
-                showPaginationTop
-                showPaginationBottom={false}
-                className="-striped -highlight"
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      <div>
+        {this.state.alert}
+        <GridContainer>
+          <GridItem xs={12}>
+            <Card>
+              <CardHeader color="warning" icon>
+                <CardIcon color="warning">
+                  <Assignment />
+                </CardIcon>
+                <h4 className={classes.cardIconTitle}>Lista de Categorias</h4>
+              </CardHeader>
+              <CardBody>
+                <ReactTable
+                  previousText="Atrás"
+                  nextText="Siguiente"
+                  pageText="Página"
+                  ofText="de"
+                  rowsText="filas"
+                  loadingText="Cargando..."
+                  noDataText="No hay usuarios"
+                  data={dataTable}
+                  filterable
+                  columns={[
+                    {
+                      Header: "ID",
+                      accessor: "id"
+                    },
+                    {
+                      Header: "Categoria",
+                      accessor: "name"
+                    },
+                    {
+                      Header: "Acciones",
+                      accessor: "actions",
+                      sortable: false,
+                      filterable: false
+                    }
+                  ]}
+                  defaultPageSize={10}
+                  showPaginationTop
+                  showPaginationBottom={false}
+                  className="-striped -highlight"
+                />
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+      </div>
     );
   }
 }

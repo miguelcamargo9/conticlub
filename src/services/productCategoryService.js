@@ -66,6 +66,26 @@ export const updateCategory = categoryData => {
     });
 };
 
+export const deleteProductCategoryService = categoryId => {
+  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/delete/${categoryId}`;
+
+  const dataCategory = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .delete(CATEGORY_API_ENDPOINT, dataCategory)
+    .then(response => {
+      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
 export const getCategoryById = categoryId => {
   const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/get/${categoryId}`;
 
