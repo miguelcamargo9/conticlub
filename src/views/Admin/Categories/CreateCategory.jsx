@@ -45,7 +45,7 @@ class CreateCategory extends React.Component {
             successMessage: `Categoría Creada con Éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/categories-list`);
+            this.props.history.push(`/admin/list-categories`);
           }, 3000);
         } else {
           this.setState({

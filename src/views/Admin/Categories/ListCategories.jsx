@@ -158,7 +158,7 @@ class ListCategories extends React.Component {
     if (this.state.productCategories.length > 0) {
       data = this.state.productCategories.map((productCategory, key) => {
         const dataTable = {
-          id: key,
+          id: productCategory.id,
           name: productCategory.name,
           actions: (
             // we've added some custom button actions
