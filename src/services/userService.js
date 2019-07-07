@@ -15,7 +15,6 @@ export const userService = () => {
   return axios
     .get(LOGIN_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -35,7 +34,6 @@ export const getInvoiceHistoryByUserService = userId => {
   return axios
     .get(LOGIN_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -55,7 +53,25 @@ export const getRedeemListService = () => {
   return axios
     .get(LOGIN_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
+export const getRedeemListByUserIdService = userId => {
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/getbyuser/${userId}`;
+
+  const data = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .get(LOGIN_API_ENDPOINT, data)
+    .then(response => {
       return response;
     })
     .catch(function(error) {

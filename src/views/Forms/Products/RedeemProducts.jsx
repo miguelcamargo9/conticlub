@@ -1,5 +1,8 @@
 import React from "react";
 
+import { compose, bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -26,6 +29,8 @@ import {
   getProductByIdService,
   redeemProductService
 } from "../../../services/productService";
+
+import * as sessionActions from "../../../actions/sessionActions";
 
 class RedeemProduct extends React.Component {
   constructor(props) {
@@ -54,12 +59,15 @@ class RedeemProduct extends React.Component {
   handleRedeemProduct(product) {
     redeemProductService(product.id).then(responseRedeemProfile => {
       if (responseRedeemProfile.data.message === "success") {
+        this.props.SessionActions.setPoints(
+          responseRedeemProfile.data.currentPoints
+        );
         this.setState({
           messageError: null,
           successMessage: `Procuto ${product.name} Redimido con Éxito`
         });
         setTimeout(() => {
-          this.props.history.push(`/admin/product-list`);
+          this.props.history.push(`/admin/redeem-list`);
         }, 3000);
       } else {
         this.setState({
@@ -182,4 +190,16 @@ class RedeemProduct extends React.Component {
   }
 }
 
-export default withStyles(userProfileStyles)(RedeemProduct);
+function mapDispatchToProps(dispatch) {
+  return {
+    SessionActions: bindActionCreators(sessionActions, dispatch)
+  };
+}
+
+export default compose(
+  withStyles(userProfileStyles),
+  connect(
+    null,
+    mapDispatchToProps
+  )
+)(RedeemProduct);

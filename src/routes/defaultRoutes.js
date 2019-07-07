@@ -6,6 +6,7 @@ import InvoicesList from "../views/Lists/Invoices/InvoicesList.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 import RedeemProducts from "../views/Forms/Products/RedeemProducts";
+import RedeemUserList from "../views/Lists/Invoices/RedeemUserList";
 
 // @material-ui/icons
 import Gift from "@material-ui/icons/CardGiftcard";
@@ -13,6 +14,7 @@ import Gift from "@material-ui/icons/CardGiftcard";
 // import Email from "@material-ui/icons/Email";
 import Gavel from "@material-ui/icons/Gavel";
 import CardTravel from "@material-ui/icons/CardTravel";
+import List from "@material-ui/icons/List";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -51,6 +53,14 @@ export const defaultRoutes = [
     rtlName: "Products",
     icon: Gift,
     component: ProductList,
+    layout: "/admin"
+  },
+  {
+    path: "/redeem-list",
+    name: "Lista Redenciones",
+    rtlName: "Redeem List",
+    icon: List,
+    component: RedeemUserList,
     layout: "/admin"
   },
   // {
