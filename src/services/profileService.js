@@ -16,7 +16,6 @@ export const insertProfile = profileData => {
   return axios
     .post(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -39,7 +38,6 @@ export const updateProfile = profileData => {
   return axios
     .put(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -59,7 +57,6 @@ export const deleteProfileService = profileId => {
   return axios
     .delete(PROFILE_API_ENDPOINT, dataProfile)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -79,7 +76,6 @@ export const getProfileById = profileId => {
   return axios
     .get(PROFILE_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
@@ -99,7 +95,6 @@ export const getProfiles = () => {
   return axios
     .get(PROFILE_API_ENDPOINT, data)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {
