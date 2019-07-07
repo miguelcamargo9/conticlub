@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { sessionService } from "redux-react-session";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -22,6 +21,7 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../../actions/userActions";
 import {
@@ -153,9 +153,58 @@ class ConfirmRedeemForm extends React.Component {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
     const { redeem } = this.state;
+
+    const { messageError, successMessage } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const buttons =
+      redeem.state === "espera" ? (
+        <React.Fragment>
+          <Button
+            size="sm"
+            onClick={() => this.approveRedeem()}
+            color="warning"
+            className="edit"
+          >
+            Aprobar
+          </Button>{" "}
+          <Button
+            size="sm"
+            onClick={() => this.rejectRedeem()}
+            color="danger"
+            className="delete"
+          >
+            Rechazar
+          </Button>{" "}
+        </React.Fragment>
+      ) : (
+        ""
+      );
+
     return (
       <div>
         <GridContainer>
+          {errorDiv}
+          {successDiv}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning" icon>
@@ -265,22 +314,7 @@ class ConfirmRedeemForm extends React.Component {
                     />
                   </GridItem>
                 </GridContainer>
-                <Button
-                  size="sm"
-                  onClick={() => this.approveRedeem()}
-                  color="warning"
-                  className="edit"
-                >
-                  Aprobar
-                </Button>{" "}
-                <Button
-                  size="sm"
-                  onClick={() => this.rejectRedeem()}
-                  color="danger"
-                  className="delete"
-                >
-                  Rechazar
-                </Button>{" "}
+                {buttons}
               </CardBody>
             </Card>
           </GridItem>

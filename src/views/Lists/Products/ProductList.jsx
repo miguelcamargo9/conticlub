@@ -189,7 +189,7 @@ class productList extends React.Component {
                   color="danger"
                   size="sm"
                   className={classes.marginRight}
-                  onClick={e => this.deleteWheel()}
+                  onClick={e => console.log("start")}
                 >
                   <StarRate />
                 </Button>

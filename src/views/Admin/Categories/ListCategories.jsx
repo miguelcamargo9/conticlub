@@ -172,13 +172,9 @@ class ListCategories extends React.Component {
                   let categorySelect = this.state.productCategories.find(
                     findCategory => findCategory.id === productCategory.id
                   );
-                  this.props.history.push({
-                    pathname: `/admin/edit-category`,
-                    state: {
-                      categoryName: productCategory.name,
-                      id: categorySelect.id
-                    }
-                  });
+                  this.props.history.push(
+                    `/admin/edit-category/${categorySelect.id}`
+                  );
                 }}
                 color="warning"
                 className="edit"

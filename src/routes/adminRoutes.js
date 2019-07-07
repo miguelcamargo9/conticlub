@@ -1,4 +1,4 @@
-import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
+// import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
 
@@ -19,7 +19,7 @@ import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
-import Lock from "@material-ui/icons/Lock";
+// import Lock from "@material-ui/icons/Lock";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
 
@@ -27,23 +27,23 @@ import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
 export const adminRoutes = [
   ...generalRoutes,
-  {
-    collapse: true,
-    name: "Administración",
-    rtlName: "Admin",
-    icon: Lock,
-    views: [
-      {
-        path: "/admin-slides",
-        name: "Slides",
-        rtlName: "Admin Slides",
-        mini: "SL",
-        rtlMini: "SL",
-        layout: "/admin",
-        component: AdminSlide
-      }
-    ]
-  },
+  // {
+  //   collapse: true,
+  //   name: "Administración",
+  //   rtlName: "Admin",
+  //   icon: Lock,
+  //   views: [
+  //     {
+  //       path: "/admin-slides",
+  //       name: "Slides",
+  //       rtlName: "Admin Slides",
+  //       mini: "SL",
+  //       rtlMini: "SL",
+  //       layout: "/admin",
+  //       component: AdminSlide
+  //     }
+  //   ]
+  // },
   {
     collapse: true,
     name: "Usuarios",
@@ -125,7 +125,7 @@ export const adminRoutes = [
         layout: "/admin"
       },
       {
-        path: "/edit-category",
+        path: "/edit-category/:id",
         name: "Editar Categoría",
         rtlName: "Edit Category",
         mini: "EC",
