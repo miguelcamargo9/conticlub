@@ -5,7 +5,7 @@ import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const productService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/all`;
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/all`;
 
   const data = {
     headers: {
@@ -14,7 +14,7 @@ export const productService = () => {
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .get(PRODUCT_API_ENDPOINT, data)
     .then(response => {
       console.log(response);
       return response;
@@ -25,7 +25,7 @@ export const productService = () => {
 };
 
 export const getProductsByCategoryIdService = idCategory => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/byCategory/${idCategory}`;
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/byCategory/${idCategory}`;
 
   const data = {
     headers: {
@@ -34,7 +34,7 @@ export const getProductsByCategoryIdService = idCategory => {
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .get(PRODUCT_API_ENDPOINT, data)
     .then(response => {
       console.log(response);
       return response;
@@ -123,7 +123,7 @@ export const redeemProductService = idProduct => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor`;
+      const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor`;
 
       const headers = {
         Authorization: `Bearer ${currentSession.access_token}`
@@ -134,7 +134,7 @@ export const redeemProductService = idProduct => {
       };
 
       return axios
-        .post(LOGIN_API_ENDPOINT, data, { headers: headers })
+        .post(PRODUCT_API_ENDPOINT, data, { headers: headers })
         .then(response => {
           console.log(response);
           return response;
@@ -150,7 +150,7 @@ export const getProductByIdService = idProduct => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/get/${idProduct}`;
+      const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/get/${idProduct}`;
 
       const data = {
         headers: {
@@ -159,7 +159,7 @@ export const getProductByIdService = idProduct => {
       };
 
       return axios
-        .get(LOGIN_API_ENDPOINT, data)
+        .get(PRODUCT_API_ENDPOINT, data)
         .then(response => {
           console.log(response);
           return response;
