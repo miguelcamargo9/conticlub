@@ -1,4 +1,5 @@
 import axios from "axios";
+import { sessionService } from "redux-react-session";
 
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
@@ -116,4 +117,56 @@ export const insertProduct = productData => {
     .catch(function(error) {
       console.log(error);
     });
+};
+
+export const redeemProductService = idProduct => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor`;
+
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+
+      const data = {
+        product_id: idProduct
+      };
+
+      return axios
+        .post(LOGIN_API_ENDPOINT, data, { headers: headers })
+        .then(response => {
+          console.log(response);
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};
+
+export const getProductByIdService = idProduct => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/get/${idProduct}`;
+
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
+
+      return axios
+        .get(LOGIN_API_ENDPOINT, data)
+        .then(response => {
+          console.log(response);
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
 };
