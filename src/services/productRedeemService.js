@@ -3,17 +3,17 @@ import axios from "axios";
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
-export const userService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/all`;
+export const approveRedeemService = redeemId => {
+  const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/approve/${redeemId}`;
 
-  const data = {
+  const dataRedeem = {
     headers: {
       Authorization: serviceConst.AUTH
     }
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .post(REDEEM_API_ENDPOINT, dataRedeem)
     .then(response => {
       console.log(response);
       return response;
@@ -22,18 +22,17 @@ export const userService = () => {
       console.log(error);
     });
 };
+export const rejectRedeemService = redeemId => {
+  const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/reject/${redeemId}`;
 
-export const getInvoiceHistoryByUserService = userId => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/historyinvoice/${userId}`;
-
-  const data = {
+  const dataRedeem = {
     headers: {
       Authorization: serviceConst.AUTH
     }
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .post(REDEEM_API_ENDPOINT, dataRedeem)
     .then(response => {
       console.log(response);
       return response;
@@ -42,18 +41,17 @@ export const getInvoiceHistoryByUserService = userId => {
       console.log(error);
     });
 };
+export const getRedeemByIdService = redeemId => {
+  const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/get/${redeemId}`;
 
-export const getRedeemListService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/all`;
-
-  const data = {
+  const dataRedeem = {
     headers: {
       Authorization: serviceConst.AUTH
     }
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .get(REDEEM_API_ENDPOINT, dataRedeem)
     .then(response => {
       console.log(response);
       return response;
