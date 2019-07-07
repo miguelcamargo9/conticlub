@@ -88,7 +88,7 @@ export const defaultRoutes = [
     invisible: true
   },
   {
-    path: "/redeem-product",
+    path: "/redeem-product/:id",
     name: "Redimir Porducto",
     rtlName: "Redeem Product",
     mini: "RP",

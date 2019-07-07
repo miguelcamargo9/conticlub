@@ -148,49 +148,39 @@ class productList extends React.Component {
     let gridData = [];
 
     if (this.state.filteredProducts.length > 0) {
-      gridData = this.state.filteredProducts.map((picture, index) => {
+      gridData = this.state.filteredProducts.map((product, index) => {
         let hrefValue = "#" + index;
-        const path = SERVER_URL + picture.image;
-        // const path = picture.image;
+        const path = SERVER_URL + product.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
             <Card product>
               <CardHeader image>
                 <a href={hrefValue} onClick={e => e.preventDefault()}>
-                  <img src={path} alt={picture.name} />
+                  <img src={path} alt={product.name} />
                 </a>
               </CardHeader>
               <CardBody>
                 <h4 className={classes.cardProductTitle}>
                   <a href="#pablo" onClick={e => e.preventDefault()}>
-                    {picture.name}
+                    {product.name}
                   </a>
                 </h4>
                 <p className={classes.cardProductDesciprion}>
-                  {picture.product_category.name}
+                  {product.product_category.name}
                 </p>
               </CardBody>
               <CardFooter product>
                 <div className={classes.price}>
-                  <h4>{picture.points} pts.</h4>
+                  <h4>{product.points} pts.</h4>
                 </div>
                 <Button
                   color="warning"
                   size="sm"
                   className={classes.marginRight}
                   onClick={e => {
-                    this.props.history.push({
-                      pathname: `/admin/redeem-product/`,
-                      state: {
-                        product: {
-                          id: picture.id,
-                          name: picture.name,
-                          path: path,
-                          points: picture.points,
-                          categoryName: picture.product_category.name
-                        }
-                      }
-                    });
+                    this.props.history.push(
+                      `/admin/redeem-product/${product.id}`
+                    );
                   }}
                 >
                   Redimir

@@ -16,16 +16,42 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import userProfileStyles from "assets/jss/material-dashboard-pro-react/views/userProfileStyles.jsx";
+
+import { SERVER_URL } from "../../../constants/server";
+
+import {
+  getProductByIdService,
+  redeemProductService
+} from "../../../services/productService";
 
 class RedeemProduct extends React.Component {
   constructor(props) {
     super(props);
-    this.redeemProduct = this.redeemProduct.bind(this);
+    this.state = {
+      messageError: false,
+      successMessage: false,
+      product: {
+        name: "",
+        product_category: {
+          name: ""
+        },
+        points: "",
+        image: ""
+      }
+    };
+    this.handleRedeemProduct = this.handleRedeemProduct.bind(this);
   }
 
-  redeemProduct(product) {
+  componentDidMount() {
+    getProductByIdService(this.props.match.params.id).then(product => {
+      this.setState({ product: product.data });
+    });
+  }
+
+  handleRedeemProduct(product) {
     redeemProductService(product.id).then(responseRedeemProfile => {
       if (responseRedeemProfile.data.message === "success") {
         this.setState({
@@ -37,7 +63,7 @@ class RedeemProduct extends React.Component {
         }, 3000);
       } else {
         this.setState({
-          messageError: responseSaveProfile.data.message,
+          messageError: responseRedeemProfile.data.detail,
           successMessage: null
         });
       }
@@ -46,10 +72,34 @@ class RedeemProduct extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { product } = this.props.location.state;
+    const { product } = this.state;
+
+    const { messageError, successMessage } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
 
     return (
       <div>
+        {errorDiv}
+        {successDiv}
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
             <Card>
@@ -69,7 +119,10 @@ class RedeemProduct extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: product.name,
+                        onChange: e => {
+                          console.log("cambie");
+                        },
+                        value: product.name,
                         disabled: true
                       }}
                     />
@@ -82,7 +135,7 @@ class RedeemProduct extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: product.categoryName,
+                        value: product.product_category.name,
                         disabled: true
                       }}
                     />
@@ -95,7 +148,7 @@ class RedeemProduct extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: product.points,
+                        value: product.points,
                         disabled: true
                       }}
                     />
@@ -103,13 +156,19 @@ class RedeemProduct extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
-                    <img src={product.path} alt={product.name} width="70%" />
+                    <img
+                      src={SERVER_URL + product.image}
+                      alt={product.name}
+                      width="70%"
+                    />
                   </GridItem>
                 </GridContainer>
                 <Button
                   color="success"
                   className={classes.updateProfileButton}
-                  onClick={this.redeemProduct(product)}
+                  onClick={() => {
+                    this.handleRedeemProduct(product);
+                  }}
                 >
                   Redimir
                 </Button>
