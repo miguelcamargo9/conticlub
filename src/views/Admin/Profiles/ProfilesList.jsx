@@ -165,10 +165,9 @@ class profilesList extends React.Component {
                   let profileSelect = this.state.profiles.find(
                     findProfile => findProfile.id === profile.id
                   );
-                  this.props.history.push({
-                    pathname: `/admin/edit-profile/${profileSelect.id}`,
-                    state: { profileName: profile.name }
-                  });
+                  this.props.history.push(
+                    `/admin/edit-profile/${profileSelect.id}`
+                  );
                 }}
                 color="warning"
                 className="edit"

@@ -22,15 +22,29 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
-import { updateProfile } from "../../../services/profileService";
+import {
+  getProfileById,
+  updateProfile
+} from "../../../services/profileService";
 
 class editProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      profile: {
+        name: "name"
+      },
       profileNameState: ""
     };
     this.isValidated = this.isValidated.bind(this);
+  }
+
+  componentDidMount() {
+    getProfileById(this.props.match.params.id)
+      .then(responeProfile => {
+        this.setState({ profile: responeProfile.data });
+      })
+      .catch(e => console.log("error", e));
   }
 
   handleSubmit() {
@@ -92,7 +106,7 @@ class editProfile extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage } = this.state;
+    const { messageError, successMessage, profile } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -142,7 +156,7 @@ class editProfile extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: this.props.location.state.profileName,
+                        value: profile.name,
                         onChange: event =>
                           this.change(event, "profileName", "length", 3),
                         type: "text",

@@ -22,15 +22,29 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
-import { updateCategory } from "../../../services/productCategoryService";
+import {
+  getCategoryById,
+  updateCategory
+} from "../../../services/productCategoryService";
 
 class EditCategory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      productCategory: {
+        name: ""
+      },
       categoryNameState: ""
     };
     this.isValidated = this.isValidated.bind(this);
+  }
+
+  componentDidMount() {
+    getCategoryById(this.props.match.params.id)
+      .then(responeProductCategory => {
+        this.setState({ productCategory: responeProductCategory.data });
+      })
+      .catch(e => console.log("error", e));
   }
 
   handleSubmit() {
@@ -95,7 +109,7 @@ class EditCategory extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage } = this.state;
+    const { messageError, successMessage, productCategory } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -145,7 +159,7 @@ class EditCategory extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: this.props.location.state.categoryName,
+                        value: productCategory.name,
                         onChange: event =>
                           this.change(event, "categoryName", "length", 3),
                         type: "text",
