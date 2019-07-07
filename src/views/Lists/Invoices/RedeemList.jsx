@@ -60,7 +60,6 @@ class RedeemList extends React.Component {
               <Button
                 size="sm"
                 onClick={() => {
-                  console.log("accion");
                   let redeemSelect = this.props.redeemList.find(
                     findRedeem => findRedeem.id === redeem.id
                   );

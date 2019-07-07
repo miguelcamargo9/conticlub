@@ -157,11 +157,12 @@ class registerInvoiceForm extends React.Component {
       const dataInvoice = {
         invoiceNumber: this.state.invoiceNumber,
         totalAmount: this.state.totalInvoice,
-        userId: this.state.userId,
+        subsidiaryId: this.state.subsidiaryId,
         date: this.state.date,
         rines: this.state.wheels,
         image: this.state.image
       };
+      console.log("dataInvoice", dataInvoice);
       insertInvoice(dataInvoice).then(responseSaveInvoice => {
         if (responseSaveInvoice.data.message === "success") {
           this.props.SessionActions.setPoints(
@@ -178,7 +179,7 @@ class registerInvoiceForm extends React.Component {
           }, 3000);
         } else {
           this.setState({
-            messageError: responseSaveInvoice.data.message,
+            messageError: responseSaveInvoice.data.detail,
             successMessage: null
           });
         }
@@ -200,7 +201,8 @@ class registerInvoiceForm extends React.Component {
     sessionService
       .loadUser()
       .then(user => {
-        this.setState({ userId: user.id });
+        console.log(user);
+        this.setState({ userId: user.id, subsidiaryId: user.subsidiary_id });
       })
       .catch(err => console.log(err));
   }

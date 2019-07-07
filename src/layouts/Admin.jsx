@@ -114,8 +114,10 @@ class Dashboard extends React.Component {
           return collapseActiveRoute;
         }
       } else {
+        const path = routes[i].path.split("/", 3);
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.includes(`${routes[i].layout}/${path[1]}`) !==
+          false
         ) {
           return routes[i].name;
         }

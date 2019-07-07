@@ -2,7 +2,8 @@ import * as types from "./index";
 import {
   userService,
   getInvoiceHistoryByUserService,
-  getRedeemListService
+  getRedeemListService,
+  getRedeemListByUserIdService
 } from "../services/userService";
 
 export const setUserData = dataUser => {
@@ -51,6 +52,14 @@ export const getInvoiceHistoryByUser = userId => {
 export const getRedeemList = () => {
   return dispatch => {
     getRedeemListService().then(dataRedeem => {
+      dispatch(setRedeemListData(dataRedeem.data));
+    });
+  };
+};
+
+export const getRedeemListByUserId = userId => {
+  return dispatch => {
+    getRedeemListByUserIdService(userId).then(dataRedeem => {
       dispatch(setRedeemListData(dataRedeem.data));
     });
   };

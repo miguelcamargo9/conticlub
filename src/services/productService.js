@@ -1,10 +1,11 @@
 import axios from "axios";
+import { sessionService } from "redux-react-session";
 
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const productService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/all`;
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/all`;
 
   const data = {
     headers: {
@@ -13,7 +14,7 @@ export const productService = () => {
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .get(PRODUCT_API_ENDPOINT, data)
     .then(response => {
       console.log(response);
       return response;
@@ -24,7 +25,7 @@ export const productService = () => {
 };
 
 export const getProductsByCategoryIdService = idCategory => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/byCategory/${idCategory}`;
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/byCategory/${idCategory}`;
 
   const data = {
     headers: {
@@ -33,7 +34,7 @@ export const getProductsByCategoryIdService = idCategory => {
   };
 
   return axios
-    .get(LOGIN_API_ENDPOINT, data)
+    .get(PRODUCT_API_ENDPOINT, data)
     .then(response => {
       console.log(response);
       return response;
@@ -116,4 +117,56 @@ export const insertProduct = productData => {
     .catch(function(error) {
       console.log(error);
     });
+};
+
+export const redeemProductService = idProduct => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor`;
+
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+
+      const data = {
+        product_id: idProduct
+      };
+
+      return axios
+        .post(PRODUCT_API_ENDPOINT, data, { headers: headers })
+        .then(response => {
+          console.log(response);
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};
+
+export const getProductByIdService = idProduct => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/get/${idProduct}`;
+
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
+
+      return axios
+        .get(PRODUCT_API_ENDPOINT, data)
+        .then(response => {
+          console.log(response);
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
 };

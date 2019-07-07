@@ -1,24 +1,28 @@
 import axios from "axios";
+import { sessionService } from "redux-react-session";
 
-import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const slideService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/slides/all`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/slides/all`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      console.log(response);
-      return response;
+      return axios
+        .get(LOGIN_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
