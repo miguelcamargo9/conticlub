@@ -3,7 +3,8 @@ import * as types from "../actions";
 export default function(
   state = {
     users: [],
-    invoices: []
+    invoices: [],
+    redeemList: []
   },
   action
 ) {
@@ -17,6 +18,11 @@ export default function(
       return {
         ...state,
         invoices: action.payload.dataInvoices
+      };
+    case types.SET_REDEEM_LIST:
+      return {
+        ...state,
+        redeemList: action.payload.dataRedeem
       };
     default:
       return state;

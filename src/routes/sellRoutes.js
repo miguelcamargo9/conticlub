@@ -1,4 +1,5 @@
-import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
+import RedeemList from "../views/Lists/Invoices/RedeemList";
+import ConfirmRedeemForm from "../views/Forms/Sales/ConfirmRedeemForm";
 
 // @material-ui/icons
 import CardTravel from "@material-ui/icons/CardTravel";
@@ -8,22 +9,21 @@ import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 export const sellRoutes = [
   ...generalRoutes,
   {
-    collapse: true,
-    name: "Ventas",
-    rtlName: "Sales",
+    path: "/redeem-list",
+    name: "Lista Redenciones",
+    rtlName: "Redeem List",
     icon: CardTravel,
-    state: "pageSaleCollapse",
-    views: [
-      {
-        path: "/register-sale",
-        name: "Ingresar Venta",
-        rtlName: "Register Sale",
-        mini: "IV",
-        rtlMini: "RS",
-        component: RegisterInvoiceForm,
-        layout: "/admin"
-      }
-    ]
+    component: RedeemList,
+    layout: "/admin"
+  },
+  {
+    path: "/confirm-redeem/:id",
+    name: "Confirmar Redencion",
+    rtlName: "Redeem Confirm",
+    icon: CardTravel,
+    component: ConfirmRedeemForm,
+    layout: "/admin",
+    invisible: true
   },
   ...generaFinallRoutes
 ];

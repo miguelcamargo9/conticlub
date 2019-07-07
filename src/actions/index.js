@@ -18,6 +18,7 @@ export const GET_PRODS = "GET_PRODS";
 //Users
 export const GET_USERS = "GET_USERS";
 export const SET_HISTORY_INVOICE_BY_USER = "SET_HISTORY_INVOICE_BY_USER";
+export const SET_REDEEM_LIST = "SET_REDEEM_LIST";
 
 //Subsidiary
 export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
