@@ -9,6 +9,7 @@ import ProfilesList from "../views/Admin/Profiles/ProfilesList";
 
 //Products
 import ProductListAdmin from "../views/Admin/Products/ProductListAdmin";
+import CreateProduct from "../views/Admin/Products/CreateProduct";
 
 //Product Categories
 import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
@@ -157,7 +158,7 @@ export const adminRoutes = [
         rtlName: "Create Product",
         mini: "CP",
         rtlMini: "CP",
-        component: CreateCategory,
+        component: CreateProduct,
         layout: "/admin"
       },
       {

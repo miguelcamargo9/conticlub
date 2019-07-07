@@ -165,7 +165,7 @@ class productListAdmin extends React.Component {
     deleteProductService(productId)
       .then(productInfo => {
         if (productInfo.data.message === "success") {
-          const products = this.state.products;
+          const products = this.state.filteredProducts;
           products.find((product, i) => {
             if (product.id === productId) {
               products.splice(i, 1);
@@ -173,7 +173,7 @@ class productListAdmin extends React.Component {
             }
             return false;
           });
-          this.setState({ products: products });
+          this.setState({ filteredProducts: products });
           this.successDelete(productId);
         } else {
           return this.cancelDelete(productInfo.data.detail);
@@ -255,7 +255,10 @@ class productListAdmin extends React.Component {
     if (this.state.filteredProducts.length > 0) {
       gridData = this.state.filteredProducts.map((picture, index) => {
         let hrefValue = "#" + index;
-        const path = SERVER_URL + picture.image;
+        const path =
+          SERVER_URL +
+          decodeURIComponent((picture.image + "").replace(/\+/g, "%20"));
+
         // const path = picture.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
@@ -273,7 +276,25 @@ class productListAdmin extends React.Component {
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >
-                    <Button color="warning" simple justIcon>
+                    <Button
+                      color="warning"
+                      simple
+                      justIcon
+                      onClick={() => {
+                        this.props.history.push({
+                          pathname: `/admin/edit-product/`,
+                          state: {
+                            product: {
+                              id: picture.id,
+                              name: picture.name,
+                              path: path,
+                              points: picture.points,
+                              categoryName: picture.product_category.name
+                            }
+                          }
+                        });
+                      }}
+                    >
                       <Edit className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
