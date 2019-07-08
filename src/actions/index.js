@@ -28,3 +28,6 @@ export const ERROR_MESSAGE = "ERROR_MESSAGE";
 
 //Session
 export const SET_SESSION_POINTS = "SET_SESSION_POINTS";
+
+//Invoices
+export const SET_HISTORY_INVOICE = "SET_HISTORY_INVOICE";

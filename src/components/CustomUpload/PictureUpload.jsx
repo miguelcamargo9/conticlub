@@ -23,6 +23,7 @@ class PictureUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result
       });
+      this.props.handleChangeImage(this.state.file);
     };
     reader.readAsDataURL(file);
   }

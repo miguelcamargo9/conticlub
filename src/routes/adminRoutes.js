@@ -16,10 +16,14 @@ import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
 import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
 import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 
+//Invoices
+import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
+
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
 // import Lock from "@material-ui/icons/Lock";
+import CardTravel from "@material-ui/icons/CardTravel";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
 
@@ -104,6 +108,24 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Ventas",
+    rtlName: "Sales",
+    icon: CardTravel,
+    state: "pageSaleCollapse",
+    views: [
+      {
+        path: "/invoices-list",
+        name: "Lista de Ventas",
+        rtlName: "Invoices List",
+        mini: "LV",
+        rtlMini: "IL",
+        component: InvoicesListAll,
         layout: "/admin"
       }
     ]

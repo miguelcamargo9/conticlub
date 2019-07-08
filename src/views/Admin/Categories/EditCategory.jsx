@@ -31,9 +31,7 @@ class EditCategory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productCategory: {
-        name: ""
-      },
+      categoryName: "",
       categoryNameState: ""
     };
     this.isValidated = this.isValidated.bind(this);
@@ -42,16 +40,15 @@ class EditCategory extends React.Component {
   componentDidMount() {
     getCategoryById(this.props.match.params.id)
       .then(responeProductCategory => {
-        this.setState({ productCategory: responeProductCategory.data });
+        this.setState({ categoryName: responeProductCategory.data.name });
       })
       .catch(e => console.log("error", e));
   }
 
   handleSubmit() {
     if (this.isValidated()) {
-      console.log("location", this.props.location.state.id);
       const dataCategory = {
-        id: this.props.location.state.id,
+        id: this.props.match.params.id,
         name: this.state.categoryName
       };
       updateCategory(dataCategory).then(responseSaveCategory => {
@@ -109,7 +106,7 @@ class EditCategory extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage, productCategory } = this.state;
+    const { messageError, successMessage, categoryName } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -159,7 +156,7 @@ class EditCategory extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: productCategory.name,
+                        value: categoryName,
                         onChange: event =>
                           this.change(event, "categoryName", "length", 3),
                         type: "text",

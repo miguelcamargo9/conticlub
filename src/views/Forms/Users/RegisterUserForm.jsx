@@ -13,7 +13,7 @@ import Step1 from "./RegisterUserSteps/Step1.jsx";
 import Step2 from "./RegisterUserSteps/Step2.jsx";
 import Step3 from "./RegisterUserSteps/Step3.jsx";
 
-import { createUserService } from "../../../services/registryService";
+import { createUserService } from "../../../services/userService";
 
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 
@@ -29,8 +29,9 @@ class RegisterUserForm extends React.Component {
   saveUserInfo(e) {
     console.log("data wizard", e);
     const username = e.about.firstname + " " + e.about.lastname;
-    const password = e.address.password;
+    const image = e.about.image !== undefined ? e.about.image : false;
     const email = e.about.email;
+    const password = e.address.password;
     const identification_number = e.address.identificationNumber;
     const subsidiary_id = e.account.subsidiary.id;
     const profiles_id = e.account.subsidiary.profiles_id;
@@ -38,8 +39,9 @@ class RegisterUserForm extends React.Component {
 
     const data = {
       username,
-      password,
       email,
+      image,
+      password,
       identification_number,
       subsidiary_id,
       profiles_id,
