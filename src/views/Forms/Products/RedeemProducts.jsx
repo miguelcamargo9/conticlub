@@ -64,7 +64,7 @@ class RedeemProduct extends React.Component {
         );
         this.setState({
           messageError: null,
-          successMessage: `Procuto ${product.name} Redimido con Éxito`
+          successMessage: `Producto ${product.name} Redimido con Éxito`
         });
         setTimeout(() => {
           this.props.history.push(`/admin/redeem-list`);

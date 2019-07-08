@@ -100,12 +100,22 @@ class Step1 extends React.Component {
     }
     return false;
   }
+  handleChangeImage = image => {
+    this.setState({ image: image, imageState: "success" });
+  };
+  handleRemoveImage = () => {
+    this.setState({ imageState: "error" });
+  };
   render() {
     const { classes } = this.props;
     return (
       <GridContainer justify="center">
         <GridItem xs={12} sm={4}>
-          <PictureUpload labelText="Subir Imágen" />
+          <PictureUpload
+            labelText="Subir Imágen"
+            handleChangeImage={this.handleChangeImage}
+            handleRemoveImage={this.handleRemoveImage}
+          />
         </GridItem>
         <GridItem xs={12} sm={6}>
           <CustomInput

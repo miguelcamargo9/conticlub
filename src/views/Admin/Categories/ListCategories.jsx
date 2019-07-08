@@ -61,7 +61,6 @@ class ListCategories extends React.Component {
   }
 
   warningWithConfirmMessage(categoryId) {
-    console.log("recibo id", categoryId);
     this.setState({
       alert: (
         <SweetAlert

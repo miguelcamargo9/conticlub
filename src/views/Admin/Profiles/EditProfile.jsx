@@ -31,9 +31,7 @@ class editProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      profile: {
-        name: "name"
-      },
+      profileName: "",
       profileNameState: ""
     };
     this.isValidated = this.isValidated.bind(this);
@@ -42,7 +40,7 @@ class editProfile extends React.Component {
   componentDidMount() {
     getProfileById(this.props.match.params.id)
       .then(responeProfile => {
-        this.setState({ profile: responeProfile.data });
+        this.setState({ profileName: responeProfile.data.name });
       })
       .catch(e => console.log("error", e));
   }
@@ -106,7 +104,7 @@ class editProfile extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage, profile } = this.state;
+    const { messageError, successMessage, profileName } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -156,7 +154,7 @@ class editProfile extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: profile.name,
+                        value: profileName,
                         onChange: event =>
                           this.change(event, "profileName", "length", 3),
                         type: "text",

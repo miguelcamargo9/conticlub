@@ -39,3 +39,27 @@ export const insertInvoice = invoiceData => {
     })
     .catch(err => console.log(err));
 };
+
+export const getInvoiceHistoryService = () => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const INVOICE_API_ENDPOINT = `${SERVER_URL}/api/invoice/get`;
+
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
+
+      return axios
+        .get(INVOICE_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};
