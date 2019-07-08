@@ -32,7 +32,7 @@ import Smartphone from "@material-ui/icons/Smartphone";
 import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
 
-import Politics from "../../../Pages/Politics";
+import PoliticsRegister from "../../../Pages/PoliticsRegister";
 import HabeasData from "../../../Pages/HabeasData";
 import registerUserFormStyle from "assets/jss/material-dashboard-pro-react/views/registerUserFormStyle.jsx";
 
@@ -344,7 +344,7 @@ class Step3 extends React.Component {
                 id="classic-modal-slide-description"
                 className={classes.modalBody}
               >
-                <Politics />
+                <PoliticsRegister />
               </DialogContent>
               <DialogActions className={classes.modalFooter}>
                 <Button
