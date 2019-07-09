@@ -1,6 +1,7 @@
 import Home from "../views/Home/Home.jsx";
 import LoginPage from "../views/Pages/LoginPage.jsx";
 import LogoutPage from "../views/Pages/LogoutPage.jsx";
+import UserProfile from "../views/Admin/Profiles/USerProfile";
 
 // @material-ui/icons
 import HomeIcon from "@material-ui/icons/Home";
@@ -24,6 +25,15 @@ export const generalRoutes = [
     component: LoginPage,
     layout: "/auth",
     invisible: true
+  },
+  {
+    path: "/profile-user",
+    name: "Mi Perfil",
+    rtlName: "User Profile",
+    mini: "MP",
+    rtlMini: "MP",
+    component: UserProfile,
+    layout: "/admin"
   }
 ];
 
