@@ -8,11 +8,17 @@ import GridItem from "components/Grid/GridItem.jsx";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
 
 import Slides from "../../components/Slides/Slides.jsx";
 import WheelsList from "../Lists/Wheels/WheelsList";
+
 import * as slideActions from "../../actions/slideActions";
+
+import image2 from "assets/img/CONTICLUB-BANNER-GENERAL.png";
+import image1 from "assets/img/BANNER-CONFIANZA-TOTAL.png";
+import image3 from "assets/img/BANNER TOP 2.jpg";
 
 class Home extends React.Component {
   componentDidMount() {
@@ -23,12 +29,9 @@ class Home extends React.Component {
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12}>
-            <img
-              src={"http://conticlub.co:8000/slides/slide_5.jpg"}
-              height="100%"
-              width="100%"
-              alt="Slide"
-            />
+            <GridItem xs={12} sm={12}>
+              <Slides slides={[image1, image2, image3]} />
+            </GridItem>
           </GridItem>
         </GridContainer>
         <GridContainer>

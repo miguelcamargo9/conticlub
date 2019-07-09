@@ -175,6 +175,7 @@ class Step3 extends React.Component {
                   onChange={this.handleChangeSubsidiary}
                   options={this.props.subsidiaries}
                   placeholder="Seleccione una sucursal"
+                  maxMenuHeight={250}
                 />
                 {subsidiaryState === "error" ? (
                   <FormHelperText id={"subsidiary"} className={helpTextClasses}>
@@ -436,6 +437,15 @@ function mapStateToProps(state) {
     subsidiary.value = subsidiary.id;
     subsidiary.label = subsidiary.name;
     return subsidiary;
+  });
+  selectData.sort(function(a, b) {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
   });
   return {
     subsidiaries: selectData

@@ -55,7 +55,7 @@ class RedeemList extends React.Component {
           points: redeem.points,
           userPoints: redeem.user.points,
           createDate: redeem.created_at,
-          state: redeem.state
+          state: this.capitalize(redeem.state)
         };
         return dataTable;
       });
@@ -63,6 +63,11 @@ class RedeemList extends React.Component {
     }
 
     return data;
+  }
+
+  capitalize(s) {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   render() {
