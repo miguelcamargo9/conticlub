@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { sessionService } from "redux-react-session";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -11,7 +10,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
 import Assignment from "@material-ui/icons/Assignment";
-import Dvr from "@material-ui/icons/Dvr";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -25,7 +23,6 @@ import Button from "components/CustomButtons/Button.jsx";
 import * as userActions from "../../../actions/userActions";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
-import { SERVER_URL } from "../../../constants/server";
 
 const styles = {
   cardIconTitle: {
