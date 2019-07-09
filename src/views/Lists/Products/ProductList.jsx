@@ -9,7 +9,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
 import Search from "@material-ui/icons/Search";
-import StarRate from "@material-ui/icons/StarRate";
+import Favorite from "@material-ui/icons/FavoriteBorder";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -187,11 +187,13 @@ class productList extends React.Component {
                 </Button>
                 <Button
                   color="danger"
-                  size="sm"
+                  justIcon
+                  round
+                  simple
                   className={classes.marginRight}
                   onClick={e => console.log("start")}
                 >
-                  <StarRate />
+                  <Favorite />
                 </Button>
               </CardFooter>
             </Card>

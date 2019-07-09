@@ -8,8 +8,8 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 
 import footerStyle from "assets/jss/material-dashboard-pro-react/components/footerStyle";
-import logo1 from "assets/img/logo.png";
-import logo2 from "assets/img/logo2.png";
+import logo1 from "assets/img/LOGO-CONTINENTAL-COLOR-.png";
+import logo2 from "assets/img/LOGO-GENERAL-BLANCO.png";
 
 function Footer({ ...props }) {
   const { classes, fluid, white, black } = props;
