@@ -19,6 +19,7 @@ import { SERVER_URL } from "../../../constants/server";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
+//avatar
 import defaultAvatar from "assets/img/default-avatar.png";
 
 const styles = {
@@ -68,9 +69,7 @@ class USerProfile extends React.Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card profile>
               <CardAvatar profile>
-                <a href="#" onClick={e => e.preventDefault()}>
-                  <img src={avatar} alt="Mi foto de perfil" />
-                </a>
+                <img src={avatar} alt="Mi foto de perfil" />
               </CardAvatar>
               <CardBody profile>
                 <h6 className={classes.cardCategory}>{user.profile.name}</h6>
