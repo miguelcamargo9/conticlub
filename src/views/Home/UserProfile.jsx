@@ -14,8 +14,8 @@ import CardBody from "components/Card/CardBody.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
 
-import * as userActions from "../../../actions/userActions";
-import { SERVER_URL } from "../../../constants/server";
+import * as userActions from "../../actions/userActions";
+import { SERVER_URL } from "../../constants/server";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
@@ -30,7 +30,7 @@ const styles = {
   }
 };
 
-class USerProfile extends React.Component {
+class UserProfile extends React.Component {
   constructor(props) {
     super(props);
 
@@ -239,4 +239,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(USerProfile);
+)(UserProfile);

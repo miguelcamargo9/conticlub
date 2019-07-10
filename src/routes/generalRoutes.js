@@ -1,7 +1,7 @@
 import Home from "../views/Home/Home.jsx";
 import LoginPage from "../views/Pages/LoginPage.jsx";
 import LogoutPage from "../views/Pages/LogoutPage.jsx";
-import UserProfile from "../views/Admin/Profiles/UserProfile";
+import UserProfile from "../views/Home/UserProfile";
 
 // @material-ui/icons
 import HomeIcon from "@material-ui/icons/Home";
