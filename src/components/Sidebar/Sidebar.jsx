@@ -21,7 +21,8 @@ import Icon from "@material-ui/core/Icon";
 
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
-import avatar from "assets/img/default-avatar.png";
+import defaultAvatar from "assets/img/default-avatar.png";
+import { SERVER_URL } from "../../constants/server";
 
 var ps;
 
@@ -359,6 +360,9 @@ class Sidebar extends React.Component {
       cx({
         [classes.photoRTL]: rtlActive
       });
+    const avatar = this.state.user.image
+      ? SERVER_URL + decodeURIComponent(this.state.user.image + "")
+      : defaultAvatar;
     var user = (
       <div className={userWrapperClass}>
         <div className={photo}>
@@ -392,7 +396,7 @@ class Sidebar extends React.Component {
               <List className={classes.list + " " + classes.collapseList}>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to="#"
+                    to="/admin/profile-user"
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
@@ -419,23 +423,6 @@ class Sidebar extends React.Component {
                     </span>
                     <ListItemText
                       primary={rtlActive ? "Points" : this.props.points}
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {rtlActive ? "EP" : "EP"}
-                    </span>
-                    <ListItemText
-                      primary={rtlActive ? "Edit Profile" : "Editar Perfil"}
                       disableTypography={true}
                       className={collapseItemText}
                     />
