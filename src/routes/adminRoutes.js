@@ -10,6 +10,7 @@ import ProfilesList from "../views/Admin/Profiles/ProfilesList";
 //Products
 import ProductListAdmin from "../views/Admin/Products/ProductListAdmin";
 import CreateProduct from "../views/Admin/Products/CreateProduct";
+import EditProduct from "../views/Admin/Products/EditProduct";
 
 //Product Categories
 import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
@@ -184,12 +185,12 @@ export const adminRoutes = [
         layout: "/admin"
       },
       {
-        path: "/edit-product",
+        path: "/edit-product/:id",
         name: "Editar Producto",
         rtlName: "Edit Product",
         mini: "EP",
         rtlMini: "EP",
-        component: EditCategory,
+        component: EditProduct,
         layout: "/admin",
         invisible: true
       },

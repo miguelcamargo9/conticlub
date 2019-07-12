@@ -49,15 +49,26 @@ export const updateProduct = productData => {
     productData.id
   }`;
 
+  let formData = new FormData();
+
   const headers = {
-    Authorization: serviceConst.AUTH
+    Authorization: serviceConst.AUTH,
+    "Content-Type": "application/x-www-form-urlencoded"
   };
-  const dataCategory = {
-    name: productData.name
+  const data = {
+    name: productData.name,
+    // points: productData.points,
+    product_categories_id: productData.productCategoryId
+    // points_value: productData.pointsValue,
+    // estimated_value: productData.estimatedValue
   };
 
+  console.log("data", data);
+  formData.append("data", JSON.stringify(data));
+  formData.append("image", productData.image, productData.image.name);
+
   return axios
-    .put(PRODUCT_API_ENDPOINT, dataCategory, { headers: headers })
+    .put(PRODUCT_API_ENDPOINT, formData, { headers: headers })
     .then(response => {
       console.log(response);
       return response;

@@ -11,14 +11,25 @@ import defaultAvatar from "assets/img/placeholder.jpg";
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
+    const defaultImageLoad =
+      this.props.imagePreview !== "" ? this.props.imagePreview : defaultImage;
     this.state = {
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad
     };
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.imagePreview !== this.props.imagePreview) {
+      const defaultImageLoad =
+        this.props.imagePreview !== "" ? this.props.imagePreview : defaultImage;
+      this.setState({
+        imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad
+      });
+    }
   }
   handleImageChange(e) {
     e.preventDefault();
@@ -94,7 +105,8 @@ class ImageUpload extends React.Component {
 ImageUpload.defaultProps = {
   uploadButtonText: "Select Image",
   changeButtonText: "Change",
-  removeButtonText: "Remove"
+  removeButtonText: "Remove",
+  imagePreview: ""
 };
 
 ImageUpload.propTypes = {
@@ -104,7 +116,8 @@ ImageUpload.propTypes = {
   removeButtonProps: PropTypes.object,
   uploadButtonText: PropTypes.string,
   changeButtonText: PropTypes.string,
-  removeButtonText: PropTypes.string
+  removeButtonText: PropTypes.string,
+  imagePreview: PropTypes.string
 };
 
 export default ImageUpload;

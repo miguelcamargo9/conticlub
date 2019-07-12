@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -18,42 +19,98 @@ import CardText from "components/Card/CardText.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
+import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
 
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
-import { updateCategory } from "../../../services/productCategoryService";
+import { getCategoriesService } from "../../../services/productCategoryService";
+import {
+  updateProduct,
+  getProductByIdService
+} from "../../../services/productService";
+
+// utils
+import { SERVER_URL } from "../../../constants/server";
 
 class EditProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoryNameState: ""
+      product: {
+        name: "",
+        image: "",
+        category: { id: "", name: "" }
+      }
     };
     this.isValidated = this.isValidated.bind(this);
   }
 
+  componentDidMount() {
+    getCategoriesService()
+      .then(categoryInfo => {
+        const categorySelectData = categoryInfo.data.map(category => {
+          category.value = category.id;
+          category.label = category.name;
+          category.key = 0;
+          return category;
+        });
+        this.setState({ categories: categorySelectData });
+      })
+      .then(() => {
+        getProductByIdService(this.props.match.params.id).then(productInfo => {
+          const category = productInfo.data.product_category;
+          const selectCategory = {
+            ...category,
+            value: category.id,
+            label: category.name
+          };
+          this.setState({
+            product: productInfo.data,
+            selectCategory: selectCategory
+          });
+        });
+      });
+  }
+
+  handleChangeImage = image => {
+    this.setState({
+      image: image,
+      imageState: "success"
+    });
+  };
+
+  handleRemoveImage = () => {
+    this.setState({ imageState: "error" });
+  };
+
+  handleChangeCategories = category => {
+    this.setState({
+      categoryState: "success",
+      selectCategory: category
+    });
+  };
+
   handleSubmit() {
     if (this.isValidated()) {
-      console.log("location", this.props.location.state.id);
-      const dataCategory = {
-        id: this.props.location.state.id,
-        name: this.state.categoryName
+      const dataProduct = {
+        id: this.props.match.params.id,
+        name: this.state.name,
+        category: this.state.category,
+        image: this.state.image
       };
-      updateCategory(dataCategory).then(responseSaveCategory => {
-        if (responseSaveCategory.data.message === "success") {
+      updateProduct(dataProduct).then(responseSaveProduct => {
+        if (responseSaveProduct.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Categoria ${
-              this.state.categoryName
-            } editada con éxito`
+            successMessage: `Producto ${this.state.name} editado con éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/list-categories`);
+            this.props.history.push(`/admin/list-products`);
           }, 3000);
         } else {
           this.setState({
-            messageError: responseSaveCategory.data.message,
+            messageError: responseSaveProduct.data.message,
             successMessage: null
           });
         }
@@ -67,6 +124,7 @@ class EditProduct extends React.Component {
     }
     return false;
   }
+
   change(event, stateName, type, stateNameEqualTo) {
     switch (type) {
       case "length":
@@ -80,20 +138,28 @@ class EditProduct extends React.Component {
         break;
     }
 
-    this.setState({ [stateName]: event.target.value });
+    const product = {
+      ...this.state.product,
+      [stateName]: event.target.value
+    };
+
+    this.setState({ product });
   }
+
   isValidated() {
-    if (this.state.categoryNameState === "success") {
+    if (this.state.nameState === "success") {
       return true;
     } else {
-      if (this.state.categoryNameState !== "success") {
-        this.setState({ dateState: "error" });
+      if (this.state.nameState !== "success") {
+        this.setState({ name: "error" });
       }
     }
     return false;
   }
+
   render() {
     const { classes } = this.props;
+    const { product } = this.state;
 
     const { messageError, successMessage } = this.state;
 
@@ -117,6 +183,10 @@ class EditProduct extends React.Component {
       ""
     );
 
+    const path =
+      SERVER_URL +
+      decodeURIComponent((product.image + "").replace(/\+/g, "%20"));
+
     return (
       <GridContainer>
         {errorDiv}
@@ -125,7 +195,7 @@ class EditProduct extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Editar Categoría</h4>
+                <h4 className={classes.cardTitle}>Editar Producto</h4>
               </CardText>
             </CardHeader>
             <CardBody>
@@ -133,21 +203,17 @@ class EditProduct extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={6}>
                     <CustomInput
-                      success={this.state.categoryNameState === "success"}
-                      error={this.state.categoryNameState === "error"}
-                      labelText={
-                        <span>
-                          Nombre de Categoría <small>(requerido)</small>
-                        </span>
-                      }
-                      id="categoryName"
+                      success={this.state.nameState === "success"}
+                      error={this.state.nameState === "error"}
+                      labelText={<span>Nombre de Producto</span>}
+                      id="name"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        defaultValue: this.props.location.state.categoryName,
+                        value: product.name,
                         onChange: event =>
-                          this.change(event, "categoryName", "length", 3),
+                          this.change(event, "name", "length", 3),
                         type: "text",
                         endAdornment:
                           this.state.categoryNameState === "error" ? (
@@ -159,6 +225,60 @@ class EditProduct extends React.Component {
                           )
                       }}
                     />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={4}>
+                    <Select
+                      value={this.state.selectCategory}
+                      onChange={selectedOption =>
+                        this.handleChangeCategories(selectedOption)
+                      }
+                      options={this.state.categories}
+                      placeholder={"Seleccione una categoría"}
+                    />
+                    <br />
+                    {this.state.categoryState === "error" ? (
+                      <InputAdornment position="end" className={classes.danger}>
+                        Seleccione Una Categoría
+                        <Close />
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    )}
+                    <br />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer justify="center">
+                  <GridItem xs={12} sm={3} md={3}>
+                    <ImageUpload
+                      imagePreview={`${path}`}
+                      handleChangeImage={this.handleChangeImage}
+                      handleRemoveImage={this.handleRemoveImage}
+                      addButtonProps={{
+                        color: "warning",
+                        round: true
+                      }}
+                      changeButtonProps={{
+                        color: "warning",
+                        round: true
+                      }}
+                      removeButtonProps={{
+                        color: "danger",
+                        round: true
+                      }}
+                      uploadButtonText="Subir Imagen Producto (Requerido)"
+                      changeButtonText="Cambiar"
+                      removeButtonText="Borrar"
+                    />
+                    {this.state.imageState === "error" ? (
+                      <InputAdornment position="end" className={classes.danger}>
+                        Seleccione Una Imagen
+                        <Close />
+                      </InputAdornment>
+                    ) : (
+                      ""
+                    )}
                   </GridItem>
                 </GridContainer>
               </form>
