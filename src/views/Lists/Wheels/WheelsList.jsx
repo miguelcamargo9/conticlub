@@ -17,6 +17,9 @@ import wheel1 from "assets/img/llantascontinental/contisportcontact5.png";
 import wheel2 from "assets/img/llantascontinental/crosscontactatr.png";
 import wheel3 from "assets/img/llantascontinental/crosscontactat50.png";
 import wheel4 from "assets/img/llantascontinental/crosscontactuhp.png";
+import wheel5 from "assets/img/llantascontinental/grabber_at2.png";
+import wheel6 from "assets/img/llantascontinental/altimax_xp7.png";
+import wheel7 from "assets/img/llantascontinental/g_max_rs.png";
 
 class WheelsList extends React.Component {
   render() {
@@ -108,6 +111,51 @@ class WheelsList extends React.Component {
                   <h4>CrossContact UHP</h4>
                 </div>
               </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6} lg={4}>
+            <Card product>
+              <CardHeader image>
+                <img src={wheel1} alt={wheel5} />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardProductTitle}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    GRABER AT2
+                  </a>
+                </h4>
+                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6} lg={4}>
+            <Card product>
+              <CardHeader image>
+                <img src={wheel2} alt={wheel6} />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardProductTitle}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    ALTIMAX XP7
+                  </a>
+                </h4>
+                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+              </CardBody>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6} lg={4}>
+            <Card product>
+              <CardHeader image>
+                <img src={wheel3} alt={wheel7} />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardProductTitle}>
+                  <a href="#" onClick={e => e.preventDefault()}>
+                    G-MAX RS
+                  </a>
+                </h4>
+                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+              </CardBody>
             </Card>
           </GridItem>
         </GridContainer>
