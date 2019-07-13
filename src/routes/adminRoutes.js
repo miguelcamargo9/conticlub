@@ -1,4 +1,4 @@
-// import AdminSlide from "../views/Admin/Slides/AdminSlide.jsx";
+import ListSlides from "../views/Admin/Slides/ListSlides";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
 
@@ -23,7 +23,7 @@ import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
-// import Lock from "@material-ui/icons/Lock";
+import Lock from "@material-ui/icons/Lock";
 import CardTravel from "@material-ui/icons/CardTravel";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
@@ -32,23 +32,23 @@ import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
 export const adminRoutes = [
   ...generalRoutes,
-  // {
-  //   collapse: true,
-  //   name: "Administración",
-  //   rtlName: "Admin",
-  //   icon: Lock,
-  //   views: [
-  //     {
-  //       path: "/admin-slides",
-  //       name: "Slides",
-  //       rtlName: "Admin Slides",
-  //       mini: "SL",
-  //       rtlMini: "SL",
-  //       layout: "/admin",
-  //       component: AdminSlide
-  //     }
-  //   ]
-  // },
+  {
+    collapse: true,
+    name: "Administración",
+    rtlName: "Admin",
+    icon: Lock,
+    views: [
+      {
+        path: "/list-slides",
+        name: "Slides",
+        rtlName: "Admin Slides",
+        mini: "SL",
+        rtlMini: "SL",
+        layout: "/admin",
+        component: ListSlides
+      }
+    ]
+  },
   {
     collapse: true,
     name: "Usuarios",

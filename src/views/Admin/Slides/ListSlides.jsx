@@ -29,7 +29,7 @@ import Remove from "@material-ui/icons/Remove";
 
 import { SERVER_URL } from "../../../constants/server";
 
-class AdminSlide extends React.Component {
+class ListSlides extends React.Component {
   componentDidMount() {
     this.props.SlideActions.getSlidesAction();
   }
@@ -49,7 +49,7 @@ class AdminSlide extends React.Component {
               <CardIcon color="warning">
                 <Assignment />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>Titan Table</h4>
+              <h4 className={classes.cardIconTitle}>Lista diapositivas</h4>
             </CardHeader>
             <CardBody>
               <Table
@@ -82,8 +82,7 @@ class AdminSlide extends React.Component {
    */
   createButtons() {
     const buttons = [
-      { color: "info", icon: Person },
-      { color: "success", icon: Edit },
+      { color: "warning", icon: Edit },
       { color: "danger", icon: Remove }
     ];
 
@@ -139,4 +138,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   )
-)(AdminSlide);
+)(ListSlides);
