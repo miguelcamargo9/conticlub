@@ -1,5 +1,6 @@
 import RedeemList from "../views/Lists/Invoices/RedeemList";
 import ConfirmRedeemForm from "../views/Forms/Sales/ConfirmRedeemForm";
+import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
 
 // @material-ui/icons
 import CardTravel from "@material-ui/icons/CardTravel";
@@ -22,6 +23,16 @@ export const sellRoutes = [
     rtlName: "Redeem Confirm",
     icon: CardTravel,
     component: ConfirmRedeemForm,
+    layout: "/admin",
+    invisible: true
+  },
+  {
+    path: "/invoice-details/:id",
+    name: "Detalle de Factrua",
+    rtlName: "Invoices Details",
+    mini: "ID",
+    rtlMini: "ID",
+    component: InvoiceDetails,
     layout: "/admin",
     invisible: true
   },

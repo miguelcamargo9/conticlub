@@ -3,6 +3,7 @@ import ContactForm from "../views/Forms/ContactForm.jsx";
 import Politics from "../views/Pages/Politics.jsx";
 import ProductList from "../views/Lists/Products/ProductList.jsx";
 import InvoicesList from "../views/Lists/Invoices/InvoicesList.jsx";
+import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import RegisterInvoiceForm from "../views/Forms/Sales/RegisterInvoiceForm.jsx";
 import RedeemProducts from "../views/Forms/Products/RedeemProducts";
@@ -44,6 +45,16 @@ export const defaultRoutes = [
         rtlMini: "IL",
         component: InvoicesList,
         layout: "/admin"
+      },
+      {
+        path: "/invoice-details/:id",
+        name: "Detalle de Factrua",
+        rtlName: "Invoices Details",
+        mini: "ID",
+        rtlMini: "ID",
+        component: InvoiceDetails,
+        layout: "/admin",
+        invisible: true
       }
     ]
   },

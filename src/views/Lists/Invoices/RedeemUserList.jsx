@@ -51,9 +51,7 @@ class RedeemList extends React.Component {
           id: redeem.id,
           product: redeem.product.name,
           user: redeem.user.name,
-          cc: redeem.user.identification_number,
           points: redeem.points,
-          userPoints: redeem.user.points,
           createDate: redeem.created_at,
           state: this.capitalize(redeem.state)
         };
@@ -108,16 +106,8 @@ class RedeemList extends React.Component {
                     accessor: "user"
                   },
                   {
-                    Header: "# Cédula",
-                    accessor: "cc"
-                  },
-                  {
                     Header: "Puntos",
                     accessor: "points"
-                  },
-                  {
-                    Header: "Puntos Usuario",
-                    accessor: "userPoints"
                   },
                   {
                     Header: "Fecha Creación",

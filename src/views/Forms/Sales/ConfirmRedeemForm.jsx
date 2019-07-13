@@ -70,7 +70,7 @@ class ConfirmRedeemForm extends React.Component {
           points: dataRedeem.points,
           userPoints: dataRedeem.user.points,
           createDate: dataRedeem.created_at,
-          state: dataRedeem.state
+          state: this.capitalize(dataRedeem.state)
         };
         this.setState({ redeem });
       })
@@ -93,6 +93,7 @@ class ConfirmRedeemForm extends React.Component {
           number: invoice.number,
           price: invoice.price,
           totalPoints: totalPoints,
+          state: invoice.state,
           image: (
             <a
               href={SERVER_URL + invoice.image}
@@ -101,6 +102,27 @@ class ConfirmRedeemForm extends React.Component {
             >
               Ver Factura
             </a>
+          ),
+          actions: (
+            // we've added some custom button actions
+            <div className="actions-left">
+              {/* use this button to add a edit kind of action */}
+              <Button
+                size="sm"
+                onClick={() => {
+                  let invoiceSelect = this.props.invoices.find(
+                    findInvoice => findInvoice.id === invoice.id
+                  );
+                  this.props.history.push(
+                    `/admin/invoice-details/${invoiceSelect.id}`
+                  );
+                }}
+                color="warning"
+                className="edit"
+              >
+                Detalles
+              </Button>{" "}
+            </div>
           )
         };
         return dataTable;
@@ -147,6 +169,11 @@ class ConfirmRedeemForm extends React.Component {
         });
       }
     });
+  }
+
+  capitalize(s) {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   render() {
@@ -355,6 +382,10 @@ class ConfirmRedeemForm extends React.Component {
                     {
                       Header: "Puntos",
                       accessor: "totalPoints"
+                    },
+                    {
+                      Header: "Estado",
+                      accessor: "state"
                     },
                     {
                       Header: "Imagen",
