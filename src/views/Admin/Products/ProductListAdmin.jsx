@@ -281,18 +281,9 @@ class productListAdmin extends React.Component {
                       simple
                       justIcon
                       onClick={() => {
-                        this.props.history.push({
-                          pathname: `/admin/edit-product/`,
-                          state: {
-                            product: {
-                              id: picture.id,
-                              name: picture.name,
-                              path: path,
-                              points: picture.points,
-                              categoryName: picture.product_category.name
-                            }
-                          }
-                        });
+                        this.props.history.push(
+                          `/admin/edit-product/${picture.id}`
+                        );
                       }}
                     >
                       <Edit className={classes.underChartIcons} />

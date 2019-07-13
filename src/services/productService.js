@@ -45,19 +45,32 @@ export const getProductsByCategoryIdService = idCategory => {
 };
 
 export const updateProduct = productData => {
-  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/product/update/${
+  const PRODUCT_API_ENDPOINT = `${SERVER_URL}/api/products/update/${
     productData.id
   }`;
 
+  let formData = new FormData();
+
   const headers = {
-    Authorization: serviceConst.AUTH
+    Authorization: serviceConst.AUTH,
+    "Content-Type": "application/x-www-form-urlencoded"
   };
-  const dataCategory = {
-    name: productData.name
+  const data = {
+    name: productData.name,
+    points: productData.points,
+    product_categories_id: productData.category,
+    points_value: productData.points_value,
+    estimated_value: productData.estimated_value
   };
 
+  console.log("data", data);
+  formData.append("data", JSON.stringify(data));
+  if (productData.image) {
+    formData.append("image", productData.image, productData.image.name);
+  }
+
   return axios
-    .put(PRODUCT_API_ENDPOINT, dataCategory, { headers: headers })
+    .post(PRODUCT_API_ENDPOINT, formData, { headers: headers })
     .then(response => {
       console.log(response);
       return response;
