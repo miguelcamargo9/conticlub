@@ -37,8 +37,16 @@ class EditProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      categoryState: "success",
+      nameState: "success",
+      pointsState: "success",
+      pointsValueState: "success",
+      estimatedValueState: "success",
       product: {
         name: "",
+        points: "",
+        points_value: "",
+        estimated_value: "",
         image: "",
         category: { id: "", name: "" }
       }
@@ -95,15 +103,20 @@ class EditProduct extends React.Component {
     if (this.isValidated()) {
       const dataProduct = {
         id: this.props.match.params.id,
-        name: this.state.name,
-        category: this.state.category,
+        name: this.state.product.name,
+        points: this.state.product.points,
+        points_value: this.state.product.points_value,
+        estimated_value: this.state.product.estimated_value,
+        category: this.state.product.product_category.id,
         image: this.state.image
       };
       updateProduct(dataProduct).then(responseSaveProduct => {
         if (responseSaveProduct.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Producto ${this.state.name} editado con éxito`
+            successMessage: `Producto ${
+              this.state.product.name
+            } editado con éxito`
           });
           setTimeout(() => {
             this.props.history.push(`/admin/list-products`);
@@ -115,7 +128,17 @@ class EditProduct extends React.Component {
           });
         }
       });
+    } else {
+      console.log("No has llenado nada amigo!");
     }
+  }
+  // function that verifies if value contains only numbers
+  verifyNumber(value) {
+    var numberRex = new RegExp("^[0-9]+$");
+    if (numberRex.test(value)) {
+      return true;
+    }
+    return false;
   }
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
@@ -125,8 +148,15 @@ class EditProduct extends React.Component {
     return false;
   }
 
-  change(event, stateName, type, stateNameEqualTo) {
+  change(event, stateName, type, stateNameEqualTo, value) {
     switch (type) {
+      case "number":
+        if (this.verifyNumber(event.target.value)) {
+          this.setState({ [stateName + "State"]: "success" });
+        } else {
+          this.setState({ [stateName + "State"]: "error" });
+        }
+        break;
       case "length":
         if (this.verifyLength(event.target.value, stateNameEqualTo)) {
           this.setState({ [stateName + "State"]: "success" });
@@ -147,11 +177,29 @@ class EditProduct extends React.Component {
   }
 
   isValidated() {
-    if (this.state.nameState === "success") {
+    if (
+      this.state.nameState === "success" &&
+      this.state.pointsState === "success" &&
+      this.state.categoryState === "success" &&
+      this.state.pointsValueState === "success" &&
+      this.state.estimatedValueState === "success"
+    ) {
       return true;
     } else {
       if (this.state.nameState !== "success") {
-        this.setState({ name: "error" });
+        this.setState({ nameState: "error" });
+      }
+      if (this.state.pointsState !== "success") {
+        this.setState({ pointsState: "error" });
+      }
+      if (this.state.categoryState !== "success") {
+        this.setState({ categoryState: "error" });
+      }
+      if (this.state.pointsValueState !== "success") {
+        this.setState({ pointsValueState: "error" });
+      }
+      if (this.state.estimatedValueState !== "success") {
+        this.setState({ estimatedValueState: "error" });
       }
     }
     return false;
@@ -159,9 +207,8 @@ class EditProduct extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { product } = this.state;
 
-    const { messageError, successMessage } = this.state;
+    const { messageError, successMessage, product } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -216,7 +263,82 @@ class EditProduct extends React.Component {
                           this.change(event, "name", "length", 3),
                         type: "text",
                         endAdornment:
-                          this.state.categoryNameState === "error" ? (
+                          this.state.nameState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <CustomInput
+                      success={this.state.pointsState === "success"}
+                      error={this.state.pointsState === "error"}
+                      labelText={<span>Puntos</span>}
+                      id="points"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: product.points,
+                        onChange: event =>
+                          this.change(event, "points", "number", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.pointsState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <CustomInput
+                      success={this.state.pointsValueState === "success"}
+                      error={this.state.pointsValueState === "error"}
+                      labelText={<span>Costo en puntos</span>}
+                      id="pointsValue"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: product.points_value,
+                        onChange: event =>
+                          this.change(event, "pointsValue", "number", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.pointsValueState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <CustomInput
+                      success={this.state.estimatedValueState === "success"}
+                      error={this.state.estimatedValueState === "error"}
+                      labelText={<span>Costo estimado en $COP</span>}
+                      id="estimatedValue"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: this.state.product.estimated_value,
+                        onChange: event =>
+                          this.change(event, "estimatedValue", "number", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.estimatedValueState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -240,7 +362,7 @@ class EditProduct extends React.Component {
                     <br />
                     {this.state.categoryState === "error" ? (
                       <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Una Categoría
+                        Seleccione una categoría
                         <Close />
                       </InputAdornment>
                     ) : (
@@ -267,13 +389,13 @@ class EditProduct extends React.Component {
                         color: "danger",
                         round: true
                       }}
-                      uploadButtonText="Subir Imagen Producto (Requerido)"
+                      uploadButtonText="Editar Imagen Producto"
                       changeButtonText="Cambiar"
                       removeButtonText="Borrar"
                     />
                     {this.state.imageState === "error" ? (
                       <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Una Imagen
+                        Seleccione una nueva imagen
                         <Close />
                       </InputAdornment>
                     ) : (
