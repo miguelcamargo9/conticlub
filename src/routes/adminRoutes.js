@@ -20,10 +20,14 @@ import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 //Invoices
 import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
 
+//Report
+import PointsReport from "../views/Admin/Reports/PointsReport";
+
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
 import Lock from "@material-ui/icons/Lock";
+import ListALt from "@material-ui/icons/ListAlt";
 import CardTravel from "@material-ui/icons/CardTravel";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
@@ -202,6 +206,23 @@ export const adminRoutes = [
         rtlMini: "LP",
         component: ProductListAdmin,
         layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Reportes",
+    rtlName: "Reports",
+    icon: ListALt,
+    views: [
+      {
+        path: "/points",
+        name: "Reporte de puntos",
+        rtlName: "Points Report",
+        mini: "RP",
+        rtlMini: "RP",
+        layout: "/admin",
+        component: PointsReport
       }
     ]
   },
