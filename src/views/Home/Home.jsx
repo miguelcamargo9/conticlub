@@ -19,6 +19,7 @@ import * as slideActions from "../../actions/slideActions";
 import image2 from "assets/img/CONTICLUB-BANNER-GENERAL.png";
 import image1 from "assets/img/BANNER-CONFIANZA-TOTAL.png";
 import image3 from "assets/img/BANNER TOP 2.jpg";
+import image4 from "assets/img/BANNER-TOUR-DE-FRANCIA.png";
 
 class Home extends React.Component {
   componentDidMount() {
@@ -30,7 +31,7 @@ class Home extends React.Component {
         <GridContainer>
           <GridItem xs={12} sm={12}>
             <GridItem xs={12} sm={12}>
-              <Slides slides={[image1, image2, image3]} />
+              <Slides slides={[image1, image2, image3, image4]} />
             </GridItem>
           </GridItem>
         </GridContainer>
