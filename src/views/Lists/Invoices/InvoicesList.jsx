@@ -19,6 +19,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
+import Button from "components/CustomButtons/Button.jsx";
 
 import * as userActions from "../../../actions/userActions";
 
@@ -59,6 +60,7 @@ class InvoicesList extends React.Component {
           sale_date: invoice.sale_date,
           number: invoice.number,
           price: invoice.price,
+          state: invoice.state,
           totalPoints: totalPoints,
           image: (
             <a
@@ -68,6 +70,27 @@ class InvoicesList extends React.Component {
             >
               Ver Factura
             </a>
+          ),
+          actions: (
+            // we've added some custom button actions
+            <div className="actions-left">
+              {/* use this button to add a edit kind of action */}
+              <Button
+                size="sm"
+                onClick={() => {
+                  let invoiceSelect = this.props.invoices.find(
+                    findInvoice => findInvoice.id === invoice.id
+                  );
+                  this.props.history.push(
+                    `/admin/invoice-details/${invoiceSelect.id}`
+                  );
+                }}
+                color="warning"
+                className="edit"
+              >
+                Detalles
+              </Button>{" "}
+            </div>
           )
         };
         return dataTable;
@@ -118,6 +141,10 @@ class InvoicesList extends React.Component {
                   {
                     Header: "Puntos",
                     accessor: "totalPoints"
+                  },
+                  {
+                    Header: "Estado",
+                    accessor: "state"
                   },
                   {
                     Header: "Imagen",

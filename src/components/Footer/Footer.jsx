@@ -30,7 +30,8 @@ function Footer({ ...props }) {
           <img src={logo1} height="90%" width="90%" alt="Slide" />
         </GridItem>
         <GridItem xs={12} sm={4} className={block}>
-          <img src={logo2} height="90%" width="90%" alt="Slide" />
+          <br />
+          <img src={logo2} height="70%" width="90%" alt="Slide" />
         </GridItem>
       </GridContainer>
     </footer>

@@ -45,6 +45,8 @@ class RedeemList extends React.Component {
           id: redeem.id,
           product: redeem.product.name,
           user: redeem.user.name,
+          city: redeem.user.subsidiary.city.name,
+          subsidiary: redeem.user.subsidiary.name,
           cc: redeem.user.identification_number,
           points: redeem.points,
           userPoints: redeem.user.points,
@@ -113,6 +115,14 @@ class RedeemList extends React.Component {
                   {
                     Header: "ID",
                     accessor: "id"
+                  },
+                  {
+                    Header: "Ciudad",
+                    accessor: "city"
+                  },
+                  {
+                    Header: "Punto de venta",
+                    accessor: "subsidiary"
                   },
                   {
                     Header: "Producto",
