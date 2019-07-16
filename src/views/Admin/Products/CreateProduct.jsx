@@ -1,9 +1,6 @@
 import React from "react";
 import Select from "react-select";
 
-import { compose, bindActionCreators } from "redux";
-import { connect } from "react-redux";
-
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -29,8 +26,6 @@ import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/
 
 import { getCategoriesService } from "../../../services/productCategoryService";
 import { insertProduct } from "../../../services/productService";
-
-import * as sessionActions from "../../../actions/sessionActions";
 
 class CreateProduct extends React.Component {
   constructor(props) {
@@ -393,16 +388,4 @@ class CreateProduct extends React.Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    SessionActions: bindActionCreators(sessionActions, dispatch)
-  };
-}
-
-export default compose(
-  withStyles(validationFormsStyle),
-  connect(
-    null,
-    mapDispatchToProps
-  )
-)(CreateProduct);
+export default withStyles(validationFormsStyle)(CreateProduct);
