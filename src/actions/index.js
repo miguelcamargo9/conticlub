@@ -10,7 +10,8 @@ export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 export const DATA_USER = "DATA_USER";
 
 //Slides
-export const GET_SLIDES = "GET_SLIDES";
+export const SET_SLIDES_DOWN = "SET_SLIDES_DOWN";
+export const SET_SLIDES_UP = "SET_SLIDES_UP";
 
 //Products
 export const GET_PRODS = "GET_PRODS";
