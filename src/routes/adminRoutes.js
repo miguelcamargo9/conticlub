@@ -1,6 +1,10 @@
-import ListSlides from "../views/Admin/Slides/ListSlides";
+//Users
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
+
+//Slides
+import ListSlides from "../views/Admin/Slides/ListSlides";
+import CreateSlide from "../views/Admin/Slides/CreateSlide";
 
 //Profiles
 import CreateProfile from "../views/Admin/Profiles/CreateProfile";
@@ -26,11 +30,11 @@ import PointsReport from "../views/Admin/Reports/PointsReport";
 // @material-ui/icons
 import People from "@material-ui/icons/People";
 import Person from "@material-ui/icons/Person";
-import Lock from "@material-ui/icons/Lock";
 import ListALt from "@material-ui/icons/ListAlt";
 import CardTravel from "@material-ui/icons/CardTravel";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
+import Slideshow from "@material-ui/icons/Slideshow";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -38,9 +42,9 @@ export const adminRoutes = [
   ...generalRoutes,
   {
     collapse: true,
-    name: "Administración",
+    name: "Slides",
     rtlName: "Admin",
-    icon: Lock,
+    icon: Slideshow,
     views: [
       {
         path: "/list-slides",
@@ -50,6 +54,15 @@ export const adminRoutes = [
         rtlMini: "SL",
         layout: "/admin",
         component: ListSlides
+      },
+      {
+        path: "/create-slide",
+        name: "Agregar Slide",
+        rtlName: "Add Slide",
+        mini: "AS",
+        rtlMini: "AS",
+        layout: "/admin",
+        component: CreateSlide
       }
     ]
   },

@@ -1,15 +1,13 @@
 import * as types from "./index";
-import { slideService } from "../services/slideService";
+import { getSlideByPositionService } from "../services/slideService";
 import { SERVER_URL } from "../constants/server";
 
-export const setSlideData = dataSlide => {
-  const paths = dataSlide
-    .filter(slide => slide.show === 1)
-    .map(slide => {
-      return SERVER_URL + slide.path;
-    });
+export const setSlidesUpData = dataSlide => {
+  const paths = dataSlide.map(slide => {
+    return SERVER_URL + slide.path;
+  });
   return {
-    type: types.GET_SLIDES,
+    type: types.SET_SLIDES_UP,
     payload: {
       paths,
       dataSlide
@@ -17,10 +15,29 @@ export const setSlideData = dataSlide => {
   };
 };
 
-export const getSlidesAction = () => {
+export const setSlidesDownData = dataSlide => {
+  const paths = dataSlide.map(slide => {
+    return SERVER_URL + slide.path;
+  });
+  return {
+    type: types.SET_SLIDES_DOWN,
+    payload: {
+      paths,
+      dataSlide
+    }
+  };
+};
+
+export const getSlidesAction = position => {
   return dispatch => {
-    slideService().then(slideInfo => {
-      dispatch(setSlideData(slideInfo.data));
+    getSlideByPositionService(position).then(slideInfo => {
+      if (position === "up") {
+        dispatch(setSlidesUpData(slideInfo.data));
+      } else {
+        if (position === "down") {
+          dispatch(setSlidesDownData(slideInfo.data));
+        }
+      }
     });
   };
 };

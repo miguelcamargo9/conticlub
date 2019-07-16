@@ -2,11 +2,17 @@ import * as types from "../actions";
 
 export default function(state = { slides: [] }, action) {
   switch (action.type) {
-    case types.GET_SLIDES:
+    case types.SET_SLIDES_UP:
       return {
         ...state,
-        slides: action.payload.dataSlide,
-        paths: action.payload.paths
+        slidesUp: action.payload.dataSlide,
+        pathsUp: action.payload.paths
+      };
+    case types.SET_SLIDES_DOWN:
+      return {
+        ...state,
+        slidesDown: action.payload.dataSlide,
+        pathsDown: action.payload.paths
       };
     default:
       return state;
