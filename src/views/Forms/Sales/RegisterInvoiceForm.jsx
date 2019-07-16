@@ -307,6 +307,11 @@ class registerInvoiceForm extends React.Component {
     }
     return false;
   }
+  // Let's use the static moment reference in the Datetime component
+  validDate(current) {
+    const yesterday = Datetime.moment("20190301");
+    return current.isAfter(yesterday);
+  }
   render() {
     const { classes } = this.props;
 
@@ -457,6 +462,7 @@ class registerInvoiceForm extends React.Component {
                         inputProps={{ placeholder: "Fecha de Factura" }}
                         onChange={this.handleChangeDate}
                         closeOnSelect
+                        isValidDate={this.validDate}
                       />
                     </FormControl>
                     <br />
