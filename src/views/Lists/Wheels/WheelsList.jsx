@@ -40,11 +40,9 @@ class WheelsList extends React.Component {
               </CardHeader>
               <CardBody>
                 <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    ContiSportContact 5
-                  </a>
+                  ContiSportContact 5
                 </h4>
-                <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
+                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
               </CardBody>
             </Card>
           </GridItem>
@@ -54,12 +52,8 @@ class WheelsList extends React.Component {
                 <img src={wheel2} alt={wheel2} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    CrossContact ATR
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
+                <h4 className={classes.cardProductTitle}>CrossContact ATR</h4>
+                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
               </CardBody>
             </Card>
           </GridItem>
@@ -70,11 +64,9 @@ class WheelsList extends React.Component {
               </CardHeader>
               <CardBody>
                 <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    TerrainContact AT-50
-                  </a>
+                  TerrainContact AT-50
                 </h4>
-                <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
+                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
               </CardBody>
             </Card>
           </GridItem>
@@ -84,12 +76,8 @@ class WheelsList extends React.Component {
                 <img src={wheel4} alt={wheel4} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    CrossContact UHP
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"Continetal"}</p>
+                <h4 className={classes.cardProductTitle}>CrossContact UHP</h4>
+                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
               </CardBody>
             </Card>
           </GridItem>
@@ -99,12 +87,10 @@ class WheelsList extends React.Component {
                 <img src={wheel5} alt={wheel5} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    GRABER AT2
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+                <h4 className={classes.cardProductTitle}>GRABBER AT2</h4>
+                <p className={classes.cardProductDesciprion}>
+                  {"GENERAL TIRE"}
+                </p>
               </CardBody>
             </Card>
           </GridItem>
@@ -114,12 +100,10 @@ class WheelsList extends React.Component {
                 <img src={wheel6} alt={wheel6} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    ALTIMAX XP7
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+                <h4 className={classes.cardProductTitle}>ALTIMAX XP7</h4>
+                <p className={classes.cardProductDesciprion}>
+                  {"GENERAL TIRE"}
+                </p>
               </CardBody>
             </Card>
           </GridItem>
@@ -129,12 +113,10 @@ class WheelsList extends React.Component {
                 <img src={wheel7} alt={wheel7} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    G-MAX RS
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+                <h4 className={classes.cardProductTitle}>G-MAX RS</h4>
+                <p className={classes.cardProductDesciprion}>
+                  {"GENERAL TIRE"}
+                </p>
               </CardBody>
             </Card>
           </GridItem>
@@ -144,12 +126,10 @@ class WheelsList extends React.Component {
                 <img src={wheel8} alt={wheel8} />
               </CardHeader>
               <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#" onClick={e => e.preventDefault()}>
-                    GRABER X3
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"GENERAL"}</p>
+                <h4 className={classes.cardProductTitle}>GRABBER X3</h4>
+                <p className={classes.cardProductDesciprion}>
+                  {"GENERAL TIRE"}
+                </p>
               </CardBody>
             </Card>
           </GridItem>
