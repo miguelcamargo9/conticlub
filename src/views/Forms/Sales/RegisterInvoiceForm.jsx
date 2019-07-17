@@ -201,7 +201,6 @@ class registerInvoiceForm extends React.Component {
     sessionService
       .loadUser()
       .then(user => {
-        console.log(user);
         this.setState({ userId: user.id, subsidiaryId: user.subsidiary_id });
       })
       .catch(err => console.log(err));
@@ -369,6 +368,7 @@ class registerInvoiceForm extends React.Component {
                 }
                 options={this.state.designs}
                 placeholder={"Seleccione un diseño"}
+                maxMenuHeight={200}
               />
               <br />
               {wheel.designState === "error" ? (
@@ -389,6 +389,7 @@ class registerInvoiceForm extends React.Component {
                 }
                 options={this.state.selectWheels}
                 placeholder={"Ancho | Perfil | Rin"}
+                maxMenuHeight={200}
               />
               <br />
               {wheel.wheelState === "error" ? (
@@ -409,6 +410,7 @@ class registerInvoiceForm extends React.Component {
                 }
                 options={this.state.amounts}
                 placeholder={"Cantidad"}
+                maxMenuHeight={200}
               />
               <br />
               {wheel.amountState === "error" ? (

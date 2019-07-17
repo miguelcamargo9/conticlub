@@ -127,9 +127,6 @@ class RedeemProduct extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        onChange: e => {
-                          console.log("cambie");
-                        },
                         value: product.name,
                         disabled: true
                       }}

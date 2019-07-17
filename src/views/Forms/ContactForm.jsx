@@ -112,7 +112,7 @@ class contactForm extends React.Component {
             </CardHeader>
             <CardBody>
               <p>
-                Para Continental es importante saber lo que piensas, por eso
+                Para ContiClub es importante saber lo que piensas, por eso
                 abrimos este espacio para que puedas tener una comunicación
                 directa con nosotros y así poder solventar cualquier cosas que
                 necesites.
