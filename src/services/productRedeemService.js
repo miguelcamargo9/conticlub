@@ -4,20 +4,25 @@ import { sessionService } from "redux-react-session";
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
-export const approveRedeemService = redeemId => {
+export const approveRedeemService = dataRedeem => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/approve/${redeemId}`;
+      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/approve/${
+        dataRedeem.id
+      }`;
 
       const headers = {
         Authorization: `Bearer ${currentSession.access_token}`
       };
 
+      const requestdata = {
+        comment: dataRedeem.comment
+      };
+
       return axios
-        .post(REDEEM_API_ENDPOINT, null, { headers: headers })
+        .post(REDEEM_API_ENDPOINT, requestdata, { headers: headers })
         .then(response => {
-          console.log(response);
           return response;
         })
         .catch(function(error) {
@@ -27,20 +32,25 @@ export const approveRedeemService = redeemId => {
     .catch(err => console.log(err));
 };
 
-export const rejectRedeemService = redeemId => {
+export const rejectRedeemService = dataRedeem => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/reject/${redeemId}`;
+      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/reject/${
+        dataRedeem.id
+      }`;
 
       const headers = {
         Authorization: `Bearer ${currentSession.access_token}`
       };
 
+      const requestdata = {
+        comment: dataRedeem.comment
+      };
+
       return axios
-        .post(REDEEM_API_ENDPOINT, null, { headers: headers })
+        .post(REDEEM_API_ENDPOINT, requestdata, { headers: headers })
         .then(response => {
-          console.log(response);
           return response;
         })
         .catch(function(error) {
@@ -62,7 +72,6 @@ export const getRedeemByIdService = redeemId => {
   return axios
     .get(REDEEM_API_ENDPOINT, dataRedeem)
     .then(response => {
-      console.log(response);
       return response;
     })
     .catch(function(error) {

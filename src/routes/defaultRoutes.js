@@ -48,7 +48,7 @@ export const defaultRoutes = [
       },
       {
         path: "/invoice-details/:id",
-        name: "Detalle de Factrua",
+        name: "Detalle de Factura",
         rtlName: "Invoices Details",
         mini: "ID",
         rtlMini: "ID",

@@ -7,10 +7,12 @@ import ReactTable from "react-table";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 // @material-ui/icons
 import Assignment from "@material-ui/icons/Assignment";
 import ShoppingCart from "@material-ui/icons/ShoppingCart";
+import Close from "@material-ui/icons/Close";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -33,7 +35,11 @@ import {
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import { SERVER_URL } from "../../../constants/server";
 
+// style for this view
+import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
+
 const styles = {
+  ...validationFormsStyle,
   cardIconTitle: {
     ...cardTitle,
     marginTop: "15px",
@@ -53,6 +59,7 @@ class ConfirmRedeemForm extends React.Component {
         points: "",
         userPoints: "",
         createDate: "",
+        comment: "",
         state: ""
       }
     };
@@ -70,6 +77,7 @@ class ConfirmRedeemForm extends React.Component {
           points: dataRedeem.points,
           userPoints: dataRedeem.user.points,
           createDate: dataRedeem.created_at,
+          comment: dataRedeem.comment ? dataRedeem.comment : "",
           state: this.capitalize(dataRedeem.state)
         };
         this.setState({ redeem });
@@ -87,6 +95,9 @@ class ConfirmRedeemForm extends React.Component {
           },
           0
         );
+        const totalPointsUsed = invoice.points.reduce((acc, points) => {
+          return acc + parseFloat(points.points);
+        }, 0);
         const dataTable = {
           id: index,
           sale_date: invoice.sale_date,
@@ -94,6 +105,9 @@ class ConfirmRedeemForm extends React.Component {
           price: invoice.price,
           totalPoints: totalPoints,
           state: invoice.state,
+          register_date: invoice.created_at,
+          totalPointsUsed: totalPointsUsed,
+          totalUsed: totalPoints - totalPointsUsed,
           image: (
             <a
               href={SERVER_URL + invoice.image}
@@ -134,7 +148,12 @@ class ConfirmRedeemForm extends React.Component {
   }
 
   approveRedeem() {
-    approveRedeemService(this.state.redeem.id).then(responseApproveRedeem => {
+    const { redeem } = this.state;
+    const dataRedeem = {
+      id: redeem.id,
+      comment: redeem.comment ? redeem.comment : null
+    };
+    approveRedeemService(dataRedeem).then(responseApproveRedeem => {
       if (responseApproveRedeem.data.message === "success") {
         this.setState({
           messageError: null,
@@ -145,7 +164,7 @@ class ConfirmRedeemForm extends React.Component {
         }, 3000);
       } else {
         this.setState({
-          messageError: responseApproveRedeem.data.message,
+          messageError: responseApproveRedeem.data.detail,
           successMessage: null
         });
       }
@@ -153,22 +172,68 @@ class ConfirmRedeemForm extends React.Component {
   }
 
   rejectRedeem() {
-    rejectRedeemService(this.state.redeem.id).then(responseApproveRedeem => {
-      if (responseApproveRedeem.data.message === "success") {
-        this.setState({
-          messageError: null,
-          successMessage: `Solicitud Rechazada`
-        });
-        setTimeout(() => {
-          this.props.history.push(`/admin/redeem-list`);
-        }, 3000);
-      } else {
-        this.setState({
-          messageError: responseApproveRedeem.data.message,
-          successMessage: null
-        });
+    if (this.isValidated()) {
+      const { redeem } = this.state;
+      const dataRedeem = {
+        id: redeem.id,
+        comment: redeem.comment ? redeem.comment : null
+      };
+      rejectRedeemService(dataRedeem).then(responseApproveRedeem => {
+        if (responseApproveRedeem.data.message === "success") {
+          this.setState({
+            messageError: null,
+            successMessage: `Solicitud Rechazada`
+          });
+          setTimeout(() => {
+            this.props.history.push(`/admin/redeem-list`);
+          }, 3000);
+        } else {
+          this.setState({
+            messageError: responseApproveRedeem.data.detail,
+            successMessage: null
+          });
+        }
+      });
+    }
+  }
+
+  // function that verifies if a string has a given length or not
+  verifyLength(value, length) {
+    if (value.length >= length) {
+      return true;
+    }
+    return false;
+  }
+
+  change(event, stateName, type, stateNameEqualTo) {
+    switch (type) {
+      case "length":
+        if (this.verifyLength(event.target.value, stateNameEqualTo)) {
+          this.setState({ [stateName + "State"]: "success" });
+        } else {
+          this.setState({ [stateName + "State"]: "error" });
+        }
+        break;
+      default:
+        break;
+    }
+    const redeem = {
+      ...this.state.redeem,
+      [stateName]: event.target.value
+    };
+
+    this.setState({ redeem });
+  }
+
+  isValidated() {
+    if (this.state.commentState === "success") {
+      return true;
+    } else {
+      if (this.state.commentState !== "success") {
+        this.setState({ commentState: "error" });
       }
-    });
+    }
+    return false;
   }
 
   capitalize(s) {
@@ -179,9 +244,7 @@ class ConfirmRedeemForm extends React.Component {
   render() {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
-    const { redeem } = this.state;
-
-    const { messageError, successMessage } = this.state;
+    const { messageError, successMessage, redeem } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -204,7 +267,7 @@ class ConfirmRedeemForm extends React.Component {
     );
 
     const buttons =
-      redeem.state === "espera" ? (
+      redeem.state === "Espera" ? (
         <React.Fragment>
           <Button
             size="sm"
@@ -328,7 +391,7 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={1}>
+                  <GridItem xs={12} sm={12} md={2}>
                     <CustomInput
                       labelText="Estado"
                       formControlProps={{
@@ -337,6 +400,36 @@ class ConfirmRedeemForm extends React.Component {
                       inputProps={{
                         value: redeem.state,
                         disabled: true
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={5}>
+                    <CustomInput
+                      success={this.state.commentState === "success"}
+                      error={this.state.commentState === "error"}
+                      labelText={
+                        <span>
+                          Comentario <small>(requerido para rechazar)</small>
+                        </span>
+                      }
+                      id="comment"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: redeem.comment,
+                        disabled: redeem.state === "Espera" ? false : true,
+                        onChange: event =>
+                          this.change(event, "comment", "length", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.commentState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
                       }}
                     />
                   </GridItem>
@@ -380,8 +473,20 @@ class ConfirmRedeemForm extends React.Component {
                       accessor: "price"
                     },
                     {
-                      Header: "Puntos",
+                      Header: "Puntos Obtenidos",
                       accessor: "totalPoints"
+                    },
+                    {
+                      Header: "Puntos Usados",
+                      accessor: "totalUsed"
+                    },
+                    {
+                      Header: "Puntos Restantes",
+                      accessor: "totalPointsUsed"
+                    },
+                    {
+                      Header: "Fecha de Registro",
+                      accessor: "register_date"
                     },
                     {
                       Header: "Estado",
@@ -401,6 +506,12 @@ class ConfirmRedeemForm extends React.Component {
                   defaultPageSize={10}
                   showPaginationTop
                   showPaginationBottom={false}
+                  defaultSorted={[
+                    {
+                      id: "register_date",
+                      desc: true
+                    }
+                  ]}
                   className="-striped -highlight"
                 />
               </CardBody>

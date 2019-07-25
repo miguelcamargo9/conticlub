@@ -53,6 +53,7 @@ class RedeemList extends React.Component {
           user: redeem.user.name,
           points: redeem.points,
           createDate: redeem.created_at,
+          comment: redeem.comment,
           state: this.capitalize(redeem.state)
         };
         return dataTable;
@@ -118,10 +119,15 @@ class RedeemList extends React.Component {
                     accessor: "state"
                   },
                   {
-                    Header: "Acciones",
-                    accessor: "actions",
-                    sortable: false,
-                    filterable: false
+                    Header: "Comentarios",
+                    accessor: "comment",
+                    sortable: false
+                  }
+                ]}
+                defaultSorted={[
+                  {
+                    id: "createDate",
+                    desc: true
                   }
                 ]}
                 defaultPageSize={10}

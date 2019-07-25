@@ -42,7 +42,15 @@ class InvoicesListAll extends React.Component {
     let data = [];
     if (this.props.invoices.length > 0) {
       data = this.props.invoices.map((invoice, index) => {
-        const totalPoints = 0;
+        const totalPoints = invoice.invoice_references.reduce(
+          (acc, invoiceRef) => {
+            return acc + parseFloat(invoiceRef.points);
+          },
+          0
+        );
+        const totalPointsUsed = invoice.points.reduce((acc, points) => {
+          return acc + parseFloat(points.points);
+        }, 0);
         const dataTable = {
           id: index,
           user: invoice.user.name,
@@ -50,6 +58,9 @@ class InvoicesListAll extends React.Component {
           number: invoice.number,
           price: invoice.price,
           state: invoice.state,
+          totalPointsUsed: totalPointsUsed,
+          register_date: invoice.created_at,
+          totalUsed: totalPoints - totalPointsUsed,
           totalPoints: totalPoints,
           image: (
             <a
@@ -132,8 +143,20 @@ class InvoicesListAll extends React.Component {
                     accessor: "price"
                   },
                   {
-                    Header: "Puntos",
+                    Header: "Puntos Obtenidos",
                     accessor: "totalPoints"
+                  },
+                  {
+                    Header: "Puntos Usados",
+                    accessor: "totalUsed"
+                  },
+                  {
+                    Header: "Puntos Restantes",
+                    accessor: "totalPointsUsed"
+                  },
+                  {
+                    Header: "Fecha de Registro",
+                    accessor: "register_date"
                   },
                   {
                     Header: "Estado",
@@ -151,6 +174,12 @@ class InvoicesListAll extends React.Component {
                   }
                 ]}
                 defaultPageSize={10}
+                defaultSorted={[
+                  {
+                    id: "register_date",
+                    desc: true
+                  }
+                ]}
                 showPaginationTop
                 showPaginationBottom={false}
                 className="-striped -highlight"

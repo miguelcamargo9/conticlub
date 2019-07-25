@@ -1,5 +1,5 @@
 import RedeemList from "../views/Lists/Invoices/RedeemList";
-import ConfirmRedeemForm from "../views/Forms/Sales/ConfirmRedeemForm";
+import ConfirmRedeemForm from "../views/Forms/Products/ConfirmRedeemForm";
 import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
 
 // @material-ui/icons
@@ -28,7 +28,7 @@ export const sellRoutes = [
   },
   {
     path: "/invoice-details/:id",
-    name: "Detalle de Factrua",
+    name: "Detalle de Factura",
     rtlName: "Invoices Details",
     mini: "ID",
     rtlMini: "ID",

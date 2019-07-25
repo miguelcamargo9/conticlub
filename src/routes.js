@@ -20,7 +20,7 @@ export const getAllRoutes = () => {
           case 1:
             dashRoutes = [...adminRoutes];
             break;
-          case 4:
+          case (4, 5):
             dashRoutes = [...sellRoutes];
             break;
           default:

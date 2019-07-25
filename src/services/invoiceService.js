@@ -30,7 +30,6 @@ export const insertInvoice = invoiceData => {
       return axios
         .post(INVOICE_API_ENDPOINT, formData, { headers: headers })
         .then(response => {
-          console.log(response);
           return response;
         })
         .catch(function(error) {
@@ -78,6 +77,34 @@ export const getInvoiceDetailsService = invoiceId => {
 
       return axios
         .get(INVOICE_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};
+
+export const rejectInvoiceService = dataInvoice => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const INVOICE_API_ENDPOINT = `${SERVER_URL}/api/invoice/rejected/${
+        dataInvoice.id
+      }`;
+
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+
+      const requestdata = {
+        comment_rejected: dataInvoice.comment
+      };
+
+      return axios
+        .post(INVOICE_API_ENDPOINT, requestdata, { headers: headers })
         .then(response => {
           return response;
         })

@@ -7,11 +7,14 @@ import ReactTable from "react-table";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 // @material-ui/icons
 import Assignment from "@material-ui/icons/Assignment";
 import FindInPage from "@material-ui/icons/FindInPage";
 import CloudDownload from "@material-ui/icons/CloudDownload";
+import RemoveCircle from "@material-ui/icons/RemoveCircle";
+import Close from "@material-ui/icons/Close";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -22,14 +25,22 @@ import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../../actions/userActions";
-import { getInvoiceDetailsService } from "../../../services/invoiceService";
+import {
+  getInvoiceDetailsService,
+  rejectInvoiceService
+} from "../../../services/invoiceService";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import { SERVER_URL } from "../../../constants/server";
 
+// style for this view
+import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
+
 const styles = {
+  ...validationFormsStyle,
   cardIconTitle: {
     ...cardTitle,
     marginTop: "15px",
@@ -51,6 +62,7 @@ class ConfirmRedeemForm extends React.Component {
         points: "",
         user: "",
         state: "",
+        comment: "",
         invoiceReferences: []
       }
     };
@@ -75,6 +87,9 @@ class ConfirmRedeemForm extends React.Component {
           user: dataInvoice.user.name,
           points: totalPoints,
           state: dataInvoice.state,
+          comment: dataInvoice.comment_rejected
+            ? dataInvoice.comment_rejected
+            : "",
           invoiceReferences: dataInvoice.invoice_references
         };
         this.setState({ invoice });
@@ -101,14 +116,118 @@ class ConfirmRedeemForm extends React.Component {
     return data;
   }
 
+  rejectInvoice() {
+    if (this.isValidated()) {
+      const { invoice } = this.state;
+      const dataInvoice = {
+        id: invoice.id,
+        comment: invoice.comment ? invoice.comment : null
+      };
+      rejectInvoiceService(dataInvoice).then(responseRejectInvocie => {
+        if (responseRejectInvocie.data.message === "success") {
+          this.setState({
+            messageError: null,
+            successMessage: `Factura Rechazada`
+          });
+          setTimeout(() => {
+            this.props.history.goBack();
+          }, 3000);
+        } else {
+          this.setState({
+            messageError: responseRejectInvocie.data.message,
+            successMessage: null
+          });
+        }
+      });
+    }
+  }
+
+  // function that verifies if a string has a given length or not
+  verifyLength(value, length) {
+    if (value.length >= length) {
+      return true;
+    }
+    return false;
+  }
+
+  change(event, stateName, type, stateNameEqualTo) {
+    switch (type) {
+      case "length":
+        if (this.verifyLength(event.target.value, stateNameEqualTo)) {
+          this.setState({ [stateName + "State"]: "success" });
+        } else {
+          this.setState({ [stateName + "State"]: "error" });
+        }
+        break;
+      default:
+        break;
+    }
+    const invoice = {
+      ...this.state.invoice,
+      [stateName]: event.target.value
+    };
+
+    this.setState({ invoice });
+  }
+
+  isValidated() {
+    if (this.state.commentState === "success") {
+      return true;
+    } else {
+      if (this.state.commentState !== "success") {
+        this.setState({ commentState: "error" });
+      }
+    }
+    return false;
+  }
+
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const dataTable = this.buildDataTable();
     const { invoice } = this.state;
+
+    const rejectButton =
+      invoice.state === "Creada" && user.profiles_id === 4 ? (
+        <Button
+          size="sm"
+          onClick={() => this.rejectInvoice()}
+          color="danger"
+          className="delete"
+        >
+          <RemoveCircle />
+          Rechazar
+        </Button>
+      ) : (
+        ""
+      );
+
+    const { messageError, successMessage } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
 
     return (
       <div>
         <GridContainer>
+          {errorDiv}
+          {successDiv}
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning" icon>
@@ -155,7 +274,7 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={1}>
+                  <GridItem xs={12} sm={12} md={2}>
                     <CustomInput
                       labelText="Número"
                       formControlProps={{
@@ -191,7 +310,7 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={1}>
+                  <GridItem xs={12} sm={12} md={2}>
                     <CustomInput
                       labelText="Estado"
                       formControlProps={{
@@ -215,7 +334,42 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={1}>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      success={this.state.commentState === "success"}
+                      error={this.state.commentState === "error"}
+                      labelText={
+                        <span>
+                          Comentario <small>(requerido para rechazar)</small>
+                        </span>
+                      }
+                      id="comment"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: invoice.comment,
+                        disabled:
+                          invoice.state === "Creada" && user.profiles_id === 4
+                            ? false
+                            : true,
+                        onChange: event =>
+                          this.change(event, "comment", "length", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.commentState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={5}>
                     <a
                       href={SERVER_URL + invoice.image}
                       rel="noopener noreferrer"
@@ -226,6 +380,7 @@ class ConfirmRedeemForm extends React.Component {
                         Descargar Factura
                       </Button>
                     </a>
+                    {rejectButton}
                   </GridItem>
                 </GridContainer>
               </CardBody>
@@ -239,7 +394,7 @@ class ConfirmRedeemForm extends React.Component {
                 <CardIcon color="warning">
                   <Assignment />
                 </CardIcon>
-                <h4 className={classes.cardIconTitle}>Lista de Rines</h4>
+                <h4 className={classes.cardIconTitle}>Lista de Llantas</h4>
               </CardHeader>
               <CardBody>
                 <ReactTable
@@ -300,7 +455,8 @@ function mapStateToProps(state) {
       ? state.user.invoices.invoices
       : state.user.invoices;
   return {
-    invoices: invoices
+    invoices: invoices,
+    user: state.session.user
   };
 }
 

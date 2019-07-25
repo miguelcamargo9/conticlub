@@ -55,6 +55,9 @@ class InvoicesList extends React.Component {
           },
           0
         );
+        const totalPointsUsed = invoice.points.reduce((acc, points) => {
+          return acc + parseFloat(points.points);
+        }, 0);
         const dataTable = {
           id: index,
           sale_date: invoice.sale_date,
@@ -62,6 +65,9 @@ class InvoicesList extends React.Component {
           price: invoice.price,
           state: invoice.state,
           totalPoints: totalPoints,
+          totalPointsUsed: totalPointsUsed,
+          register_date: invoice.created_at,
+          totalUsed: totalPoints - totalPointsUsed,
           image: (
             <a
               href={SERVER_URL + invoice.image}
@@ -139,8 +145,20 @@ class InvoicesList extends React.Component {
                     accessor: "price"
                   },
                   {
-                    Header: "Puntos",
+                    Header: "Puntos Obtenidos",
                     accessor: "totalPoints"
+                  },
+                  {
+                    Header: "Puntos Usados",
+                    accessor: "totalUsed"
+                  },
+                  {
+                    Header: "Puntos Restantes",
+                    accessor: "totalPointsUsed"
+                  },
+                  {
+                    Header: "Fecha de Registro",
+                    accessor: "register_date"
                   },
                   {
                     Header: "Estado",
@@ -155,6 +173,12 @@ class InvoicesList extends React.Component {
                     accessor: "actions",
                     sortable: false,
                     filterable: false
+                  }
+                ]}
+                defaultSorted={[
+                  {
+                    id: "register_date",
+                    desc: true
                   }
                 ]}
                 defaultPageSize={10}

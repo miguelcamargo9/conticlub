@@ -23,6 +23,7 @@ import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 
 //Invoices
 import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
+import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
 
 //Report
 import PointsReport from "../views/Admin/Reports/PointsReport";
@@ -145,6 +146,16 @@ export const adminRoutes = [
         rtlMini: "IL",
         component: InvoicesListAll,
         layout: "/admin"
+      },
+      {
+        path: "/invoice-details/:id",
+        name: "Detalle de Factura",
+        rtlName: "Invoices Details",
+        mini: "ID",
+        rtlMini: "ID",
+        component: InvoiceDetails,
+        layout: "/admin",
+        invisible: true
       }
     ]
   },

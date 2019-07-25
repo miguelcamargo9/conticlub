@@ -69,7 +69,9 @@ class RedeemList extends React.Component {
                 color="warning"
                 className="edit"
               >
-                Ver Solicitud
+                Ver
+                <br />
+                Solicitud
               </Button>{" "}
             </div>
           )
@@ -129,6 +131,10 @@ class RedeemList extends React.Component {
                     accessor: "product"
                   },
                   {
+                    Header: "Puntos",
+                    accessor: "points"
+                  },
+                  {
                     Header: "Usuario",
                     accessor: "user"
                   },
@@ -136,14 +142,10 @@ class RedeemList extends React.Component {
                     Header: "# Cédula",
                     accessor: "cc"
                   },
-                  {
-                    Header: "Puntos",
-                    accessor: "points"
-                  },
-                  {
-                    Header: "Puntos Usuario",
-                    accessor: "userPoints"
-                  },
+                  // {
+                  //   Header: "Puntos Usuario",
+                  //   accessor: "userPoints"
+                  // },
                   {
                     Header: "Fecha Creación",
                     accessor: "createDate"
@@ -157,6 +159,12 @@ class RedeemList extends React.Component {
                     accessor: "actions",
                     sortable: false,
                     filterable: false
+                  }
+                ]}
+                defaultSorted={[
+                  {
+                    id: "createDate",
+                    desc: true
                   }
                 ]}
                 defaultPageSize={10}
