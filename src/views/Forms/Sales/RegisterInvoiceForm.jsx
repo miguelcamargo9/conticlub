@@ -14,6 +14,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 
 // material ui icons
 import Close from "@material-ui/icons/Close";
+import Help from "@material-ui/icons/Help";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -587,6 +588,15 @@ class registerInvoiceForm extends React.Component {
               </Button>
             </CardFooter>
           </Card>
+        </GridItem>
+        <GridItem>
+          <SnackbarContent
+            message={
+              "Si necesitas agregar una llanta por favor contáctanos en la linea CAU 3013211294."
+            }
+            icon={Help}
+            color="info"
+          />
         </GridItem>
       </GridContainer>
     );
