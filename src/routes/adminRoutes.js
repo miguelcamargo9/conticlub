@@ -91,6 +91,15 @@ export const adminRoutes = [
         rtlMini: "UL",
         component: UserList,
         layout: "/admin"
+      },
+      {
+        path: "/edit-users",
+        name: "Editar Usuario",
+        rtlName: "Edit User",
+        mini: "EU",
+        rtlMini: "EU",
+        component: UserList,
+        layout: "/admin"
       }
     ]
   },
@@ -127,7 +136,8 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
-        layout: "/admin"
+        layout: "/admin",
+        invisible: true
       }
     ]
   },
