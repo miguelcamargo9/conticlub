@@ -17,10 +17,16 @@ import GridItem from "components/Grid/GridItem.jsx";
 import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
-import CardAvatar from "components/Card/CardAvatar.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
+import Button from "components/CustomButtons/Button.jsx";
+import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../../actions/userActions";
-import { getUserByIdService } from "../../../services/userService";
+import {
+  getUserByIdService,
+  updateUserService
+} from "../../../services/userService";
 import { getProfiles } from "../../../services/profileService";
 import { getSubsidiariesService } from "../../../services/subsidiaryService";
 import { SERVER_URL } from "../../../constants/server";
@@ -44,7 +50,6 @@ class EditUser extends React.Component {
 
     this.state = {
       nameState: "",
-      lastnameState: "",
       emailState: "",
       phoneState: "",
       pointsState: "",
@@ -66,6 +71,8 @@ class EditUser extends React.Component {
         subsidiary: { id: "", name: "" }
       }
     };
+    this.isValidated = this.isValidated.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
     getProfiles()
@@ -197,33 +204,11 @@ class EditUser extends React.Component {
   }
 
   isValidated() {
-    if (
-      this.state.nameState === "success" &&
-      this.state.emailState === "success" &&
-      this.state.phoneState === "success" &&
-      this.state.pointsState === "success" &&
-      this.state.passwordState === "success" &&
-      this.state.confirmPasswordState === "success"
-    ) {
+    if (this.state.nameState === "success") {
       return true;
     } else {
       if (this.state.nameState !== "success") {
         this.setState({ nameState: "error" });
-      }
-      if (this.state.emailState !== "success") {
-        this.setState({ emailState: "error" });
-      }
-      if (this.state.phoneState !== "success") {
-        this.setState({ phoneState: "error" });
-      }
-      if (this.state.pointsState !== "success") {
-        this.setState({ pointsState: "error" });
-      }
-      if (this.state.passwordState !== "success") {
-        this.setState({ passwordState: "error" });
-      }
-      if (this.state.confirmPasswordState !== "success") {
-        this.setState({ confirmPasswordState: "error" });
       }
     }
     return false;
@@ -257,9 +242,42 @@ class EditUser extends React.Component {
     this.setState({ imageState: "error" });
   };
 
+  handleSubmit() {
+    if (this.isValidated()) {
+      const dataUser = {
+        id: this.props.match.params.id,
+        name: this.state.user.name,
+        email: this.state.user.email,
+        phone: this.state.user.phone,
+        points: this.state.user.points,
+        status: this.state.user.stateUser,
+        profiles_id: this.state.user.profiles_id,
+        subsidiary_id: this.state.user.subsidiary_id
+      };
+      updateUserService(dataUser).then(responseSaveUser => {
+        if (responseSaveUser.data.message === "success") {
+          this.setState({
+            messageError: null,
+            successMessage: `User ${this.state.user.name} editado con éxito`
+          });
+          setTimeout(() => {
+            this.props.history.push(`/admin/list-users`);
+          }, 3000);
+        } else {
+          this.setState({
+            messageError: responseSaveUser.data.message,
+            successMessage: null
+          });
+        }
+      });
+    } else {
+      console.log("No has editado nada amigo!");
+    }
+  }
+
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
+    const { messageError, successMessage, user } = this.state;
     const options = [
       { label: "Activo", value: "1" },
       { label: "Inactivo", value: "0" }
@@ -267,239 +285,313 @@ class EditUser extends React.Component {
     const avatar = user.image
       ? SERVER_URL + decodeURIComponent(user.image + "")
       : defaultAvatar;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
     return (
       <div>
         <GridContainer>
+          {errorDiv}
+          {successDiv}
           <GridItem xs={12} sm={12} md={12}>
             <Card profile>
-              <CardAvatar profile>
+              {/* <CardAvatar profile>
                 <img src={avatar} alt="Mi foto de perfil" />
-              </CardAvatar>
+              </CardAvatar> */}
               <CardBody profile>
                 <h6 className={classes.cardCategory}>{user.profile.name}</h6>
                 <h4 className={classes.cardTitle}>{user.name}</h4>
                 <br />
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={1}>
-                    <CustomInput
-                      labelText="Id"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        value: user.id,
-                        disabled: true
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
-                    <CustomInput
-                      success={this.state.nameState === "success"}
-                      error={this.state.nameState === "error"}
-                      labelText="Nombre"
-                      id="name"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event =>
-                          this.change(event, "name", "length", 3),
-                        value: user.name
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
-                    <CustomInput
-                      success={this.state.emailState === "success"}
-                      error={this.state.emailState === "error"}
-                      labelText="Email"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event => this.change(event, "email", "email"),
-                        value: user.email
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <CustomInput
-                      labelText="Documento"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        value:
-                          user.identification_type +
-                          ". " +
-                          user.identification_number,
-                        disabled: true
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <CustomInput
-                      success={this.state.phoneState === "success"}
-                      error={this.state.phoneState === "error"}
-                      labelText="Teléfono"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event =>
-                          this.change(event, "phone", "length", 5),
-                        value: user.phone
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={1}>
-                    <CustomInput
-                      success={this.state.pointsState === "success"}
-                      error={this.state.pointsState === "error"}
-                      labelText="Puntos"
-                      id="points"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        onChange: event =>
-                          this.change(event, "points", "number", 2),
-                        value: user.points
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={2}>
-                    <CustomInput
-                      success={this.state.passwordState === "success"}
-                      error={this.state.passwordState === "error"}
-                      labelText={
-                        <span>
-                          Contraseña <small>(requerido)</small>
-                        </span>
-                      }
-                      id="password"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "password",
-                        onChange: event =>
-                          this.change(event, "password", "password"),
-                        endAdornment: (
-                          <InputAdornment
-                            position="end"
-                            className={classes.inputAdornment}
-                          >
-                            <Lock className={classes.inputAdornmentIcon} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={2}>
-                    <CustomInput
-                      success={this.state.confirmPasswordState === "success"}
-                      error={this.state.confirmPasswordState === "error"}
-                      labelText={
-                        <span>
-                          Confimar Contraseña <small>(requerido)</small>
-                        </span>
-                      }
-                      id="confirmPassword"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        type: "password",
-                        onChange: event =>
-                          this.change(
-                            event,
-                            "confirmPassword",
-                            "equalTo",
-                            "password"
-                          ),
-                        endAdornment: (
-                          <InputAdornment
-                            position="end"
-                            className={classes.inputAdornment}
-                          >
-                            <Lock className={classes.inputAdornmentIcon} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <Select
-                      value={this.state.selectProfile}
-                      onChange={selectedOption =>
-                        this.handleChangeProfiles(selectedOption)
-                      }
-                      options={this.state.profiles}
-                      placeholder={"Seleccione un perfil"}
-                    />
-                    <br />
-                    {this.state.profileState === "error" ? (
-                      <InputAdornment position="end" className={classes.danger}>
-                        Seleccione un perfil
-                        <Close />
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )}
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
-                    <Select
-                      value={this.state.selectSubsidiary}
-                      onChange={selectedOption =>
-                        this.handleChangeSubsidiaries(selectedOption)
-                      }
-                      options={this.state.subsidiaries}
-                      placeholder={"Seleccione un punto de venta"}
-                    />
-                    <br />
-                    {this.state.subsiduaryState === "error" ? (
-                      <InputAdornment position="end" className={classes.danger}>
-                        Seleccione un punto de venta
-                        <Close />
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )}
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <Select
-                      value={this.state.selectUserState}
-                      onChange={selectedOption =>
-                        this.handleChangeUserState(selectedOption)
-                      }
-                      options={options}
-                      placeholder={"Seleccione un Estado"}
-                    />
-                    <br />
-                    {this.state.stateUserState === "error" ? (
-                      <InputAdornment position="end" className={classes.danger}>
-                        Seleccione un estado
-                        <Close />
-                      </InputAdornment>
-                    ) : (
-                      ""
-                    )}
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={2}>
-                    <CustomInput
-                      labelText="Fecha de registro"
-                      formControlProps={{
-                        fullWidth: true
-                      }}
-                      inputProps={{
-                        value: user.created_at,
-                        disabled: true
-                      }}
-                    />
-                  </GridItem>
-                </GridContainer>
+                <form>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={1}>
+                      <CustomInput
+                        labelText="Id"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          value: user.id,
+                          disabled: true
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <CustomInput
+                        success={this.state.nameState === "success"}
+                        error={this.state.nameState === "error"}
+                        labelText="Nombre"
+                        id="name"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "name", "length", 3),
+                          value: user.name
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                      <CustomInput
+                        success={this.state.emailState === "success"}
+                        error={this.state.emailState === "error"}
+                        labelText="Email"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "email", "email"),
+                          value: user.email
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                      <CustomInput
+                        labelText="Documento"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          value:
+                            user.identification_type +
+                            ". " +
+                            user.identification_number,
+                          disabled: true
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                      <CustomInput
+                        success={this.state.phoneState === "success"}
+                        error={this.state.phoneState === "error"}
+                        labelText="Teléfono"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "phone", "length", 5),
+                          value: user.phone
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={1}>
+                      <CustomInput
+                        success={this.state.pointsState === "success"}
+                        error={this.state.pointsState === "error"}
+                        labelText="Puntos"
+                        id="points"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          onChange: event =>
+                            this.change(event, "points", "number", 2),
+                          value: user.points
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={2}>
+                      <CustomInput
+                        success={this.state.passwordState === "success"}
+                        error={this.state.passwordState === "error"}
+                        labelText={
+                          <span>
+                            Contraseña <small>(requerido)</small>
+                          </span>
+                        }
+                        id="password"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          type: "password",
+                          onChange: event =>
+                            this.change(event, "password", "password"),
+                          endAdornment: (
+                            <InputAdornment
+                              position="end"
+                              className={classes.inputAdornment}
+                            >
+                              <Lock className={classes.inputAdornmentIcon} />
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={2}>
+                      <CustomInput
+                        success={this.state.confirmPasswordState === "success"}
+                        error={this.state.confirmPasswordState === "error"}
+                        labelText={
+                          <span>
+                            Confimar Contraseña <small>(requerido)</small>
+                          </span>
+                        }
+                        id="confirmPassword"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          type: "password",
+                          onChange: event =>
+                            this.change(
+                              event,
+                              "confirmPassword",
+                              "equalTo",
+                              "password"
+                            ),
+                          endAdornment: (
+                            <InputAdornment
+                              position="end"
+                              className={classes.inputAdornment}
+                            >
+                              <Lock className={classes.inputAdornmentIcon} />
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                      <Select
+                        value={this.state.selectProfile}
+                        onChange={selectedOption =>
+                          this.handleChangeProfiles(selectedOption)
+                        }
+                        options={this.state.profiles}
+                        placeholder={"Seleccione un perfil"}
+                      />
+                      <br />
+                      {this.state.profileState === "error" ? (
+                        <InputAdornment
+                          position="end"
+                          className={classes.danger}
+                        >
+                          Seleccione un perfil
+                          <Close />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      )}
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={3}>
+                      <Select
+                        value={this.state.selectSubsidiary}
+                        onChange={selectedOption =>
+                          this.handleChangeSubsidiaries(selectedOption)
+                        }
+                        options={this.state.subsidiaries}
+                        placeholder={"Seleccione un punto de venta"}
+                      />
+                      <br />
+                      {this.state.subsiduaryState === "error" ? (
+                        <InputAdornment
+                          position="end"
+                          className={classes.danger}
+                        >
+                          Seleccione un punto de venta
+                          <Close />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      )}
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                      <Select
+                        value={this.state.selectUserState}
+                        onChange={selectedOption =>
+                          this.handleChangeUserState(selectedOption)
+                        }
+                        options={options}
+                        placeholder={"Seleccione un Estado"}
+                      />
+                      <br />
+                      {this.state.stateUserState === "error" ? (
+                        <InputAdornment
+                          position="end"
+                          className={classes.danger}
+                        >
+                          Seleccione un estado
+                          <Close />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      )}
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={2}>
+                      <CustomInput
+                        labelText="Fecha de registro"
+                        formControlProps={{
+                          fullWidth: true
+                        }}
+                        inputProps={{
+                          value: user.created_at,
+                          disabled: true
+                        }}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                  <GridContainer justify="center">
+                    <GridItem xs={12} sm={3} md={3}>
+                      <ImageUpload
+                        imagePreview={`${avatar}`}
+                        handleChangeImage={this.handleChangeImage}
+                        handleRemoveImage={this.handleRemoveImage}
+                        addButtonProps={{
+                          color: "warning",
+                          round: true
+                        }}
+                        changeButtonProps={{
+                          color: "warning",
+                          round: true
+                        }}
+                        removeButtonProps={{
+                          color: "danger",
+                          round: true
+                        }}
+                        uploadButtonText="Editar foto de perfil"
+                        changeButtonText="Cambiar"
+                        removeButtonText="Borrar"
+                      />
+                      {this.state.imageState === "error" ? (
+                        <InputAdornment
+                          position="end"
+                          className={classes.danger}
+                        >
+                          Seleccione una nueva foto de perfil
+                          <Close />
+                        </InputAdornment>
+                      ) : (
+                        ""
+                      )}
+                    </GridItem>
+                  </GridContainer>
+                </form>
               </CardBody>
+              <CardFooter className={classes.justifyContentCenter}>
+                <Button color="warning" onClick={this.handleSubmit.bind(this)}>
+                  Guardar
+                </Button>
+              </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
