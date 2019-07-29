@@ -22,6 +22,25 @@ export const userService = () => {
     });
 };
 
+export const getUserByIdService = userId => {
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/getuser/${userId}`;
+
+  const data = {
+    headers: {
+      Authorization: serviceConst.AUTH
+    }
+  };
+
+  return axios
+    .get(LOGIN_API_ENDPOINT, data)
+    .then(response => {
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};
+
 export const updateUserService = request => {
   const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/update`;
 

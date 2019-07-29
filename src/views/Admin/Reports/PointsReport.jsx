@@ -2,6 +2,7 @@ import React from "react";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
+import { CSVLink } from "react-csv";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -60,6 +61,13 @@ class PointsReport extends React.Component {
   render() {
     const { classes } = this.props;
     const dataTable = this.state.users;
+    const csvData = dataTable;
+    const prettyLink = {
+      backgroundColor: "#fb8c00",
+      height: 20,
+      padding: "10px",
+      color: "#fff"
+    };
     return dataTable.length > 0 ? (
       <GridContainer>
         <GridItem xs={12}>
@@ -70,6 +78,18 @@ class PointsReport extends React.Component {
               </CardIcon>
               <h4 className={classes.cardIconTitle}>Reporte de puntos</h4>
             </CardHeader>
+            <CardBody>
+              <GridContainer justify="space-between">
+                <GridItem xs={12} sm={10} md={6} />
+                <GridItem xs={12} sm={10} md={3}>
+                  <span>
+                    <CSVLink data={csvData} style={prettyLink}>
+                      Exportar a CSV
+                    </CSVLink>
+                  </span>
+                </GridItem>
+              </GridContainer>
+            </CardBody>
             <CardBody>
               <ReactTable
                 previousText="Atrás"

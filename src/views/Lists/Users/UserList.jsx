@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -61,9 +61,6 @@ class UserList extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  // let categorySelect = this.state.productCategories.find(
-                  //   findCategory => findCategory.id === productCategory.id
-                  // );
                   this.props.history.push(`/admin/edit-users/${user.id}`);
                 }}
                 color="warning"
