@@ -22,6 +22,7 @@ export const getAllRoutes = () => {
             break;
           case 4:
             dashRoutes = [...sellRoutes];
+            break;
           case 5:
             dashRoutes = [...sellRoutes];
             break;
