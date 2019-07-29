@@ -42,7 +42,7 @@ export const getUserByIdService = userId => {
 };
 
 export const updateUserService = request => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/update`;
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/update/${request.id}`;
 
   let formData = new FormData();
 
@@ -50,17 +50,26 @@ export const updateUserService = request => {
     Authorization: serviceConst.AUTH,
     "Content-Type": "application/x-www-form-urlencoded"
   };
+
+  var finalData = {};
   const data = {
-    name: request.username,
-    password: request.password,
+    name: request.name,
     email: request.email,
     phone: request.phone,
-    identification_number: request.identification_number,
-    subsidiary_id: request.subsidiary_id,
-    profiles_id: request.profiles_id
+    points: request.points,
+    status: request.status,
+    profiles_id: request.profiles_id,
+    subsidiary_id: request.subsidiary_id
   };
-
-  formData.append("data", JSON.stringify(data));
+  if (request.password) {
+    finalData = {
+      ...data,
+      password: request.password
+    };
+  } else {
+    finalData = data;
+  }
+  formData.append("data", JSON.stringify(finalData));
   if (request.image) {
     formData.append("image", request.image, request.image.name);
   }
