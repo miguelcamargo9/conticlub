@@ -115,13 +115,13 @@ class RedeemProduct extends React.Component {
                 <CardIcon color="warning">
                   <StoreMallDirectory />
                 </CardIcon>
-                <h4 className={classes.cardIconTitle}>Redimir Porducto</h4>
+                <h4 className={classes.cardIconTitle}>Redimir Producto</h4>
               </CardHeader>
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={5}>
                     <CustomInput
-                      labelText="Nombre de Porducto"
+                      labelText="Nombre de Producto"
                       id="product-disabled"
                       formControlProps={{
                         fullWidth: true

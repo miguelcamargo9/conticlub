@@ -7,6 +7,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.jsx";
+import Footer from "components/Footer/Footer.jsx";
 
 import { defaultRoutes } from "../routes/";
 
@@ -75,6 +76,7 @@ class Pages extends React.Component {
             style={{ backgroundImage: "url(" + this.getBgImage() + ")" }}
           >
             <Switch>{this.getRoutes(defaultRoutes)}</Switch>
+            <Footer />
           </div>
         </div>
       </div>

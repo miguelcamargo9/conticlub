@@ -1,4 +1,5 @@
 import React from "react";
+import Datetime from "react-datetime";
 import { connect } from "react-redux";
 import { bindActionCreators, compose } from "redux";
 
@@ -8,6 +9,8 @@ import ReactTable from "react-table";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 // @material-ui/icons
 import Assignment from "@material-ui/icons/Assignment";
@@ -29,7 +32,8 @@ import * as userActions from "../../../actions/userActions";
 import {
   approveRedeemService,
   rejectRedeemService,
-  getRedeemByIdService
+  getRedeemByIdService,
+  confirmRedeemService
 } from "../../../services/productRedeemService";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
@@ -60,6 +64,8 @@ class ConfirmRedeemForm extends React.Component {
         userPoints: "",
         createDate: "",
         comment: "",
+        buyerComment: "",
+        purchaseDate: "",
         state: ""
       }
     };
@@ -78,6 +84,10 @@ class ConfirmRedeemForm extends React.Component {
           userPoints: dataRedeem.user.points,
           createDate: dataRedeem.created_at,
           comment: dataRedeem.comment ? dataRedeem.comment : "",
+          buyerComment: dataRedeem.buyer_comment
+            ? dataRedeem.buyer_comment
+            : "",
+          purchaseDate: dataRedeem.purchase_date,
           state: this.capitalize(dataRedeem.state)
         };
         this.setState({ redeem });
@@ -171,6 +181,34 @@ class ConfirmRedeemForm extends React.Component {
     });
   }
 
+  confirmRedeem() {
+    if (this.isValidatedConfirm()) {
+      const { redeem, date } = this.state;
+      const dataRedeem = {
+        id: redeem.id,
+        comment: redeem.buyerComment ? redeem.buyerComment : null,
+        purchaseDate: date
+      };
+      console.log("data enviada", dataRedeem);
+      confirmRedeemService(dataRedeem).then(responseApproveRedeem => {
+        if (responseApproveRedeem.data.message === "success") {
+          this.setState({
+            messageError: null,
+            successMessage: `Confirmado con éxito`
+          });
+          setTimeout(() => {
+            this.props.history.push(`/admin/redeem-list`);
+          }, 3000);
+        } else {
+          this.setState({
+            messageError: responseApproveRedeem.data.detail,
+            successMessage: null
+          });
+        }
+      });
+    }
+  }
+
   rejectRedeem() {
     if (this.isValidated()) {
       const { redeem } = this.state;
@@ -236,13 +274,45 @@ class ConfirmRedeemForm extends React.Component {
     return false;
   }
 
+  isValidatedConfirm() {
+    if (
+      this.state.dateState === "success" &&
+      this.state.buyerCommentState === "success"
+    ) {
+      return true;
+    } else {
+      if (this.state.dateState !== "success") {
+        this.setState({ dateState: "error" });
+      }
+      if (this.state.buyerCommentState !== "success") {
+        this.setState({ buyerCommentState: "error" });
+      }
+    }
+    return false;
+  }
+
   capitalize(s) {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
+  // Let's use the static moment reference in the Datetime component
+  validDate(current) {
+    const yesterday = Datetime.moment("20190301");
+    return current.isAfter(yesterday);
+  }
+
+  handleChangeDate = date => {
+    if (date._d !== undefined) {
+      const selectDate = date._d.toISOString().substr(0, 10);
+      this.setState({ date: selectDate, dateState: "success" });
+    } else {
+      this.setState({ date: null, dateState: "error" });
+    }
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const dataTable = this.buildDataTable();
     const { messageError, successMessage, redeem } = this.state;
 
@@ -267,7 +337,7 @@ class ConfirmRedeemForm extends React.Component {
     );
 
     const buttons =
-      redeem.state === "Espera" ? (
+      redeem.state === "Espera" && user.profiles_id === 4 ? (
         <React.Fragment>
           <Button
             size="sm"
@@ -286,8 +356,62 @@ class ConfirmRedeemForm extends React.Component {
             Rechazar
           </Button>{" "}
         </React.Fragment>
+      ) : redeem.state === "Aprobado" && user.profiles_id === 5 ? (
+        <Button
+          size="sm"
+          onClick={() => this.confirmRedeem()}
+          color="warning"
+          className="edit"
+        >
+          Confirmar Compra
+        </Button>
       ) : (
         ""
+      );
+
+    const inputDate =
+      redeem.state === "Aprobado" && user.profiles_id === 5 ? (
+        <GridItem xs={12} sm={4}>
+          <InputLabel className={classes.label}>
+            Fecha de Confirmación (requerido para confirmar)
+          </InputLabel>
+          <br />
+          <FormControl fullWidth>
+            <Datetime
+              timeFormat={false}
+              inputProps={{
+                placeholder: "Fecha de Confirmación",
+                readOnly: true
+              }}
+              onChange={this.handleChangeDate}
+              closeOnSelect
+              isValidDate={this.validDate}
+            />
+          </FormControl>
+          <br />
+          <br />
+          {this.state.dateState === "error" ? (
+            <InputAdornment position="end" className={classes.danger}>
+              Seleccione Una Fecha
+              <Close />
+            </InputAdornment>
+          ) : (
+            ""
+          )}
+        </GridItem>
+      ) : (
+        <GridItem xs={12} sm={12} md={3}>
+          <CustomInput
+            labelText="Fecha de Confirmación"
+            formControlProps={{
+              fullWidth: true
+            }}
+            inputProps={{
+              value: redeem.purchaseDate,
+              disabled: true
+            }}
+          />
+        </GridItem>
       );
 
     return (
@@ -409,7 +533,8 @@ class ConfirmRedeemForm extends React.Component {
                       error={this.state.commentState === "error"}
                       labelText={
                         <span>
-                          Comentario <small>(requerido para rechazar)</small>
+                          Comentario Aprobador
+                          <small> (requerido para rechazar)</small>
                         </span>
                       }
                       id="comment"
@@ -418,7 +543,10 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                       inputProps={{
                         value: redeem.comment,
-                        disabled: redeem.state === "Espera" ? false : true,
+                        disabled:
+                          redeem.state === "Espera" && user.profiles_id === 4
+                            ? false
+                            : true,
                         onChange: event =>
                           this.change(event, "comment", "length", 3),
                         type: "text",
@@ -433,6 +561,41 @@ class ConfirmRedeemForm extends React.Component {
                       }}
                     />
                   </GridItem>
+                  <GridItem xs={12} sm={12} md={5}>
+                    <CustomInput
+                      success={this.state.buyerCommentState === "success"}
+                      error={this.state.buyerCommentState === "error"}
+                      labelText={
+                        <span>
+                          Comentario Comprador
+                          <small> (requerido para confirmar)</small>
+                        </span>
+                      }
+                      id="buyerComment"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        value: redeem.buyerComment,
+                        disabled:
+                          redeem.state === "Aprobado" && user.profiles_id === 5
+                            ? false
+                            : true,
+                        onChange: event =>
+                          this.change(event, "buyerComment", "length", 3),
+                        type: "text",
+                        endAdornment:
+                          this.state.buyerCommentState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  {inputDate}
                 </GridContainer>
                 {buttons}
               </CardBody>
@@ -529,7 +692,8 @@ function mapStateToProps(state) {
       ? state.user.invoices.invoices
       : state.user.invoices;
   return {
-    invoices: invoices
+    invoices: invoices,
+    user: state.session.user
   };
 }
 

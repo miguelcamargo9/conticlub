@@ -110,7 +110,7 @@ export const defaultRoutes = [
   },
   {
     path: "/redeem-product/:id",
-    name: "Redimir Porducto",
+    name: "Redimir Producto",
     rtlName: "Redeem Product",
     mini: "RP",
     rtlMini: "RP",

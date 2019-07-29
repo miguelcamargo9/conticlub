@@ -6,6 +6,9 @@ import { sessionService } from "redux-react-session";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 
+// @material-ui/icons
+import Help from "@material-ui/icons/Help";
+
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -13,6 +16,7 @@ import Card from "components/Card/Card.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CardAvatar from "components/Card/CardAvatar.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../actions/userActions";
 import { SERVER_URL } from "../../constants/server";
@@ -170,7 +174,10 @@ class UserProfile extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: user.subsidiary.name,
+                        value:
+                          user.subsidiary !== null
+                            ? user.subsidiary.name
+                            : "N/A",
                         disabled: true
                       }}
                     />
@@ -182,7 +189,10 @@ class UserProfile extends React.Component {
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: user.subsidiary.city.name,
+                        value:
+                          user.subsidiary !== null
+                            ? user.subsidiary.city.name
+                            : "N/A",
                         disabled: true
                       }}
                     />
@@ -214,6 +224,15 @@ class UserProfile extends React.Component {
                 </GridContainer>
               </CardBody>
             </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={12}>
+            <SnackbarContent
+              message={
+                "Si necesitas actualizar tu información por favor contáctanos en la linea CAU 3013211294."
+              }
+              icon={Help}
+              color="info"
+            />
           </GridItem>
         </GridContainer>
       </div>
