@@ -2,7 +2,8 @@ import Home from "../views/Home/Home.jsx";
 import LoginPage from "../views/Pages/LoginPage.jsx";
 import RecoverPasswordPage from "../views/Pages/RecoverPasswordPage.jsx";
 import LogoutPage from "../views/Pages/LogoutPage.jsx";
-import UserProfile from "../views/Home/UserProfile";
+// import UserProfile from "../views/Home/UserProfile";
+import EditUser from "../views/Home/EditUser";
 
 // @material-ui/icons
 import HomeIcon from "@material-ui/icons/Home";
@@ -43,7 +44,7 @@ export const generalRoutes = [
     rtlName: "User Profile",
     mini: "MP",
     rtlMini: "MP",
-    component: UserProfile,
+    component: EditUser,
     layout: "/admin",
     invisible: true
   }
