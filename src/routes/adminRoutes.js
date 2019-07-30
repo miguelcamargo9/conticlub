@@ -1,6 +1,7 @@
 //Users
 import RegisterUserForm from "../views/Forms/Users/RegisterUserForm.jsx";
 import UserList from "../views/Lists/Users/UserList";
+import EditUser from "../views/Forms/Users/EditUser";
 
 //Slides
 import ListSlides from "../views/Admin/Slides/ListSlides";
@@ -91,6 +92,16 @@ export const adminRoutes = [
         rtlMini: "UL",
         component: UserList,
         layout: "/admin"
+      },
+      {
+        path: "/edit-users/:id",
+        name: "Editar Usuario",
+        rtlName: "Edit User",
+        mini: "EU",
+        rtlMini: "EU",
+        component: EditUser,
+        layout: "/admin",
+        invisible: true
       }
     ]
   },
@@ -238,6 +249,7 @@ export const adminRoutes = [
     name: "Reportes",
     rtlName: "Reports",
     icon: ListALt,
+    state: "pageReportsCollapse",
     views: [
       {
         path: "/points",
