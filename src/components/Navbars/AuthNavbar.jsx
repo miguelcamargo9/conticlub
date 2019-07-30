@@ -17,6 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/icons/Menu";
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import Fingerprint from "@material-ui/icons/Fingerprint";
+import Restore from "@material-ui/icons/Restore";
 
 // core components
 import Button from "components/CustomButtons/Button";
@@ -49,6 +50,21 @@ class AuthNavbar extends React.Component {
     });
     var list = (
       <List className={classes.list}>
+        <ListItem className={classes.listItem}>
+          <NavLink
+            to={"/auth/recovery-pass"}
+            className={cx(classes.navLink, {
+              [classes.navLinkActive]: this.activeRoute("/auth/recovery-pass")
+            })}
+          >
+            <Restore className={classes.listItemIcon} />
+            <ListItemText
+              primary={"Recuperar Contraseña"}
+              disableTypography={true}
+              className={classes.listItemText}
+            />
+          </NavLink>
+        </ListItem>
         <ListItem className={classes.listItem}>
           <NavLink
             to={"/auth/register-page"}
