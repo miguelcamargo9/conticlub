@@ -1,5 +1,6 @@
 import Home from "../views/Home/Home.jsx";
 import LoginPage from "../views/Pages/LoginPage.jsx";
+import RecoverPasswordPage from "../views/Pages/RecoverPasswordPage.jsx";
 import LogoutPage from "../views/Pages/LogoutPage.jsx";
 import UserProfile from "../views/Home/UserProfile";
 
@@ -23,6 +24,16 @@ export const generalRoutes = [
     mini: "L",
     rtlMini: "LP",
     component: LoginPage,
+    layout: "/auth",
+    invisible: true
+  },
+  {
+    path: "/recovery-pass",
+    name: "Recuperar Contraseña",
+    rtlName: "Recovery Password",
+    mini: "RC",
+    rtlMini: "RP",
+    component: RecoverPasswordPage,
     layout: "/auth",
     invisible: true
   },

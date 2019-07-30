@@ -1,9 +1,13 @@
 import { sessionService } from "redux-react-session";
 import * as types from "./index";
 
-import { loginUserService } from "../services/authenticationService";
+import {
+  loginUserService,
+  recoveryPassService
+} from "../services/authenticationService";
 
 import { setMessageError } from "./errorActions";
+import { setMessage } from "./messageActions";
 import { setPoints } from "./sessionActions";
 
 export const registerUserAction = user => {
@@ -41,6 +45,24 @@ export const loginUserAction = (user, history) => {
         dispatch(setPoints(userInfo.data[0].points));
         dispatch(setUserData(userInfo.data[0], history));
         dispatch(setMessageError(null));
+      }
+    });
+  };
+};
+
+export const recoveryPassAction = user => {
+  return dispatch => {
+    recoveryPassService(user).then(userInfo => {
+      if (userInfo.data.message === "error") {
+        dispatch(setMessageError(userInfo.data.detail));
+        dispatch(setMessage(null));
+      } else {
+        dispatch(setMessageError(null));
+        dispatch(
+          setMessage(
+            "Se le envió un correo electrónico con una contraseña temporal"
+          )
+        );
       }
     });
   };

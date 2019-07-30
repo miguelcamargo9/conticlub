@@ -23,3 +23,24 @@ export const loginUserService = request => {
       console.log(error);
     });
 };
+
+export const recoveryPassService = request => {
+  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/recover`;
+
+  const data = {
+    identification_number: request.username,
+    email: request.email,
+    grant_type: serviceConst.GRANT_TYPE,
+    client_id: serviceConst.CLIENT_ID,
+    client_secret: serviceConst.CLIENT_SECRET
+  };
+
+  return axios
+    .post(LOGIN_API_ENDPOINT, data)
+    .then(response => {
+      return response;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+};

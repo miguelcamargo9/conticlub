@@ -45,6 +45,8 @@ class Pages extends React.Component {
       return bdimg;
     } else if (window.location.pathname.indexOf("/auth/error-page") !== -1) {
       return error;
+    } else if (window.location.pathname.indexOf("/auth/recovery-pass") !== -1) {
+      return bdimg;
     }
   };
   getActiveRoute = routes => {

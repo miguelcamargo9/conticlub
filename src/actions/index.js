@@ -5,6 +5,7 @@ export const REGISTER_USER_ERROR = "REGISTER_USER_ERROR";
 
 //Login User
 export const LOGIN_USER = "LOGIN_USER";
+export const RECOVERY_PASS = "RECOVERY_PASS";
 export const LOGIN_USER_SUCCESS = "LOGIN_USER_SUCCESS";
 export const LOGIN_USER_ERROR = "LOGIN_USER_ERROR";
 export const DATA_USER = "DATA_USER";
@@ -26,6 +27,9 @@ export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
 
 //Errors
 export const ERROR_MESSAGE = "ERROR_MESSAGE";
+
+//Message
+export const MESSAGE = "MESSAGE";
 
 //Session
 export const SET_SESSION_POINTS = "SET_SESSION_POINTS";
