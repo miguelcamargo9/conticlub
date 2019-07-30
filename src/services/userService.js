@@ -57,7 +57,7 @@ export const updateUserService = request => {
     email: request.email,
     phone: request.phone,
     points: request.points,
-    status: request.status,
+    state: request.state,
     profiles_id: request.profiles_id,
     subsidiary_id: request.subsidiary_id
   };

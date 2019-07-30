@@ -49,7 +49,8 @@ class PointsReport extends React.Component {
         const dataTable = {
           id: key,
           code: user.id,
-          name: user.name
+          name: user.name,
+          subsidiary: user.subsidiary.name
         };
         return dataTable;
       });
@@ -109,6 +110,10 @@ class PointsReport extends React.Component {
                   {
                     Header: "Nombre",
                     accessor: "name"
+                  },
+                  {
+                    Header: "Subsidiaria",
+                    accessor: "subsidiary"
                   },
                   {
                     Header: "Puntos",
