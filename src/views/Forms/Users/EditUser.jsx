@@ -49,15 +49,15 @@ class EditUser extends React.Component {
     super(props);
 
     this.state = {
-      nameState: "",
-      emailState: "",
-      phoneState: "",
-      pointsState: "",
-      profileState: "",
-      subsidiaryState: "",
-      stateUserState: "",
-      passwordState: "",
-      confirmPasswordState: "",
+      nameState: "success",
+      emailState: "success",
+      phoneState: "success",
+      pointsState: "success",
+      profileState: "success",
+      subsidiaryState: "success",
+      stateUserState: "success",
+      passwordState: "success",
+      confirmPasswordState: "success",
       user: {
         id: "",
         name: "",
@@ -65,6 +65,7 @@ class EditUser extends React.Component {
         phone: "",
         points: "",
         password: "",
+        confirmPassword: "",
         stateUser: "",
         created_at: "",
         profile: { id: "", name: "" },
@@ -117,8 +118,12 @@ class EditUser extends React.Component {
             value: stateUser.state,
             label: stateUser.state === 1 ? "Activo" : "Inactivo"
           };
+          const user = {
+            ...this.state.user,
+            ...userData.data
+          };
           this.setState({
-            user: userData.data,
+            user: user,
             selectProfile: selectProfile,
             selectSubsidiary: selectSubsidiary,
             selectUserState: selectUserState
@@ -155,6 +160,7 @@ class EditUser extends React.Component {
 
   // function that verifies if two strings are equal
   compare(string1, string2) {
+    console.log("comparando strings", string1 + " " + string2);
     if (string1 === string2) {
       return true;
     }
@@ -178,14 +184,16 @@ class EditUser extends React.Component {
         }
         break;
       case "password":
-        if (this.verifyLength(event.target.value, 1)) {
+        if (this.verifyLength(event.target.value, 0)) {
           this.setState({ [stateName + "State"]: "success" });
         } else {
           this.setState({ [stateName + "State"]: "error" });
         }
         break;
       case "equalTo":
-        if (this.compare(event.target.value, this.state[stateNameEqualTo])) {
+        if (
+          this.compare(event.target.value, this.state.user[stateNameEqualTo])
+        ) {
           this.setState({ [stateName + "State"]: "success" });
         } else {
           this.setState({ [stateName + "State"]: "error" });
@@ -193,6 +201,11 @@ class EditUser extends React.Component {
         break;
       default:
         break;
+    }
+    if (stateName === "password") {
+      if (event.target.value !== this.state.user.confirmPassword)
+        this.setState({ confirmPasswordState: "error" });
+      else this.setState({ confirmPasswordState: "success" });
     }
 
     const user = {
@@ -204,11 +217,41 @@ class EditUser extends React.Component {
   }
 
   isValidated() {
-    if (this.state.nameState === "success") {
+    if (
+      this.state.nameState === "success" &&
+      this.state.emailState === "success" &&
+      this.state.phoneState === "success" &&
+      this.state.pointsState === "success" &&
+      this.state.profileState === "success" &&
+      this.state.subsidiaryState === "success" &&
+      this.state.passwordState === "success" &&
+      this.state.confirmPasswordState === "success"
+    ) {
       return true;
     } else {
       if (this.state.nameState !== "success") {
         this.setState({ nameState: "error" });
+      }
+      if (this.state.emailState !== "success") {
+        this.setState({ emailState: "error" });
+      }
+      if (this.state.phoneState !== "success") {
+        this.setState({ phoneState: "error" });
+      }
+      if (this.state.pointsState !== "success") {
+        this.setState({ pointsState: "error" });
+      }
+      if (this.state.profileState !== "success") {
+        this.setState({ profileState: "error" });
+      }
+      if (this.state.subsidiaryState !== "success") {
+        this.setState({ subsidiaryState: "error" });
+      }
+      if (this.state.passwordState !== "success") {
+        this.setState({ passwordState: "error" });
+      }
+      if (this.state.confirmPasswordState !== "success") {
+        this.setState({ confirmPasswordState: "error" });
       }
     }
     return false;
@@ -244,16 +287,28 @@ class EditUser extends React.Component {
 
   handleSubmit() {
     if (this.isValidated()) {
+      const {
+        user,
+        selectProfile,
+        selectSubsidiary,
+        selectUserState
+      } = this.state;
       const dataUser = {
         id: this.props.match.params.id,
-        name: this.state.user.name,
-        email: this.state.user.email,
-        phone: this.state.user.phone,
-        points: this.state.user.points,
-        status: this.state.user.stateUser,
-        profiles_id: this.state.user.profiles_id,
-        subsidiary_id: this.state.user.subsidiary_id
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        points: user.points,
+        state: selectUserState.value,
+        password:
+          user.password && user.password === user.confirmPassword
+            ? user.password
+            : null,
+        profiles_id: selectProfile.value,
+        subsidiary_id: selectSubsidiary.value,
+        image: this.state.image
       };
+      console.log("Data User update", dataUser);
       updateUserService(dataUser).then(responseSaveUser => {
         if (responseSaveUser.data.message === "success") {
           this.setState({
@@ -271,7 +326,7 @@ class EditUser extends React.Component {
         }
       });
     } else {
-      console.log("No has editado nada amigo!");
+      console.log("No has editado los campos requeridos!");
     }
   }
 
@@ -424,6 +479,7 @@ class EditUser extends React.Component {
                           fullWidth: true
                         }}
                         inputProps={{
+                          autoComplete: "new-password",
                           type: "password",
                           onChange: event =>
                             this.change(event, "password", "password"),
