@@ -33,7 +33,7 @@ const styles = {
 class PointsReport extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { users: [] };
+    this.state = { users: [], dataCsv: [] };
   }
 
   componentDidMount() {
@@ -45,12 +45,19 @@ class PointsReport extends React.Component {
   buildDataTable() {
     let data = [];
     if (this.state.users.length > 0) {
-      data = this.state.users.map((user, key) => {
+      data = this.state.users.map(user => {
         const dataTable = {
-          id: key,
           code: user.id,
           name: user.name,
-          subsidiary: user.subsidiary.name
+          points: user.points,
+          gastados: user.gastados,
+          vencidos: user.vencidos,
+          apply_aprobado: user.apply_aprobado,
+          apply_rechazado: user.apply_rechazado,
+          apply_espera: user.apply_espera,
+          invoices_count: user.invoices_count,
+          subsidiary: user.subsidiary.name,
+          city: user.subsidiary.city.name
         };
         return dataTable;
       });
@@ -62,7 +69,8 @@ class PointsReport extends React.Component {
   render() {
     const { classes } = this.props;
     const dataTable = this.state.users;
-    const csvData = dataTable;
+    console.table(dataTable);
+    const csvData = this.buildDataTable();
     const prettyLink = {
       backgroundColor: "#fb8c00",
       height: 20,
@@ -113,7 +121,7 @@ class PointsReport extends React.Component {
                   },
                   {
                     Header: "Subsidiaria",
-                    accessor: "subsidiary"
+                    accessor: "subsidiary.name"
                   },
                   {
                     Header: "Puntos",
