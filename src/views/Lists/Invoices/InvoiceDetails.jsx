@@ -106,6 +106,7 @@ class ConfirmRedeemForm extends React.Component {
           brand: wheel.rin.design.brand.name,
           design: wheel.rin.design.name,
           wheel: wheel.rin.description,
+          amount: wheel.amount,
           points: wheel.points
         };
         return dataTable;
@@ -423,6 +424,10 @@ class ConfirmRedeemForm extends React.Component {
                     {
                       Header: "Rin",
                       accessor: "wheel"
+                    },
+                    {
+                      Header: "Cantidad",
+                      accessor: "amount"
                     },
                     {
                       Header: "Puntos",
