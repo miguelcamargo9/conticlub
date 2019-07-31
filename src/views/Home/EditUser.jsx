@@ -9,6 +9,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 // @material-ui/icons
 import Close from "@material-ui/icons/Close";
+import Help from "@material-ui/icons/Help";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -19,6 +20,7 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import ImageUpload from "components/CustomUpload/ImageUpload.jsx";
+import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../actions/userActions";
 import {
@@ -72,7 +74,6 @@ class EditUser extends React.Component {
             ...this.state.user,
             ...userData.data
           };
-          console.log("user final render", user);
           this.setState({
             user: user
           });
@@ -102,12 +103,14 @@ class EditUser extends React.Component {
         subsidiary_id: user.subsidiary.id,
         image: this.state.image
       };
-      console.log("Data User update", dataUser);
       updateUserService(dataUser).then(responseSaveUser => {
         if (responseSaveUser.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `User ${this.state.user.name} editado con éxito`
+            successMessage: `User ${
+              this.state.user.name
+            } editado con éxito, recuerde que una vez actualizada la foto de perfil, 
+            el cambio se verá reflejado la próxima vez que inicie sesión`
           });
           setTimeout(() => {
             this.props.history.push(`/admin/profile-user`);
@@ -126,14 +129,36 @@ class EditUser extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
-    console.log("user data obtained", user);
+    const { messageError, successMessage, user } = this.state;
+
+    const errorDiv = messageError ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={messageError} color="danger" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
+    const successDiv = successMessage ? (
+      <GridContainer justify="center">
+        <GridItem xs={12} sm={6} md={4}>
+          <SnackbarContent message={successMessage} color="success" />
+        </GridItem>
+      </GridContainer>
+    ) : (
+      ""
+    );
+
     const avatar = user.image
       ? SERVER_URL + decodeURIComponent(user.image + "")
       : defaultAvatar;
     return (
       <div>
         <GridContainer>
+          {errorDiv}
+          {successDiv}
           <GridItem xs={12} sm={12} md={12}>
             <Card profile>
               <CardBody profile>
@@ -320,6 +345,17 @@ class EditUser extends React.Component {
                 </GridItem>
               </GridContainer>
             </Card>
+          </GridItem>
+          {errorDiv}
+          {successDiv}
+          <GridItem xs={12} sm={12} md={12}>
+            <SnackbarContent
+              message={
+                "Si necesitas actualizar tu información por favor contáctanos en la linea CAU 3013211294."
+              }
+              icon={Help}
+              color="info"
+            />
           </GridItem>
         </GridContainer>
       </div>
