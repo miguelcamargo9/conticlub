@@ -589,6 +589,8 @@ class registerInvoiceForm extends React.Component {
             </CardFooter>
           </Card>
         </GridItem>
+        {errorDiv}
+        {successDiv}
         <GridItem>
           <SnackbarContent
             message={
