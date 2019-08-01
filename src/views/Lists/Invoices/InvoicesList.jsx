@@ -118,7 +118,7 @@ class InvoicesList extends React.Component {
               <CardIcon color="warning">
                 <Assignment />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>Lista de Ventas</h4>
+              <h4 className={classes.cardIconTitle}>Lista de Ventas :Ds</h4>
             </CardHeader>
             <CardBody>
               <ReactTable
@@ -131,6 +131,20 @@ class InvoicesList extends React.Component {
                 noDataText="No ha ingresado ventas"
                 data={dataTable}
                 filterable
+                getTrProps={(state, rowInfo, column) => {
+                  return {
+                    style: {
+                      textDecorationLine:
+                        rowInfo && rowInfo.row.state === "Rechazada"
+                          ? "line-through"
+                          : "",
+                      color:
+                        rowInfo && rowInfo.row.state === "Rechazada"
+                          ? "red"
+                          : null
+                    }
+                  };
+                }}
                 columns={[
                   {
                     Header: "Fecha",
@@ -162,7 +176,8 @@ class InvoicesList extends React.Component {
                   },
                   {
                     Header: "Estado",
-                    accessor: "state"
+                    accessor: "state",
+                    color: "danger"
                   },
                   {
                     Header: "Imagen",
