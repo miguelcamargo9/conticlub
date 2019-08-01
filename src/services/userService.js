@@ -58,13 +58,20 @@ export const updateUserService = request => {
     phone: request.phone,
     points: request.points,
     state: request.state,
-    profiles_id: request.profiles_id,
-    subsidiary_id: request.subsidiary_id
+    profiles_id: request.profiles_id
   };
   if (request.password) {
     finalData = {
       ...data,
       password: request.password
+    };
+  } else {
+    finalData = data;
+  }
+  if (request.subsidiary_id) {
+    finalData = {
+      ...data,
+      subsidiary_id: request.subsidiary_id
     };
   } else {
     finalData = data;
