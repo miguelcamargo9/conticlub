@@ -118,7 +118,7 @@ class InvoicesList extends React.Component {
               <CardIcon color="warning">
                 <Assignment />
               </CardIcon>
-              <h4 className={classes.cardIconTitle}>Lista de Ventas :Ds</h4>
+              <h4 className={classes.cardIconTitle}>Lista de Ventas</h4>
             </CardHeader>
             <CardBody>
               <ReactTable
