@@ -594,7 +594,7 @@ class registerInvoiceForm extends React.Component {
         <GridItem>
           <SnackbarContent
             message={
-              "Si necesitas agregar una llanta por favor contáctanos en la linea CAU 3013211294."
+              "Si no encuentras la referencia que vendiste por favor contáctanos en la linea CAU 3013211294."
             }
             icon={Help}
             color="info"
