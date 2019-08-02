@@ -20,6 +20,7 @@ import * as slideActions from "../../actions/slideActions";
 import IMG1 from "assets/img/banner/bannercontinental.jpg";
 import IMG2 from "assets/img/banner/bannergeneral.jpg";
 import IMG3 from "assets/img/banner/bannerconfiazatotal.png";
+import IMG4 from "assets/img/banner/Logo-continental.jpg";
 
 class Home extends React.Component {
   componentDidMount() {
@@ -37,7 +38,7 @@ class Home extends React.Component {
           </Hidden>
           <Hidden mdUp implementation="css">
             <GridItem xs={12} sm={12}>
-              <Slides slides={[IMG1, IMG2, IMG3]} />
+              <Slides slides={[IMG4]} />
             </GridItem>
           </Hidden>
         </GridContainer>
