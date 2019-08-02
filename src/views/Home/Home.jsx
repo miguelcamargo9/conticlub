@@ -48,9 +48,16 @@ class Home extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12}>
-            <Slides slides={this.props.slidesdown} />
-          </GridItem>
+          <Hidden smDown>
+            <GridItem xs={12} sm={12}>
+              <Slides slides={this.props.slidesdown} />
+            </GridItem>
+          </Hidden>
+          <Hidden mdUp implementation="css">
+            <GridItem xs={12} sm={12}>
+              <Slides slides={[IMG4]} />
+            </GridItem>
+          </Hidden>
         </GridContainer>
       </div>
     );
