@@ -60,6 +60,7 @@ export const updateUserService = request => {
     state: request.state,
     profiles_id: request.profiles_id
   };
+
   if (request.password) {
     finalData = {
       ...data,
@@ -68,15 +69,18 @@ export const updateUserService = request => {
   } else {
     finalData = data;
   }
+
   if (request.subsidiary_id) {
     finalData = {
-      ...data,
+      ...finalData,
       subsidiary_id: request.subsidiary_id
     };
   } else {
-    finalData = data;
+    finalData = finalData;
   }
+
   formData.append("data", JSON.stringify(finalData));
+
   if (request.image) {
     formData.append("image", request.image, request.image.name);
   }

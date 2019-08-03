@@ -21,7 +21,6 @@ import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweet
 
 // material-ui icons
 import Assignment from "@material-ui/icons/Assignment";
-import Edit from "@material-ui/icons/Edit";
 import Remove from "@material-ui/icons/Remove";
 
 // utils
@@ -166,6 +165,7 @@ class ListSlides extends React.Component {
                     "Posición",
                     "Índice",
                     "Mostrar",
+                    "Responsive",
                     "Opciones"
                   ]}
                   tableData={tableData}
@@ -203,6 +203,7 @@ class ListSlides extends React.Component {
           <img src={path} width="150px" height="80px" alt="imagenes slides" />
         );
         const show = slide.show ? "Sí" : "No";
+        const responsive = slide.responsive ? "Sí" : "No";
         return [
           slide.id,
           imgElement,
@@ -210,24 +211,9 @@ class ListSlides extends React.Component {
           slide.position,
           slide.order,
           show,
+          responsive,
           // we've added some custom button actions
           <div className="actions-right">
-            {/* use this button to add a edit kind of action */}
-            <Button
-              justIcon
-              round
-              simple
-              onClick={() => {
-                let slideSelect = slides.find(
-                  findSlide => findSlide.id === slide.id
-                );
-                this.props.history.push(`/admin/edit-slide/${slideSelect.id}`);
-              }}
-              color="warning"
-              className="edit"
-            >
-              <Edit />
-            </Button>{" "}
             {/* use this button to remove the data row */}
             <Button
               justIcon

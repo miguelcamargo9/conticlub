@@ -4,9 +4,12 @@ import Select from "react-select";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 // material ui icons
 import Close from "@material-ui/icons/Close";
+import Check from "@material-ui/icons/Check";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -30,6 +33,7 @@ class CreateSlide extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      checked: [],
       orderState: "",
       positionState: "",
       imageState: "",
@@ -56,7 +60,8 @@ class CreateSlide extends React.Component {
       const dataSlide = {
         order: this.state.order,
         position: this.state.position,
-        image: this.state.image
+        image: this.state.image,
+        responsive: this.state.checked.length > 0 ? 1 : 0
       };
       insertSlideService(dataSlide).then(responseSaveSlide => {
         if (responseSaveSlide.data.message === "success") {
@@ -136,6 +141,21 @@ class CreateSlide extends React.Component {
     }
     return false;
   }
+  handleToggle(value) {
+    const { checked } = this.state;
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    this.setState({
+      checked: newChecked
+    });
+  }
   render() {
     const { classes } = this.props;
 
@@ -175,7 +195,7 @@ class CreateSlide extends React.Component {
             <CardBody>
               <form>
                 <GridContainer>
-                  <GridItem xs={12} sm={4}>
+                  <GridItem xs={12} sm={2}>
                     <CustomInput
                       success={this.state.orderState === "success"}
                       error={this.state.orderState === "error"}
@@ -202,6 +222,30 @@ class CreateSlide extends React.Component {
                           )
                       }}
                     />
+                  </GridItem>
+                  <GridItem xs={12} sm={2}>
+                    <div className={classes.checkboxAndRadio}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            tabIndex={-1}
+                            onClick={() => this.handleToggle(2)}
+                            checkedIcon={
+                              <Check className={classes.checkedIcon} />
+                            }
+                            icon={<Check className={classes.uncheckedIcon} />}
+                            classes={{
+                              checked: classes.checked,
+                              root: classes.checkRoot
+                            }}
+                          />
+                        }
+                        classes={{
+                          label: classes.label
+                        }}
+                        label="Responsive"
+                      />
+                    </div>
                   </GridItem>
                   <GridItem xs={12} sm={4}>
                     <br />

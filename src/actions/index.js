@@ -12,7 +12,9 @@ export const DATA_USER = "DATA_USER";
 
 //Slides
 export const SET_SLIDES_DOWN = "SET_SLIDES_DOWN";
+export const SET_SLIDES_DOWN_RESPONSIVE = "SET_SLIDES_DOWN_RESPONSIVE";
 export const SET_SLIDES_UP = "SET_SLIDES_UP";
+export const SET_SLIDES_UP_RESPONSIVE = "SET_SLIDES_UP_RESPONSIVE";
 
 //Products
 export const GET_PRODS = "GET_PRODS";

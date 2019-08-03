@@ -47,13 +47,20 @@ class RedeemList extends React.Component {
     let data = [];
     if (this.props.redeemList.length > 0) {
       data = this.props.redeemList.map(redeem => {
+        const comment = redeem.comment
+          ? redeem.buyer_comment
+            ? `${redeem.comment}, ${redeem.buyer_comment}`
+            : redeem.comment
+          : redeem.buyer_comment
+          ? redeem.buyer_comment
+          : "";
         const dataTable = {
           id: redeem.id,
           product: redeem.product.name,
           user: redeem.user.name,
           points: redeem.points,
           createDate: redeem.created_at,
-          comment: redeem.comment,
+          comment: comment,
           state: this.capitalize(redeem.state)
         };
         return dataTable;

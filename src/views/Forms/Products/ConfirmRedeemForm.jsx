@@ -622,6 +622,20 @@ class ConfirmRedeemForm extends React.Component {
                   noDataText="No ha ingresado ventas"
                   data={dataTable}
                   filterable
+                  getTrProps={(state, rowInfo, column) => {
+                    return {
+                      style: {
+                        textDecorationLine:
+                          rowInfo && rowInfo.row.state === "Rechazada"
+                            ? "line-through"
+                            : "",
+                        color:
+                          rowInfo && rowInfo.row.state === "Rechazada"
+                            ? "red"
+                            : null
+                      }
+                    };
+                  }}
                   columns={[
                     {
                       Header: "Fecha",

@@ -27,11 +27,11 @@ export const getSlideService = () => {
     .catch(err => console.log(err));
 };
 
-export const getSlideByPositionService = position => {
+export const getSlideByPositionService = (position, responsive) => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const SLIDE_API_ENDPOINT = `${SERVER_URL}/api/slides/position/${position}`;
+      const SLIDE_API_ENDPOINT = `${SERVER_URL}/api/slides/position/${position}/${responsive}`;
 
       const data = {
         headers: {
@@ -90,6 +90,7 @@ export const insertSlideService = slideData => {
       const data = {
         position: slideData.position.value,
         order: slideData.order,
+        responsive: slideData.responsive,
         show: 1
       };
 

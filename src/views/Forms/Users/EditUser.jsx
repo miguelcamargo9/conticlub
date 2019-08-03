@@ -99,7 +99,6 @@ class EditUser extends React.Component {
       })
       .then(() => {
         getUserByIdService(this.props.match.params.id).then(userData => {
-          console.log("userData", userData);
           const profile = userData.data.profile;
           const selectProfile = {
             ...profile,
@@ -160,7 +159,6 @@ class EditUser extends React.Component {
 
   // function that verifies if two strings are equal
   compare(string1, string2) {
-    console.log("comparando strings", string1 + " " + string2);
     if (string1 === string2) {
       return true;
     }
@@ -308,7 +306,6 @@ class EditUser extends React.Component {
         subsidiary_id: selectSubsidiary.value,
         image: this.state.image
       };
-      console.log("Data User update", dataUser);
       updateUserService(dataUser).then(responseSaveUser => {
         if (responseSaveUser.data.message === "success") {
           this.setState({

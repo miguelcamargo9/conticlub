@@ -17,15 +17,12 @@ import WheelsList from "../Lists/Wheels/WheelsList";
 
 import * as slideActions from "../../actions/slideActions";
 
-import IMG1 from "assets/img/banner/bannercontinental.jpg";
-import IMG2 from "assets/img/banner/bannergeneral.jpg";
-import IMG3 from "assets/img/banner/bannerconfiazatotal.png";
-import IMG4 from "assets/img/banner/Logo-continental.jpg";
-
 class Home extends React.Component {
   componentDidMount() {
-    this.props.SlideActions.getSlidesAction("down");
-    this.props.SlideActions.getSlidesAction("up");
+    this.props.SlideActions.getSlidesAction("down", 0);
+    this.props.SlideActions.getSlidesAction("down", 1);
+    this.props.SlideActions.getSlidesAction("up", 0);
+    this.props.SlideActions.getSlidesAction("up", 1);
   }
   render() {
     return (
@@ -33,12 +30,12 @@ class Home extends React.Component {
         <GridContainer>
           <Hidden smDown>
             <GridItem xs={12} sm={12}>
-              <Slides slides={this.props.slidesup} />
+              <Slides slides={this.props.slidesUp} />
             </GridItem>
           </Hidden>
           <Hidden mdUp implementation="css">
             <GridItem xs={12} sm={12}>
-              <Slides slides={[IMG4]} />
+              <Slides slides={this.props.slidesUpResponsive} />
             </GridItem>
           </Hidden>
         </GridContainer>
@@ -50,12 +47,12 @@ class Home extends React.Component {
         <GridContainer>
           <Hidden smDown>
             <GridItem xs={12} sm={12}>
-              <Slides slides={this.props.slidesdown} />
+              <Slides slides={this.props.slidesDown} />
             </GridItem>
           </Hidden>
           <Hidden mdUp implementation="css">
             <GridItem xs={12} sm={12}>
-              <Slides slides={[IMG4]} />
+              <Slides slides={this.props.slidesDownResponsive} />
             </GridItem>
           </Hidden>
         </GridContainer>
@@ -66,8 +63,10 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    slidesup: state.slide.pathsUp,
-    slidesdown: state.slide.pathsDown
+    slidesUp: state.slide.pathsUp,
+    slidesUpResponsive: state.slide.pathsUpResponsive,
+    slidesDown: state.slide.pathsDown,
+    slidesDownResponsive: state.slide.pathsDownResponsive
   };
 }
 
