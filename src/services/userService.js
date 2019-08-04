@@ -62,21 +62,27 @@ export const updateUserService = request => {
   };
 
   if (request.password) {
-    finalData = {
-      ...data,
-      password: request.password
-    };
+    if (request.subsidiary_id) {
+      finalData = {
+        ...data,
+        password: request.password,
+        subsidiary_id: request.subsidiary_id
+      };
+    } else {
+      finalData = {
+        ...data,
+        password: request.password
+      };
+    }
   } else {
-    finalData = data;
-  }
-
-  if (request.subsidiary_id) {
-    finalData = {
-      ...finalData,
-      subsidiary_id: request.subsidiary_id
-    };
-  } else {
-    finalData = finalData;
+    if (request.subsidiary_id) {
+      finalData = {
+        ...data,
+        subsidiary_id: request.subsidiary_id
+      };
+    } else {
+      finalData = data;
+    }
   }
 
   formData.append("data", JSON.stringify(finalData));

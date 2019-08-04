@@ -106,11 +106,14 @@ class EditUser extends React.Component {
             label: profile.name
           };
           const subsidiary = userData.data.subsidiary;
-          const selectSubsidiary = {
-            ...subsidiary,
-            value: subsidiary.id,
-            label: subsidiary.name
-          };
+          const selectSubsidiary =
+            subsidiary !== null
+              ? {
+                  ...subsidiary,
+                  value: subsidiary.id,
+                  label: subsidiary.name
+                }
+              : null;
           const stateUser = userData.data;
           const selectUserState = {
             ...stateUser,
@@ -303,7 +306,8 @@ class EditUser extends React.Component {
             ? user.password
             : null,
         profiles_id: selectProfile.value,
-        subsidiary_id: selectSubsidiary.value,
+        subsidiary_id:
+          selectSubsidiary !== null ? selectSubsidiary.value : null,
         image: this.state.image
       };
       updateUserService(dataUser).then(responseSaveUser => {

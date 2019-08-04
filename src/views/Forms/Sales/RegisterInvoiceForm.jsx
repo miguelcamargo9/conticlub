@@ -481,6 +481,7 @@ class registerInvoiceForm extends React.Component {
                   </GridItem>
                   <GridItem xs={12} sm={3}>
                     <CustomInput
+                      helpText="Para ingresar la corrección de una factura, agregar al final del numero la letra 'C'"
                       success={this.state.invoiceNumberState === "success"}
                       error={this.state.invoiceNumberState === "error"}
                       labelText={
