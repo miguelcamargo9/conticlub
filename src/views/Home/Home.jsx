@@ -28,16 +28,14 @@ class Home extends React.Component {
     return (
       <div>
         <GridContainer>
-          <Hidden smDown>
-            <GridItem xs={12} sm={12}>
+          <GridItem xs={12} sm={12}>
+            <Hidden smDown>
               <Slides slides={this.props.slidesUp} />
-            </GridItem>
-          </Hidden>
-          <Hidden mdUp implementation="css">
-            <GridItem xs={12} sm={12}>
+            </Hidden>
+            <Hidden mdUp implementation="css">
               <Slides slides={this.props.slidesUpResponsive} />
-            </GridItem>
-          </Hidden>
+            </Hidden>
+          </GridItem>
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12}>
@@ -45,16 +43,14 @@ class Home extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <Hidden smDown>
-            <GridItem xs={12} sm={12}>
+          <GridItem xs={12} sm={12}>
+            <Hidden smDown>
               <Slides slides={this.props.slidesDown} />
-            </GridItem>
-          </Hidden>
-          <Hidden mdUp implementation="css">
-            <GridItem xs={12} sm={12}>
+            </Hidden>
+            <Hidden mdUp implementation="css">
               <Slides slides={this.props.slidesDownResponsive} />
-            </GridItem>
-          </Hidden>
+            </Hidden>
+          </GridItem>
         </GridContainer>
       </div>
     );
