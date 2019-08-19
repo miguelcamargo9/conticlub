@@ -14,6 +14,7 @@ import Assignment from "@material-ui/icons/Assignment";
 import FindInPage from "@material-ui/icons/FindInPage";
 import CloudDownload from "@material-ui/icons/CloudDownload";
 import RemoveCircle from "@material-ui/icons/RemoveCircle";
+import CheckCircle from "@material-ui/icons/CheckCircle";
 import Close from "@material-ui/icons/Close";
 
 // core components
@@ -30,6 +31,7 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 import * as userActions from "../../../actions/userActions";
 import {
   getInvoiceDetailsService,
+  approveInvoiceService,
   rejectInvoiceService
 } from "../../../services/invoiceService";
 
@@ -143,6 +145,29 @@ class ConfirmRedeemForm extends React.Component {
     }
   }
 
+  approveInvoice() {
+    const { invoice } = this.state;
+    const dataInvoice = {
+      id: invoice.id
+    };
+    approveInvoiceService(dataInvoice).then(responseApproveInvocie => {
+      if (responseApproveInvocie.data.message === "success") {
+        this.setState({
+          messageError: null,
+          successMessage: `Factura Aprobada`
+        });
+        setTimeout(() => {
+          this.props.history.goBack();
+        }, 3000);
+      } else {
+        this.setState({
+          messageError: responseApproveInvocie.data.message,
+          successMessage: null
+        });
+      }
+    });
+  }
+
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
     if (value.length >= length) {
@@ -197,6 +222,21 @@ class ConfirmRedeemForm extends React.Component {
         >
           <RemoveCircle />
           Rechazar
+        </Button>
+      ) : (
+        ""
+      );
+
+    const approveButton =
+      invoice.state === "Creada" && user.profiles_id === 4 ? (
+        <Button
+          size="sm"
+          onClick={() => this.approveInvoice()}
+          color="warning"
+          className="success"
+        >
+          <CheckCircle />
+          Aprobar
         </Button>
       ) : (
         ""
@@ -382,6 +422,7 @@ class ConfirmRedeemForm extends React.Component {
                       </Button>
                     </a>
                     {rejectButton}
+                    {approveButton}
                   </GridItem>
                 </GridContainer>
               </CardBody>

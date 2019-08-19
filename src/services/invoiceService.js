@@ -114,3 +114,27 @@ export const rejectInvoiceService = dataInvoice => {
     })
     .catch(err => console.log(err));
 };
+
+export const approveInvoiceService = dataInvoice => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const INVOICE_API_ENDPOINT = `${SERVER_URL}/api/invoice/approved/${
+        dataInvoice.id
+      }`;
+
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+
+      return axios
+        .post(INVOICE_API_ENDPOINT, null, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};
