@@ -1,1 +1,1 @@
-export const SERVER_URL = "http://conticlub.co:8000";
+export const SERVER_URL = "https://conticlub.co:8000";
