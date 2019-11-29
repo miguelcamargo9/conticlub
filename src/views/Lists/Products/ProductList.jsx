@@ -9,7 +9,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // @material-ui/icons
 import Search from "@material-ui/icons/Search";
-import Favorite from "@material-ui/icons/FavoriteBorder";
+// import Favorite from "@material-ui/icons/FavoriteBorder";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -173,7 +173,7 @@ class productList extends React.Component {
                 <div className={classes.price}>
                   <h4>{product.points} pts.</h4>
                 </div>
-                <Button
+                {/* <Button
                   color="warning"
                   size="sm"
                   className={classes.marginRight}
@@ -194,7 +194,7 @@ class productList extends React.Component {
                   onClick={e => console.log("start")}
                 >
                   <Favorite />
-                </Button>
+                </Button> */}
               </CardFooter>
             </Card>
           </GridItem>
@@ -303,8 +303,5 @@ function mapDispatchToProps(dispatch) {
 
 export default compose(
   withStyles(dashboardStyle),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(productList);

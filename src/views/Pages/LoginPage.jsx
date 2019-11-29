@@ -43,6 +43,7 @@ class LoginPage extends React.Component {
     };
     this.onSubmit = this.onHandleLogin.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
   componentDidMount() {
     // we add a hidden class to the card and after 700 ms we delete it and the transition appears
@@ -60,10 +61,15 @@ class LoginPage extends React.Component {
 
   onChange(e) {
     const { value, name } = e.target;
-
     const { user } = this.state;
     user[name] = value;
     this.setState({ user });
+  }
+
+  onKeyDown(event, history) {
+    if (event.key === "Enter") {
+      this.onHandleLogin(history);
+    }
   }
 
   onHandleLogin = history => {
@@ -124,6 +130,8 @@ class LoginPage extends React.Component {
                   inputProps={{
                     name: "username",
                     value: username,
+                    onKeyDown: event =>
+                      this.onKeyDown(event, this.props.history),
                     onChange: event => this.onChange(event),
                     endAdornment: (
                       <InputAdornment position="end">
@@ -145,6 +153,8 @@ class LoginPage extends React.Component {
                     value: password,
                     type: "password",
                     onChange: event => this.onChange(event),
+                    onKeyDown: event =>
+                      this.onKeyDown(event, this.props.history),
                     endAdornment: (
                       <InputAdornment position="end">
                         <Icon className={classes.inputAdornmentIcon}>
@@ -185,8 +195,5 @@ function mapDispatchToProps(dispatch) {
 
 export default compose(
   withStyles(loginPageStyle),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps, mapDispatchToProps)
 )(LoginPage);
