@@ -1,1 +1,4 @@
-export const SERVER_URL = "https://conticlub.co:8000";
+export const SERVER_URL =
+  process.env.NODE_ENV === "PROD"
+    ? "https://server.conticlub.co"
+    : "http://localhost:8080";
