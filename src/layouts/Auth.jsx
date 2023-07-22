@@ -13,8 +13,7 @@ import { defaultRoutes } from "../routes/";
 
 import pagesStyle from "assets/jss/material-dashboard-pro-react/layouts/authStyle.jsx";
 
-import error from "assets/img/clint-mckoy.jpg";
-import bdimg from "assets/img/sidebar-2.jpg";
+import { BUCKET_URL } from "../constants/server";
 
 class Pages extends React.Component {
   componentDidMount() {
@@ -38,17 +37,7 @@ class Pages extends React.Component {
       }
     });
   };
-  getBgImage = () => {
-    if (window.location.pathname.indexOf("/auth/register-page") !== -1) {
-      return bdimg;
-    } else if (window.location.pathname.indexOf("/auth/login-page") !== -1) {
-      return bdimg;
-    } else if (window.location.pathname.indexOf("/auth/error-page") !== -1) {
-      return error;
-    } else if (window.location.pathname.indexOf("/auth/recovery-pass") !== -1) {
-      return bdimg;
-    }
-  };
+
   getActiveRoute = routes => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
@@ -75,7 +64,9 @@ class Pages extends React.Component {
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}
-            style={{ backgroundImage: "url(" + this.getBgImage() + ")" }}
+            style={{
+              backgroundImage: `url(${BUCKET_URL}/files/assets/img/FONDO_CONTICLUB_OP2.png)`
+            }}
           >
             <Switch>{this.getRoutes(defaultRoutes)}</Switch>
             <Footer />

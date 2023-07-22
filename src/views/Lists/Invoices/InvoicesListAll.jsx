@@ -23,7 +23,7 @@ import Button from "components/CustomButtons/Button.jsx";
 import * as invoiceActions from "../../../actions/invoiceActions";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 const styles = {
   cardIconTitle: {
@@ -64,7 +64,7 @@ class InvoicesListAll extends React.Component {
           totalPoints: totalPoints,
           image: (
             <a
-              href={SERVER_URL + invoice.image}
+              href={BUCKET_URL + invoice.image}
               rel="noopener noreferrer"
               target="_blank"
             >

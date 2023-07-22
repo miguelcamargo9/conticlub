@@ -1,10 +1,10 @@
 import * as types from "./index";
 import { getSlideByPositionService } from "../services/slideService";
-import { SERVER_URL } from "../constants/server";
+import { BUCKET_URL } from "../constants/server";
 
 export const setSlidesUpData = dataSlide => {
   const paths = dataSlide.map(slide => {
-    return SERVER_URL + slide.path;
+    return BUCKET_URL + slide.path;
   });
   return {
     type: types.SET_SLIDES_UP,
@@ -17,7 +17,7 @@ export const setSlidesUpData = dataSlide => {
 
 export const setSlidesUpResponsiveData = dataSlide => {
   const paths = dataSlide.map(slide => {
-    return SERVER_URL + slide.path;
+    return BUCKET_URL + slide.path;
   });
   return {
     type: types.SET_SLIDES_UP_RESPONSIVE,
@@ -30,7 +30,7 @@ export const setSlidesUpResponsiveData = dataSlide => {
 
 export const setSlidesDownData = dataSlide => {
   const paths = dataSlide.map(slide => {
-    return SERVER_URL + slide.path;
+    return BUCKET_URL + slide.path;
   });
   return {
     type: types.SET_SLIDES_DOWN,
@@ -43,7 +43,7 @@ export const setSlidesDownData = dataSlide => {
 
 export const setSlidesDownResponsiveData = dataSlide => {
   const paths = dataSlide.map(slide => {
-    return SERVER_URL + slide.path;
+    return BUCKET_URL + slide.path;
   });
   return {
     type: types.SET_SLIDES_DOWN_RESPONSIVE,

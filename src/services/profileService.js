@@ -1,103 +1,127 @@
 import axios from "axios";
-
-import * as serviceConst from "./index";
+import { sessionService } from "redux-react-session";
 import { SERVER_URL } from "../constants/server";
 
 export const insertProfile = profileData => {
-  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/create`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/create`;
 
-  const headers = {
-    Authorization: serviceConst.AUTH
-  };
-  const dataProfile = {
-    name: profileData.name
-  };
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+      const dataProfile = {
+        name: profileData.name
+      };
 
-  return axios
-    .post(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
-    .then(response => {
-      return response;
+      return axios
+        .post(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const updateProfile = profileData => {
-  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/update/${
-    profileData.id
-  }`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/update/${
+        profileData.id
+      }`;
 
-  const headers = {
-    Authorization: serviceConst.AUTH
-  };
-  const dataProfile = {
-    name: profileData.name
-  };
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+      const dataProfile = {
+        name: profileData.name
+      };
 
-  return axios
-    .put(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
-    .then(response => {
-      return response;
+      return axios
+        .put(PROFILE_API_ENDPOINT, dataProfile, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const deleteProfileService = profileId => {
-  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/delete/${profileId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/delete/${profileId}`;
 
-  const dataProfile = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const dataProfile = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .delete(PROFILE_API_ENDPOINT, dataProfile)
-    .then(response => {
-      return response;
+      return axios
+        .delete(PROFILE_API_ENDPOINT, dataProfile)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getProfileById = profileId => {
-  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/get/${profileId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/get/${profileId}`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(PROFILE_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(PROFILE_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getProfiles = () => {
-  const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/all`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/all`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(PROFILE_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(PROFILE_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };

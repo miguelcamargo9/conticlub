@@ -30,7 +30,7 @@ import { getCategoriesService } from "../../../services/productCategoryService";
 
 // utils
 
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 const selectStyles = {
   container: (base, state) => ({
@@ -150,7 +150,7 @@ class productList extends React.Component {
     if (this.state.filteredProducts.length > 0) {
       gridData = this.state.filteredProducts.map((product, index) => {
         let hrefValue = "#" + index;
-        const path = SERVER_URL + product.image;
+        const path = BUCKET_URL + product.image;
         const imgElement = (
           <GridItem xs={12} sm={6} md={6} lg={3} key={index}>
             <Card product>

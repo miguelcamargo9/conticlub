@@ -7,7 +7,7 @@ export const getSubsidiariesService = () => {
 
   const data = {
     headers: {
-      Authorization: serviceConst.AUTH
+      Authorization: serviceConst.CLIENT_SECRET
     }
   };
 

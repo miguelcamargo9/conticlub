@@ -24,7 +24,7 @@ import Assignment from "@material-ui/icons/Assignment";
 import Remove from "@material-ui/icons/Remove";
 
 // utils
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 import {
   getSlideService,
@@ -198,7 +198,7 @@ class ListSlides extends React.Component {
 
     if (slides.length > 0) {
       tableData = slides.map(slide => {
-        const path = SERVER_URL + slide.path;
+        const path = BUCKET_URL + slide.path;
         const imgElement = (
           <img src={path} width="150px" height="80px" alt="imagenes slides" />
         );

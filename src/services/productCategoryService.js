@@ -1,102 +1,126 @@
 import axios from "axios";
-
-import * as serviceConst from "./index";
+import { sessionService } from "redux-react-session";
 import { SERVER_URL } from "../constants/server";
 
 export const getCategoriesService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/products/categories/all`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/products/categories/all`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const insertCategory = categoryData => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/category/create`;
-  const headers = {
-    Authorization: serviceConst.AUTH
-  };
-  const data = {
-    name: categoryData.categoryText
-  };
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/product/category/create`;
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+      const data = {
+        name: categoryData.categoryText
+      };
 
-  return axios
-    .post(LOGIN_API_ENDPOINT, data, { headers: headers })
-    .then(response => {
-      return response;
+      return axios
+        .post(API_ENDPOINT, data, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const updateCategory = categoryData => {
-  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/update/${
-    categoryData.id
-  }`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/update/${
+        categoryData.id
+      }`;
 
-  const headers = {
-    Authorization: serviceConst.AUTH
-  };
-  const dataCategory = {
-    name: categoryData.name
-  };
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`
+      };
+      const dataCategory = {
+        name: categoryData.name
+      };
 
-  return axios
-    .put(CATEGORY_API_ENDPOINT, dataCategory, { headers: headers })
-    .then(response => {
-      return response;
+      return axios
+        .put(CATEGORY_API_ENDPOINT, dataCategory, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const deleteProductCategoryService = categoryId => {
-  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/delete/${categoryId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/delete/${categoryId}`;
 
-  const dataCategory = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const dataCategory = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .delete(CATEGORY_API_ENDPOINT, dataCategory)
-    .then(response => {
-      return response;
+      return axios
+        .delete(CATEGORY_API_ENDPOINT, dataCategory)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getCategoryById = categoryId => {
-  const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/get/${categoryId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const CATEGORY_API_ENDPOINT = `${SERVER_URL}/api/product/category/get/${categoryId}`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(CATEGORY_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(CATEGORY_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };

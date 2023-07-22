@@ -1,113 +1,128 @@
 import axios from "axios";
-
+import { sessionService } from "redux-react-session";
 import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const userService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/all`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/users/all`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getUserByIdService = userId => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/getuser/${userId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/users/getuser/${userId}`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const updateUserService = request => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/update/${request.id}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/users/update/${request.id}`;
 
-  let formData = new FormData();
+      let formData = new FormData();
 
-  const headers = {
-    Authorization: serviceConst.AUTH,
-    "Content-Type": "application/x-www-form-urlencoded"
-  };
-
-  var finalData = {};
-  const data = {
-    name: request.name,
-    email: request.email,
-    phone: request.phone,
-    points: request.points,
-    state: request.state,
-    profiles_id: request.profiles_id
-  };
-
-  if (request.password) {
-    if (request.subsidiary_id) {
-      finalData = {
-        ...data,
-        password: request.password,
-        subsidiary_id: request.subsidiary_id
+      const headers = {
+        Authorization: `Bearer ${currentSession.access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded"
       };
-    } else {
-      finalData = {
-        ...data,
-        password: request.password
+
+      var finalData = {};
+      const data = {
+        name: request.name,
+        email: request.email,
+        phone: request.phone,
+        points: request.points,
+        state: request.state,
+        profiles_id: request.profiles_id
       };
-    }
-  } else {
-    if (request.subsidiary_id) {
-      finalData = {
-        ...data,
-        subsidiary_id: request.subsidiary_id
-      };
-    } else {
-      finalData = data;
-    }
-  }
 
-  formData.append("data", JSON.stringify(finalData));
+      if (request.password) {
+        if (request.subsidiary_id) {
+          finalData = {
+            ...data,
+            password: request.password,
+            subsidiary_id: request.subsidiary_id
+          };
+        } else {
+          finalData = {
+            ...data,
+            password: request.password
+          };
+        }
+      } else {
+        if (request.subsidiary_id) {
+          finalData = {
+            ...data,
+            subsidiary_id: request.subsidiary_id
+          };
+        } else {
+          finalData = data;
+        }
+      }
 
-  if (request.image) {
-    formData.append("image", request.image, request.image.name);
-  }
+      formData.append("data", JSON.stringify(finalData));
 
-  return axios
-    .post(LOGIN_API_ENDPOINT, formData, { headers: headers })
-    .then(response => {
-      return response;
+      if (request.image) {
+        formData.append("image", request.image, request.image.name);
+      }
+
+      return axios
+        .post(API_ENDPOINT, formData, { headers: headers })
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const createUserService = request => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/create`;
+  const API_ENDPOINT = `${SERVER_URL}/api/users/create`;
 
   let formData = new FormData();
 
   const headers = {
-    Authorization: serviceConst.AUTH,
+    client_id: serviceConst.CLIENT_SECRET,
     "Content-Type": "application/x-www-form-urlencoded"
   };
   const data = {
@@ -126,7 +141,7 @@ export const createUserService = request => {
   }
 
   return axios
-    .post(LOGIN_API_ENDPOINT, formData, { headers: headers })
+    .post(API_ENDPOINT, formData, { headers: headers })
     .then(response => {
       return response;
     })
@@ -136,58 +151,73 @@ export const createUserService = request => {
 };
 
 export const getInvoiceHistoryByUserService = userId => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/users/historyinvoice/${userId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/users/historyinvoice/${userId}`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getRedeemListService = () => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/all`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/all`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
 
 export const getRedeemListByUserIdService = userId => {
-  const LOGIN_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/getbyuser/${userId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/getbyuser/${userId}`;
 
-  const data = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(LOGIN_API_ENDPOINT, data)
-    .then(response => {
-      return response;
+      return axios
+        .get(API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };

@@ -36,7 +36,7 @@ import { getCategoriesService } from "../../../services/productCategoryService";
 import { deleteProductService } from "../../../services/productService";
 
 // utils
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 const productListAdminStyles = {
   ...sweetAlertStyle,
@@ -256,7 +256,7 @@ class productListAdmin extends React.Component {
       gridData = this.state.filteredProducts.map((picture, index) => {
         let hrefValue = "#" + index;
         const path =
-          SERVER_URL +
+          BUCKET_URL +
           decodeURIComponent((picture.image + "").replace(/\+/g, "%20"));
 
         // const path = picture.image;
@@ -367,7 +367,7 @@ class productListAdmin extends React.Component {
         {this.state.alert}
         <GridContainer justify="space-between">
           <GridItem xs={12} sm={2}>
-            <h4>Lista de Productos</h4>
+            <h4>Lista de Productos MIEL</h4>
           </GridItem>
           <GridItem xs={12} sm={4}>
             <CustomInput

@@ -1,7 +1,5 @@
 import axios from "axios";
 import { sessionService } from "redux-react-session";
-
-import * as serviceConst from "./index";
 import { SERVER_URL } from "../constants/server";
 
 export const approveRedeemService = dataRedeem => {
@@ -90,20 +88,25 @@ export const rejectRedeemService = dataRedeem => {
 };
 
 export const getRedeemByIdService = redeemId => {
-  const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/get/${redeemId}`;
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/applyfor/get/${redeemId}`;
 
-  const dataRedeem = {
-    headers: {
-      Authorization: serviceConst.AUTH
-    }
-  };
+      const dataRedeem = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
 
-  return axios
-    .get(REDEEM_API_ENDPOINT, dataRedeem)
-    .then(response => {
-      return response;
+      return axios
+        .get(REDEEM_API_ENDPOINT, dataRedeem)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .catch(err => console.log(err));
 };
