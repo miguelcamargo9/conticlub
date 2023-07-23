@@ -16,7 +16,7 @@ import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
+import { getAllRoutes } from "routes.js";
 
 import rtlStyle from "assets/jss/material-dashboard-pro-react/layouts/rtlStyle.jsx";
 
@@ -33,7 +33,8 @@ class RTL extends React.Component {
     color: "blue",
     bgColor: "black",
     hasImage: true,
-    fixedClasses: "dropdown"
+    fixedClasses: "dropdown",
+    routes: []
   };
   handleImageClick = image => {
     this.setState({ image: image });
@@ -61,6 +62,11 @@ class RTL extends React.Component {
         suppressScrollY: false
       });
     }
+    getAllRoutes()
+      .then(routes => {
+        this.setState({ routes });
+      })
+      .catch(err => console.log(err));
   }
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
@@ -126,7 +132,7 @@ class RTL extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          routes={routes}
+          routes={this.state.routes}
           logoText={"توقيت الإبداعية"}
           logo={logo}
           image={this.state.image}
@@ -144,11 +150,13 @@ class RTL extends React.Component {
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
             handleDrawerToggle={this.handleDrawerToggle}
-            brandText={this.getActiveRoute(routes)}
+            brandText={this.getActiveRoute(this.state.routes)}
             {...rest}
           />
           <div className={classes.content}>
-            <div className={classes.container}>{this.getRoutes(routes)}</div>
+            <div className={classes.container}>
+              {this.getRoutes(this.state.routes)}
+            </div>
           </div>
           <Footer fluid rtlActive />
           <FixedPlugin

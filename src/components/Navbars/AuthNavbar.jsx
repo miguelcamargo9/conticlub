@@ -14,12 +14,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
 // @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
 import Menu from "@material-ui/icons/Menu";
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import Fingerprint from "@material-ui/icons/Fingerprint";
-import LockOpen from "@material-ui/icons/LockOpen";
-import MonetizationOn from "@material-ui/icons/MonetizationOn";
+import Restore from "@material-ui/icons/Restore";
 
 // core components
 import Button from "components/CustomButtons/Button";
@@ -53,25 +51,15 @@ class AuthNavbar extends React.Component {
     var list = (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
-          <NavLink to={"/admin/dashboard"} className={classes.navLink}>
-            <Dashboard className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Dashboard"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        <ListItem className={classes.listItem}>
           <NavLink
-            to={"/auth/pricing-page"}
+            to={"/auth/recovery-pass"}
             className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute("/auth/pricing-page")
+              [classes.navLinkActive]: this.activeRoute("/auth/recovery-pass")
             })}
           >
-            <MonetizationOn className={classes.listItemIcon} />
+            <Restore className={classes.listItemIcon} />
             <ListItemText
-              primary={"Pricing"}
+              primary={"Recuperar Contraseña"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -86,7 +74,7 @@ class AuthNavbar extends React.Component {
           >
             <PersonAdd className={classes.listItemIcon} />
             <ListItemText
-              primary={"Register"}
+              primary={"Registrarse"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -101,24 +89,7 @@ class AuthNavbar extends React.Component {
           >
             <Fingerprint className={classes.listItemIcon} />
             <ListItemText
-              primary={"Login"}
-              disableTypography={true}
-              className={classes.listItemText}
-            />
-          </NavLink>
-        </ListItem>
-        <ListItem className={classes.listItem}>
-          <NavLink
-            to={"/auth/lock-screen-page"}
-            className={cx(classes.navLink, {
-              [classes.navLinkActive]: this.activeRoute(
-                "/auth/lock-screen-page"
-              )
-            })}
-          >
-            <LockOpen className={classes.listItemIcon} />
-            <ListItemText
-              primary={"Lock"}
+              primary={"Iniciar Sesión"}
               disableTypography={true}
               className={classes.listItemText}
             />
@@ -139,7 +110,7 @@ class AuthNavbar extends React.Component {
           <Hidden mdUp>
             <div className={classes.flex}>
               <Button href="#" className={classes.title} color="transparent">
-                MD Pro React
+                {brandText}
               </Button>
             </div>
           </Hidden>

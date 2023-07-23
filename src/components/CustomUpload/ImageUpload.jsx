@@ -11,14 +11,25 @@ import defaultAvatar from "assets/img/placeholder.jpg";
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
+    const defaultImageLoad =
+      this.props.imagePreview !== "" ? this.props.imagePreview : defaultImage;
     this.state = {
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad
     };
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.imagePreview !== this.props.imagePreview) {
+      const defaultImageLoad =
+        this.props.imagePreview !== "" ? this.props.imagePreview : defaultImage;
+      this.setState({
+        imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad
+      });
+    }
   }
   handleImageChange(e) {
     e.preventDefault();
@@ -29,6 +40,7 @@ class ImageUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result
       });
+      this.props.handleChangeImage(this.state.file);
     };
     reader.readAsDataURL(file);
   }
@@ -47,13 +59,17 @@ class ImageUpload extends React.Component {
       imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
     });
     this.refs.fileInput.value = null;
+    this.props.handleRemoveImage();
   }
   render() {
     var {
       avatar,
       addButtonProps,
       changeButtonProps,
-      removeButtonProps
+      removeButtonProps,
+      uploadButtonText,
+      changeButtonText,
+      removeButtonText
     } = this.props;
     return (
       <div className="fileinput text-center">
@@ -64,19 +80,19 @@ class ImageUpload extends React.Component {
         <div>
           {this.state.file === null ? (
             <Button {...addButtonProps} onClick={() => this.handleClick()}>
-              {avatar ? "Add Photo" : "Select image"}
+              {avatar ? "Add Photo" : uploadButtonText}
             </Button>
           ) : (
             <span>
               <Button {...changeButtonProps} onClick={() => this.handleClick()}>
-                Change
+                {changeButtonText}
               </Button>
               {avatar ? <br /> : null}
               <Button
                 {...removeButtonProps}
                 onClick={() => this.handleRemove()}
               >
-                <i className="fas fa-times" /> Remove
+                <i className="fas fa-times" /> {removeButtonText}
               </Button>
             </span>
           )}
@@ -86,11 +102,22 @@ class ImageUpload extends React.Component {
   }
 }
 
+ImageUpload.defaultProps = {
+  uploadButtonText: "Select Image",
+  changeButtonText: "Change",
+  removeButtonText: "Remove",
+  imagePreview: ""
+};
+
 ImageUpload.propTypes = {
   avatar: PropTypes.bool,
   addButtonProps: PropTypes.object,
   changeButtonProps: PropTypes.object,
-  removeButtonProps: PropTypes.object
+  removeButtonProps: PropTypes.object,
+  uploadButtonText: PropTypes.string,
+  changeButtonText: PropTypes.string,
+  removeButtonText: PropTypes.string,
+  imagePreview: PropTypes.string
 };
 
 export default ImageUpload;

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { sessionService } from "redux-react-session";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { NavLink } from "react-router-dom";
@@ -16,11 +17,12 @@ import Collapse from "@material-ui/core/Collapse";
 import Icon from "@material-ui/core/Icon";
 
 // core components
-import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.jsx";
+// import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.jsx";
 
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
-import avatar from "assets/img/faces/avatar.jpg";
+import defaultAvatar from "assets/img/default-avatar.png";
+import { BUCKET_URL } from "../../constants/server";
 
 var ps;
 
@@ -60,9 +62,18 @@ class Sidebar extends React.Component {
     this.state = {
       openAvatar: false,
       miniActive: true,
+      user: {},
       ...this.getCollapseStates(props.routes)
     };
   }
+  componentDidMount = () => {
+    sessionService
+      .loadUser()
+      .then(user => {
+        this.setState({ user });
+      })
+      .catch(err => console.log(err));
+  };
   // this creates the intial state of this component based on the collapse routes
   // that it gets through this.props.routes
   getCollapseStates = routes => {
@@ -106,6 +117,9 @@ class Sidebar extends React.Component {
     const { classes, color, rtlActive } = this.props;
     return routes.map((prop, key) => {
       if (prop.redirect) {
+        return null;
+      }
+      if (prop.invisible) {
         return null;
       }
       if (prop.collapse) {
@@ -346,6 +360,9 @@ class Sidebar extends React.Component {
       cx({
         [classes.photoRTL]: rtlActive
       });
+    const avatar = this.state.user.image
+      ? BUCKET_URL + decodeURIComponent(this.state.user.image + "")
+      : defaultAvatar;
     var user = (
       <div className={userWrapperClass}>
         <div className={photo}>
@@ -359,7 +376,7 @@ class Sidebar extends React.Component {
               onClick={() => this.openCollapse("openAvatar")}
             >
               <ListItemText
-                primary={rtlActive ? "تانيا أندرو" : "Tania Andrew"}
+                primary={this.state.user.name}
                 secondary={
                   <b
                     className={
@@ -379,16 +396,16 @@ class Sidebar extends React.Component {
               <List className={classes.list + " " + classes.collapseList}>
                 <ListItem className={classes.collapseItem}>
                   <NavLink
-                    to="#"
+                    to="/admin/profile-user"
                     className={
                       classes.itemLink + " " + classes.userCollapseLinks
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "مع" : "MP"}
+                      {rtlActive ? "MP" : "MP"}
                     </span>
                     <ListItemText
-                      primary={rtlActive ? "ملفي" : "My Profile"}
+                      primary={rtlActive ? "My Profile" : "Mi Perfil"}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -402,29 +419,10 @@ class Sidebar extends React.Component {
                     }
                   >
                     <span className={collapseItemMini}>
-                      {rtlActive ? "هوع" : "EP"}
+                      {rtlActive ? "PT" : "PTS"}
                     </span>
                     <ListItemText
-                      primary={
-                        rtlActive ? "تعديل الملف الشخصي" : "Edit Profile"
-                      }
-                      disableTypography={true}
-                      className={collapseItemText}
-                    />
-                  </NavLink>
-                </ListItem>
-                <ListItem className={classes.collapseItem}>
-                  <NavLink
-                    to="#"
-                    className={
-                      classes.itemLink + " " + classes.userCollapseLinks
-                    }
-                  >
-                    <span className={collapseItemMini}>
-                      {rtlActive ? "و" : "S"}
-                    </span>
-                    <ListItemText
-                      primary={rtlActive ? "إعدادات" : "Settings"}
+                      primary={rtlActive ? "Points" : this.props.points}
                       disableTypography={true}
                       className={collapseItemText}
                     />
@@ -464,12 +462,10 @@ class Sidebar extends React.Component {
       });
     var brand = (
       <div className={logoClasses}>
-        <a href="https://www.creative-tim.com" className={logoMini}>
+        <div className={logoMini}>
           <img src={logo} alt="logo" className={classes.img} />
-        </a>
-        <a href="https://www.creative-tim.com" className={logoNormal}>
-          {logoText}
-        </a>
+        </div>
+        <p className={logoNormal}>{logoText}</p>
       </div>
     );
     const drawerPaper =
@@ -508,7 +504,6 @@ class Sidebar extends React.Component {
             <SidebarWrapper
               className={sidebarWrapper}
               user={user}
-              headerLinks={<AdminNavbarLinks rtlActive={rtlActive} />}
               links={links}
             />
             {image !== undefined ? (

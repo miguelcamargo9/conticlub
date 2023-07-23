@@ -24,7 +24,8 @@ const footerStyle = {
     borderTop: "1px solid " + grayColor[15],
     padding: "15px 0",
     ...defaultFont,
-    zIndex: 4
+    zIndex: 4,
+    backgroundColor: "black"
   },
   container: {
     zIndex: 3,

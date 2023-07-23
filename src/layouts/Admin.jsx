@@ -2,6 +2,10 @@ import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { sessionService } from "redux-react-session";
+
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -13,32 +17,42 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+// import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
+import { getAllRoutes } from "routes.js";
 
 import appStyle from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.jsx";
 
 import image from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/logo-white.svg";
+import logo from "assets/img/isotipo_ico.png";
 
 var ps;
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this._isMounted = false;
     this.state = {
       mobileOpen: false,
       miniActive: false,
       image: image,
-      color: "blue",
+      color: "orange",
       bgColor: "black",
       hasImage: true,
-      fixedClasses: "dropdown"
+      fixedClasses: "dropdown",
+      routes: []
     };
     this.resizeFunction = this.resizeFunction.bind(this);
   }
   componentDidMount() {
+    this._isMounted = true;
+    sessionService
+      .loadSession()
+      .then(currentSession => {})
+      .catch(err => {
+        console.log(err);
+        this.props.history.push("/auth/logout-page");
+      });
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.refs.mainPanel, {
         suppressScrollX: true,
@@ -47,8 +61,15 @@ class Dashboard extends React.Component {
       document.body.style.overflow = "hidden";
     }
     window.addEventListener("resize", this.resizeFunction);
+    this._isMounted &&
+      getAllRoutes()
+        .then(routes => {
+          this._isMounted && this.setState({ routes });
+        })
+        .catch(err => console.log(err));
   }
   componentWillUnmount() {
+    this._isMounted = false;
     if (navigator.platform.indexOf("Win") > -1) {
       ps.destroy();
     }
@@ -93,8 +114,10 @@ class Dashboard extends React.Component {
           return collapseActiveRoute;
         }
       } else {
+        const path = routes[i].path.split("/", 3);
         if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          window.location.href.includes(`${routes[i].layout}/${path[1]}`) !==
+          false
         ) {
           return routes[i].name;
         }
@@ -141,8 +164,8 @@ class Dashboard extends React.Component {
     return (
       <div className={classes.wrapper}>
         <Sidebar
-          routes={routes}
-          logoText={"Creative Tim"}
+          routes={this.state.routes}
+          logoText={"Conticlub 2.0"}
           logo={logo}
           image={this.state.image}
           handleDrawerToggle={this.handleDrawerToggle}
@@ -150,13 +173,14 @@ class Dashboard extends React.Component {
           color={this.state.color}
           bgColor={this.state.bgColor}
           miniActive={this.state.miniActive}
+          points={this.props.points}
           {...rest}
         />
         <div className={mainPanel} ref="mainPanel">
           <AdminNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
-            brandText={this.getActiveRoute(routes)}
+            brandText={this.getActiveRoute(this.state.routes)}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
@@ -164,16 +188,16 @@ class Dashboard extends React.Component {
           {this.getRoute() ? (
             <div className={classes.content}>
               <div className={classes.container}>
-                <Switch>{this.getRoutes(routes)}</Switch>
+                <Switch>{this.getRoutes(this.state.routes)}</Switch>
               </div>
             </div>
           ) : (
             <div className={classes.map}>
-              <Switch>{this.getRoutes(routes)}</Switch>
+              <Switch>{this.getRoutes(this.state.routes)}</Switch>
             </div>
           )}
           {this.getRoute() ? <Footer fluid /> : null}
-          <FixedPlugin
+          {/* <FixedPlugin
             handleImageClick={this.handleImageClick}
             handleColorClick={this.handleColorClick}
             handleBgColorClick={this.handleBgColorClick}
@@ -185,7 +209,7 @@ class Dashboard extends React.Component {
             fixedClasses={this.state.fixedClasses}
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}
-          />
+          /> */}
         </div>
       </div>
     );
@@ -196,4 +220,18 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(appStyle)(Dashboard);
+function mapStateToProps({ localSession, session }) {
+  const points =
+    localSession.points === 0 ? session.user.points : localSession.points;
+  return {
+    points: points
+  };
+}
+
+export default compose(
+  withStyles(appStyle),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(Dashboard);

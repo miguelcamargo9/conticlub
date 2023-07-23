@@ -1,5 +1,7 @@
 import React from "react";
 
+import PropTypes from "prop-types";
+
 import defaultImage from "assets/img/default-avatar.png";
 
 class PictureUpload extends React.Component {
@@ -21,6 +23,7 @@ class PictureUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result
       });
+      this.props.handleChangeImage(this.state.file);
     };
     reader.readAsDataURL(file);
   }
@@ -41,10 +44,18 @@ class PictureUpload extends React.Component {
           />
           <input type="file" onChange={e => this.handleImageChange(e)} />
         </div>
-        <h6 className="description">Choose Picture</h6>
+        <h6 className="description">{this.props.labelText}</h6>
       </div>
     );
   }
 }
+
+PictureUpload.defaultProps = {
+  labelText: "Choose Picture"
+};
+
+PictureUpload.propTypes = {
+  labelText: PropTypes.string
+};
 
 export default PictureUpload;

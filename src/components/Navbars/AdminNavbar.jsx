@@ -14,7 +14,7 @@ import MoreVert from "@material-ui/icons/MoreVert";
 import ViewList from "@material-ui/icons/ViewList";
 
 // core components
-import AdminNavbarLinks from "./AdminNavbarLinks";
+// import AdminNavbarLinks from "./AdminNavbarLinks";
 import Button from "components/CustomButtons/Button.jsx";
 
 import adminNavbarStyle from "assets/jss/material-dashboard-pro-react/components/adminNavbarStyle.jsx";
@@ -62,9 +62,9 @@ function AdminNavbar({ ...props }) {
             {brandText}
           </Button>
         </div>
-        <Hidden smDown implementation="css">
+        {/* <Hidden smDown implementation="css">
           <AdminNavbarLinks rtlActive={rtlActive} />
-        </Hidden>
+        </Hidden> */}
         <Hidden mdUp implementation="css">
           <Button
             className={classes.appResponsive}

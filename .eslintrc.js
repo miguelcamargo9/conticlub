@@ -13,5 +13,20 @@ module.exports = {
     }
   },
   plugins: ["react"],
-  extends: ["eslint:recommended", "plugin:prettier/recommended"]
+  extends: [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended"
+  ],
+  rules: {
+    "no-console": "off"
+  },
+  settings: {
+    react: {
+      createClass: "createReactClass",
+      pragma: "React",
+      version: "detect",
+      flowVersion: "0.53"
+    }
+  }
 };

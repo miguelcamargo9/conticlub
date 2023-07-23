@@ -4,3 +4,5 @@ __MACOSX/
 documentation/
 CHANGELOG.md
 ISSUE_TEMPLATE.md
+build/
+.env
