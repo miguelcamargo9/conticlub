@@ -122,7 +122,7 @@ export const createUserService = request => {
   let formData = new FormData();
 
   const headers = {
-    client_id: serviceConst.CLIENT_SECRET,
+    Authorization: serviceConst.CLIENT_SECRET,
     "Content-Type": "application/x-www-form-urlencoded"
   };
   const data = {

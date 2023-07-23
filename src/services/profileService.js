@@ -125,3 +125,27 @@ export const getProfiles = () => {
     })
     .catch(err => console.log(err));
 };
+
+export const getSellersProfiles = () => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/sellers`;
+
+      const data = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
+
+      return axios
+        .get(PROFILE_API_ENDPOINT, data)
+        .then(response => {
+          return response;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};

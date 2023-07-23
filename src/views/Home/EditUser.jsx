@@ -27,7 +27,7 @@ import {
   updateUserService,
   getUserByIdService
 } from "../../services/userService";
-import { SERVER_URL } from "../../constants/server";
+import { BUCKET_URL } from "../../constants/server";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
@@ -152,8 +152,10 @@ class EditUser extends React.Component {
     );
 
     const avatar = user.image
-      ? SERVER_URL + decodeURIComponent(user.image + "")
+      ? BUCKET_URL + decodeURIComponent(user.image + "")
       : defaultAvatar;
+
+      console.log("avatar", avatar);
     return (
       <div>
         <GridContainer>

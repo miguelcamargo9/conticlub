@@ -22,7 +22,7 @@ import Icon from "@material-ui/core/Icon";
 import sidebarStyle from "assets/jss/material-dashboard-pro-react/components/sidebarStyle.jsx";
 
 import defaultAvatar from "assets/img/default-avatar.png";
-import { SERVER_URL } from "../../constants/server";
+import { BUCKET_URL } from "../../constants/server";
 
 var ps;
 
@@ -361,7 +361,7 @@ class Sidebar extends React.Component {
         [classes.photoRTL]: rtlActive
       });
     const avatar = this.state.user.image
-      ? SERVER_URL + decodeURIComponent(this.state.user.image + "")
+      ? BUCKET_URL + decodeURIComponent(this.state.user.image + "")
       : defaultAvatar;
     var user = (
       <div className={userWrapperClass}>

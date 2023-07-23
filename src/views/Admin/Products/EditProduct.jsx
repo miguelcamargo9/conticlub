@@ -31,7 +31,7 @@ import {
 } from "../../../services/productService";
 
 // utils
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 class EditProduct extends React.Component {
   constructor(props) {
@@ -231,7 +231,7 @@ class EditProduct extends React.Component {
     );
 
     const path =
-      SERVER_URL +
+      BUCKET_URL +
       decodeURIComponent((product.image + "").replace(/\+/g, "%20"));
 
     return (

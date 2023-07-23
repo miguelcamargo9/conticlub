@@ -12,18 +12,21 @@ import CardBody from "components/Card/CardBody.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle";
 
-import wheel1 from "assets/img/llantascontinental/contisportcontact5.png";
-import wheel2 from "assets/img/llantascontinental/crosscontactatr.png";
-import wheel3 from "assets/img/llantascontinental/crosscontactat50.png";
-import wheel4 from "assets/img/llantascontinental/crosscontactuhp.png";
-import wheel5 from "assets/img/llantascontinental/grabber_at2.png";
-import wheel6 from "assets/img/llantascontinental/altimax_xp7.png";
-import wheel7 from "assets/img/llantascontinental/g_max_rs.png";
-import wheel8 from "assets/img/llantascontinental/grabber_x3.png";
+import { BUCKET_URL } from "../../../constants/server";
 
 class WheelsList extends React.Component {
   render() {
     const { classes } = this.props;
+
+    const wheel1 = `${BUCKET_URL}/files/assets/img/llantascontinental/contisportcontact5.png`;
+    const wheel2 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactatr.png`;
+    const wheel3 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactat50.png`;
+    const wheel4 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactuhp.png`;
+    const wheel5 = `${BUCKET_URL}/files/assets/img/llantascontinental/grabber_at2.png`;
+    const wheel6 = `${BUCKET_URL}/files/assets/img/llantascontinental/altimax_xp7.png`;
+    const wheel7 = `${BUCKET_URL}/files/assets/img/llantascontinental/g_max_rs.png`;
+    const wheel8 = `${BUCKET_URL}/files/assets/img/llantascontinental/grabber_x3.png`;
+
     return (
       <div>
         <GridContainer justify="space-between">

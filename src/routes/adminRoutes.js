@@ -22,6 +22,11 @@ import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
 import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
 import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 
+//Subsidiaries
+import CreateSubsidiary from "../views/Admin/Subsidiaries/CreateSubsidiary.jsx";
+import ListSubsidiaries from "../views/Admin/Subsidiaries/ListSubsidiaries.jsx";
+import EditSubsidiary from "../views/Admin/Subsidiaries/EditSubsidiary.jsx";
+
 //Invoices
 import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
 import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
@@ -37,6 +42,7 @@ import CardTravel from "@material-ui/icons/CardTravel";
 import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
 import Slideshow from "@material-ui/icons/Slideshow";
+import LocalMall from "@material-ui/icons/LocalMall";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -102,6 +108,43 @@ export const adminRoutes = [
         component: EditUser,
         layout: "/admin",
         invisible: true
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Sucursales",
+    rtlName: "Sucursales",
+    icon: LocalMall,
+    state: "pageSubsidiariesCollapse",
+    views: [
+      {
+        path: "/create-subsidiary",
+        name: "Crear Sucursal",
+        rtlName: "Create Subsidiary",
+        mini: "CS",
+        rtlMini: "CS",
+        component: CreateSubsidiary,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-subsidiary/:id",
+        name: "Editar Subsidiaria",
+        rtlName: "Edit Sucursal",
+        mini: "EC",
+        rtlMini: "EC",
+        component: EditSubsidiary,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-subsidiaries",
+        name: "Lista Sucursales",
+        rtlName: "Subsidiaries List",
+        mini: "LS",
+        rtlMini: "LS",
+        component: ListSubsidiaries,
+        layout: "/admin"
       }
     ]
   },

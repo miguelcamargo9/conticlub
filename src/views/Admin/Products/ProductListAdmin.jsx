@@ -367,7 +367,7 @@ class productListAdmin extends React.Component {
         {this.state.alert}
         <GridContainer justify="space-between">
           <GridItem xs={12} sm={2}>
-            <h4>Lista de Productos MIEL</h4>
+            <h4>Lista de Productos</h4>
           </GridItem>
           <GridItem xs={12} sm={4}>
             <CustomInput

@@ -23,7 +23,7 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import userProfileStyles from "assets/jss/material-dashboard-pro-react/views/userProfileStyles.jsx";
 
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 import {
   getProductByIdService,
@@ -162,7 +162,7 @@ class RedeemProduct extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={6}>
                     <img
-                      src={SERVER_URL + product.image}
+                      src={BUCKET_URL + product.image}
                       alt={product.name}
                       width="70%"
                     />

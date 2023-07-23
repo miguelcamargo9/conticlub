@@ -29,7 +29,7 @@ import {
 } from "../../../services/userService";
 import { getProfiles } from "../../../services/profileService";
 import { getSubsidiariesService } from "../../../services/subsidiaryService";
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
@@ -339,8 +339,10 @@ class EditUser extends React.Component {
       { label: "Inactivo", value: "0" }
     ];
     const avatar = user.image
-      ? SERVER_URL + decodeURIComponent(user.image + "")
+      ? BUCKET_URL + decodeURIComponent(user.image + "")
       : defaultAvatar;
+
+    console.log("avatar", avatar);
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
