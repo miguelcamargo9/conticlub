@@ -37,7 +37,7 @@ import {
 } from "../../../services/productRedeemService";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
-import { SERVER_URL } from "../../../constants/server";
+import { BUCKET_URL } from "../../../constants/server";
 
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
@@ -120,7 +120,7 @@ class ConfirmRedeemForm extends React.Component {
           totalUsed: totalPoints - totalPointsUsed,
           image: (
             <a
-              href={SERVER_URL + invoice.image}
+              href={BUCKET_URL + invoice.image}
               rel="noopener noreferrer"
               target="_blank"
             >

@@ -19,10 +19,10 @@ import * as slideActions from "../../actions/slideActions";
 
 class Home extends React.Component {
   componentDidMount() {
-    this.props.SlideActions.getSlidesAction("down", 0);
-    this.props.SlideActions.getSlidesAction("down", 1);
-    this.props.SlideActions.getSlidesAction("up", 0);
-    this.props.SlideActions.getSlidesAction("up", 1);
+    this.props.slideActions.getSlidesAction("down", 0);
+    this.props.slideActions.getSlidesAction("down", 1);
+    this.props.slideActions.getSlidesAction("up", 0);
+    this.props.slideActions.getSlidesAction("up", 1);
   }
   render() {
     return (
@@ -68,7 +68,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    SlideActions: bindActionCreators(slideActions, dispatch)
+    slideActions: bindActionCreators(slideActions, dispatch)
   };
 }
 

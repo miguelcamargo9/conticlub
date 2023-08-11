@@ -19,7 +19,7 @@ import CardAvatar from "components/Card/CardAvatar.jsx";
 import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 
 import * as userActions from "../../actions/userActions";
-import { SERVER_URL } from "../../constants/server";
+import { BUCKET_URL } from "../../constants/server";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
@@ -65,7 +65,7 @@ class UserProfile extends React.Component {
     const { classes } = this.props;
     const { user } = this.state;
     const avatar = user.image
-      ? SERVER_URL + decodeURIComponent(user.image + "")
+      ? BUCKET_URL + decodeURIComponent(user.image + "")
       : defaultAvatar;
     return (
       <div>
