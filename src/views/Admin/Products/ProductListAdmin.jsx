@@ -106,7 +106,7 @@ class productListAdmin extends React.Component {
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Esta seguro que desea borrar este Producto?"
+          title="Está seguro que desea borrar este Producto?"
           onConfirm={() => this.deleteProduct(productId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={

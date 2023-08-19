@@ -61,7 +61,7 @@ class profilesList extends React.Component {
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Esta seguro que desea borrar este perfil?"
+          title="Está seguro que desea borrar este perfil?"
           onConfirm={() => this.deleteProfile(profileId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={

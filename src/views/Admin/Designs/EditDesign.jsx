@@ -24,77 +24,51 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
 import {
-  getSubsidiaryById,
-  updateSubsidiary
-} from "../../../services/subsidiaryService";
-import { getCities } from "../../../services/cityService";
-import { getSellersProfiles } from "../../../services/profileService";
+  getDesignById,
+  updateDesignService
+} from "../../../services/designService";
+import { getBrands } from "../../../services/brandService";
 
-class EditSubsidiary extends React.Component {
+class EditDesign extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subsidiaryName: "",
-      subsidiaryNameState: "success",
-      city: "",
-      cityState: "success",
-      cities: [],
-      profile: "",
-      profileState: "success",
-      profiles: []
+      designName: "",
+      designNameState: "success",
+      brand: "",
+      brandState: "success",
+      brands: []
     };
     this.isValidated = this.isValidated.bind(this);
   }
 
   componentDidMount() {
-    this.loadCities();
-    this.loadProfiles();
-    getSubsidiaryById(this.props.match.params.id)
-      .then(responeSubsidiary => {
-        const city = responeSubsidiary.data.city;
-        const selectCity = {
-          ...city,
-          value: city.id,
-          label: city.name
-        };
-        const profile = responeSubsidiary.data.profile;
-        const selectProfile = {
-          ...profile,
-          value: profile.id,
-          label: profile.name
+    this.loadBrands();
+    getDesignById(this.props.match.params.id)
+      .then(responeDesign => {
+        const brand = responeDesign.data.brand;
+        const selectBrand = {
+          ...brand,
+          value: brand.id,
+          label: brand.name
         };
         this.setState({
-          subsidiaryName: responeSubsidiary.data.name,
-          selectCity: selectCity,
-          selectProfile: selectProfile
+          designName: responeDesign.data.name,
+          selectBrand: selectBrand
         });
       })
       .catch(e => console.log("error", e));
   }
 
-  async loadCities() {
+  async loadBrands() {
     try {
-      const cityInfo = await getCities();
-      const citySelectData = cityInfo.data.map(city => {
-        city.value = city.id;
-        city.label = city.name;
-        return city;
+      const brandInfo = await getBrands();
+      const brandSelectData = brandInfo.data.map(brand => {
+        brand.value = brand.id;
+        brand.label = brand.name;
+        return brand;
       });
-      this.setState({ cities: citySelectData });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async loadProfiles() {
-    try {
-      const profileInfo = await getSellersProfiles();
-      const profileSelectData = profileInfo.data.map(profile => {
-        profile.value = profile.id;
-        profile.label = profile.name;
-        return profile;
-      });
-      this.setState({ profiles: profileSelectData });
+      this.setState({ brands: brandSelectData });
     } catch (error) {
       console.log(error);
     }
@@ -102,26 +76,23 @@ class EditSubsidiary extends React.Component {
 
   handleSubmit() {
     if (this.isValidated()) {
-      const dataSubsidiary = {
+      const dataDesign = {
         id: this.props.match.params.id,
-        subsidiaryName: this.state.subsidiaryName,
-        cityId: this.state.selectCity.id,
-        profileId: this.state.selectProfile.id
+        name: this.state.designName,
+        brand_id: this.state.selectBrand.id
       };
-      updateSubsidiary(dataSubsidiary).then(responseSaveSubsidiary => {
-        if (responseSaveSubsidiary.data.message === "success") {
+      updateDesignService(dataDesign).then(responseSaveDesign => {
+        if (responseSaveDesign.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Sucursal ${
-              this.state.subsidiaryName
-            } editada con éxito`
+            successMessage: `Diseño ${this.state.designName} editado con éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/list-subsidiaries`);
+            this.props.history.push(`/admin/list-designs`);
           }, 3000);
         } else {
           this.setState({
-            messageError: responseSaveSubsidiary.data.message,
+            messageError: responseSaveDesign.data.message,
             successMessage: null
           });
         }
@@ -155,27 +126,23 @@ class EditSubsidiary extends React.Component {
 
   isValidated() {
     if (
-      this.state.subsidiaryNameState === "success" &&
-      this.state.cityState === "success" &&
-      this.state.profileState === "success"
+      this.state.designNameState === "success" &&
+      this.state.brandState === "success"
     ) {
       return true;
     } else {
-      if (this.state.subsidiaryNameState !== "success") {
-        this.setState({ subsidiaryNameState: "error" });
+      if (this.state.designNameState !== "success") {
+        this.setState({ designNameState: "error" });
       }
-      if (this.state.cityState !== "success") {
-        this.setState({ cityState: "error" });
-      }
-      if (this.state.profileState !== "success") {
-        this.setState({ profileState: "error" });
+      if (this.state.brandState !== "success") {
+        this.setState({ brandState: "error" });
       }
     }
     return false;
   }
 
-  handleChangeCity = city => {
-    this.setState({ selectCity: city, cityState: "success" });
+  handleChangeBrand = brand => {
+    this.setState({ selectBrand: brand, brandState: "success" });
   };
 
   handleChangeProfile = profile => {
@@ -185,7 +152,7 @@ class EditSubsidiary extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage, subsidiaryName } = this.state;
+    const { messageError, successMessage, designName } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -215,7 +182,7 @@ class EditSubsidiary extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Editar Sucursal</h4>
+                <h4 className={classes.cardTitle}>Editar Diseño</h4>
               </CardText>
             </CardHeader>
             <CardBody>
@@ -223,24 +190,24 @@ class EditSubsidiary extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={4}>
                     <CustomInput
-                      success={this.state.subsidiaryNameState === "success"}
-                      error={this.state.subsidiaryNameState === "error"}
+                      success={this.state.designNameState === "success"}
+                      error={this.state.designNameState === "error"}
                       labelText={
                         <span>
-                          Sucursal <small>(requerido)</small>
+                          Diseño <small>(requerido)</small>
                         </span>
                       }
-                      id="subsidiaryName"
+                      id="designName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: subsidiaryName,
+                        value: designName,
                         onChange: event =>
-                          this.change(event, "subsidiaryName", "length", 3),
+                          this.change(event, "designName", "length", 3),
                         type: "text",
                         endAdornment:
-                          this.state.subsidiaryNameState === "error" ? (
+                          this.state.designNameState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -258,41 +225,17 @@ class EditSubsidiary extends React.Component {
                     }}
                   >
                     <Select
-                      value={this.state.selectCity}
+                      value={this.state.selectBrand}
                       onChange={selectedOption =>
-                        this.handleChangeCity(selectedOption)
+                        this.handleChangeBrand(selectedOption)
                       }
-                      options={this.state.cities}
-                      placeholder={"Seleccione una ciudad"}
+                      options={this.state.brands}
+                      placeholder={"Seleccione una marca"}
                     />
                     <br />
-                    {this.state.cityState === "error" && (
+                    {this.state.brandState === "error" && (
                       <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Una Ciudad
-                        <Close />
-                      </InputAdornment>
-                    )}
-                    <br />
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={4}
-                    style={{
-                      marginTop: "20px"
-                    }}
-                  >
-                    <Select
-                      value={this.state.selectProfile}
-                      onChange={selectedOption =>
-                        this.handleChangeProfile(selectedOption)
-                      }
-                      options={this.state.profiles}
-                      placeholder={"Seleccione un perfil"}
-                    />
-                    <br />
-                    {this.state.profileState === "error" && (
-                      <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Un Perfil
+                        Seleccione Una Marca
                         <Close />
                       </InputAdornment>
                     )}
@@ -313,4 +256,4 @@ class EditSubsidiary extends React.Component {
   }
 }
 
-export default withStyles(validationFormsStyle)(EditSubsidiary);
+export default withStyles(validationFormsStyle)(EditDesign);

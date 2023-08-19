@@ -55,7 +55,7 @@ class ListSlides extends React.Component {
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Esta seguro que desea borrar este slide?"
+          title="Está seguro que desea borrar este slide?"
           onConfirm={() => this.deleteSlide(slideId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={

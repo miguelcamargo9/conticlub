@@ -60,14 +60,14 @@ class ListSubsidiaries extends React.Component {
       .catch();
   }
 
-  warningWithConfirmMessage(categoryId) {
+  warningWithConfirmMessage(subsidiaryId) {
     this.setState({
       alert: (
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Esta seguro que desea borrar esta Categoría?"
-          onConfirm={() => this.deleteProductCategory(categoryId)}
+          title="Está seguro que desea borrar esta Sucursal?"
+          onConfirm={() => this.deleteSubsidiary(subsidiaryId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
@@ -85,7 +85,7 @@ class ListSubsidiaries extends React.Component {
     });
   }
 
-  successDelete(categoryId) {
+  successDelete(subsidiaryId) {
     this.setState({
       alert: (
         <SweetAlert
@@ -97,7 +97,7 @@ class ListSubsidiaries extends React.Component {
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          La categoría con ID: {categoryId} ha sido eliminada.
+          La sucursal con ID: {subsidiaryId} ha sido eliminada.
         </SweetAlert>
       )
     });
@@ -121,28 +121,26 @@ class ListSubsidiaries extends React.Component {
     });
   }
 
-  deleteProductCategory(categoryId) {
-    deleteSubsidiaryService(categoryId)
-      .then(productCategoryInfo => {
-        if (productCategoryInfo.data.message === "success") {
-          const productCategories = this.state.productCategories;
-          productCategories.find((productCategory, i) => {
-            if (productCategory.id === categoryId) {
-              productCategories.splice(i, 1);
+  deleteSubsidiary(subsidiaryId) {
+    deleteSubsidiaryService(subsidiaryId)
+      .then(subsidiaryInfo => {
+        if (subsidiaryInfo.data.message === "success") {
+          const subsidiaries = this.state.subsidiaries;
+          subsidiaries.find((subsidiary, i) => {
+            if (subsidiary.id === subsidiaryId) {
+              subsidiaries.splice(i, 1);
               return true;
             }
             return false;
           });
-          this.setState({ productCategories: productCategories });
-          this.successDelete(categoryId);
+          this.setState({ subsidiaries: subsidiaries });
+          this.successDelete(subsidiaryId);
         } else {
-          return this.cancelDetele(productCategoryInfo.data.detail);
+          return this.cancelDetele(subsidiaryInfo.data.detail);
         }
       })
       .catch(e => {
-        console.log(
-          "Error eliminando categoria de producto con id: categoryId"
-        );
+        console.log(`Error eliminando sucursal con id: ${subsidiaryId}`, e);
       });
   }
 
@@ -228,7 +226,7 @@ class ListSubsidiaries extends React.Component {
                   ofText="de"
                   rowsText="filas"
                   loadingText="Cargando..."
-                  noDataText="No hay sucurales registradas"
+                  noDataText="No hay sucursales registradas"
                   data={dataTable}
                   filterable
                   columns={[
