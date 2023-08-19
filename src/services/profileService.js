@@ -126,26 +126,24 @@ export const getProfiles = () => {
     .catch(err => console.log(err));
 };
 
-export const getSellersProfiles = () => {
-  return sessionService
-    .loadSession()
-    .then(currentSession => {
-      const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/sellers`;
+export const getSellersProfiles = async () => {
+  try {
+    const currentSession = await sessionService.loadSession();
+    const PROFILE_API_ENDPOINT = `${SERVER_URL}/api/profiles/sellers`;
 
-      const data = {
-        headers: {
-          Authorization: `Bearer ${currentSession.access_token}`
-        }
-      };
+    const data = {
+      headers: {
+        Authorization: `Bearer ${currentSession.access_token}`
+      }
+    };
 
-      return axios
-        .get(PROFILE_API_ENDPOINT, data)
-        .then(response => {
-          return response;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    })
-    .catch(err => console.log(err));
+    try {
+      const response = await axios.get(PROFILE_API_ENDPOINT, data);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };

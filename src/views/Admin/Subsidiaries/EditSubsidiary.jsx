@@ -1,4 +1,5 @@
 import React from "react";
+import Select from "react-select";
 
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -23,54 +24,111 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
 import {
-  getCategoryById,
-  updateCategory
-} from "../../../services/productCategoryService";
+  getSubsidiaryById,
+  updateSubsidiary
+} from "../../../services/subsidiaryService";
+import { getCities } from "../../../services/cityService";
+import { getSellersProfiles } from "../../../services/profileService";
 
-class EditCategory extends React.Component {
+class EditSubsidiary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      categoryName: "",
-      categoryNameState: ""
+      subsidiaryName: "",
+      subsidiaryNameState: "success",
+      city: "",
+      cityState: "success",
+      cities: [],
+      profile: "",
+      profileState: "success",
+      profiles: []
     };
     this.isValidated = this.isValidated.bind(this);
   }
 
   componentDidMount() {
-    getCategoryById(this.props.match.params.id)
-      .then(responeProductCategory => {
-        this.setState({ categoryName: responeProductCategory.data.name });
+    this.loadCities();
+    this.loadProfiles();
+    getSubsidiaryById(this.props.match.params.id)
+      .then(responeSubsidiary => {
+        const city = responeSubsidiary.data.city;
+        const selectCity = {
+          ...city,
+          value: city.id,
+          label: city.name
+        };
+        const profile = responeSubsidiary.data.profile;
+        const selectProfile = {
+          ...profile,
+          value: profile.id,
+          label: profile.name
+        };
+        this.setState({
+          subsidiaryName: responeSubsidiary.data.name,
+          selectCity: selectCity,
+          selectProfile: selectProfile
+        });
       })
       .catch(e => console.log("error", e));
   }
 
+  async loadCities() {
+    try {
+      const cityInfo = await getCities();
+      const citySelectData = cityInfo.data.map(city => {
+        city.value = city.id;
+        city.label = city.name;
+        return city;
+      });
+      this.setState({ cities: citySelectData });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async loadProfiles() {
+    try {
+      const profileInfo = await getSellersProfiles();
+      const profileSelectData = profileInfo.data.map(profile => {
+        profile.value = profile.id;
+        profile.label = profile.name;
+        return profile;
+      });
+      this.setState({ profiles: profileSelectData });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   handleSubmit() {
     if (this.isValidated()) {
-      const dataCategory = {
+      const dataSubsidiary = {
         id: this.props.match.params.id,
-        name: this.state.categoryName
+        subsidiaryName: this.state.subsidiaryName,
+        cityId: this.state.selectCity.id,
+        profileId: this.state.selectProfile.id
       };
-      updateCategory(dataCategory).then(responseSaveCategory => {
-        if (responseSaveCategory.data.message === "success") {
+      updateSubsidiary(dataSubsidiary).then(responseSaveSubsidiary => {
+        if (responseSaveSubsidiary.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Categoria ${
-              this.state.categoryName
+            successMessage: `Sucursal ${
+              this.state.subsidiaryName
             } editada con éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/list-categories`);
+            this.props.history.push(`/admin/list-subsidiaries`);
           }, 3000);
         } else {
           this.setState({
-            messageError: responseSaveCategory.data.message,
+            messageError: responseSaveSubsidiary.data.message,
             successMessage: null
           });
         }
       });
     }
   }
+
   // function that verifies if a string has a given length or not
   verifyLength(value, length) {
     if (value.length >= length) {
@@ -78,6 +136,7 @@ class EditCategory extends React.Component {
     }
     return false;
   }
+
   change(event, stateName, type, stateNameEqualTo) {
     switch (type) {
       case "length":
@@ -93,20 +152,40 @@ class EditCategory extends React.Component {
 
     this.setState({ [stateName]: event.target.value });
   }
+
   isValidated() {
-    if (this.state.categoryNameState === "success") {
+    if (
+      this.state.subsidiaryNameState === "success" &&
+      this.state.cityState === "success" &&
+      this.state.profileState === "success"
+    ) {
       return true;
     } else {
-      if (this.state.categoryNameState !== "success") {
-        this.setState({ dateState: "error" });
+      if (this.state.subsidiaryNameState !== "success") {
+        this.setState({ subsidiaryNameState: "error" });
+      }
+      if (this.state.cityState !== "success") {
+        this.setState({ cityState: "error" });
+      }
+      if (this.state.profileState !== "success") {
+        this.setState({ profileState: "error" });
       }
     }
     return false;
   }
+
+  handleChangeCity = city => {
+    this.setState({ selectCity: city, cityState: "success" });
+  };
+
+  handleChangeProfile = profile => {
+    this.setState({ selectProfile: profile, profileState: "success" });
+  };
+
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage, categoryName } = this.state;
+    const { messageError, successMessage, subsidiaryName } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -136,32 +215,32 @@ class EditCategory extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Editar Categoría</h4>
+                <h4 className={classes.cardTitle}>Editar Sucursal</h4>
               </CardText>
             </CardHeader>
             <CardBody>
               <form>
                 <GridContainer>
-                  <GridItem xs={12} sm={6}>
+                  <GridItem xs={12} sm={4}>
                     <CustomInput
-                      success={this.state.categoryNameState === "success"}
-                      error={this.state.categoryNameState === "error"}
+                      success={this.state.subsidiaryNameState === "success"}
+                      error={this.state.subsidiaryNameState === "error"}
                       labelText={
                         <span>
-                          Nombre de Categoría <small>(requerido)</small>
+                          Sucursal <small>(requerido)</small>
                         </span>
                       }
-                      id="categoryName"
+                      id="subsidiaryName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
-                        value: categoryName,
+                        value: subsidiaryName,
                         onChange: event =>
-                          this.change(event, "categoryName", "length", 3),
+                          this.change(event, "subsidiaryName", "length", 3),
                         type: "text",
                         endAdornment:
-                          this.state.categoryNameState === "error" ? (
+                          this.state.subsidiaryNameState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -170,6 +249,45 @@ class EditCategory extends React.Component {
                           )
                       }}
                     />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <Select
+                      value={this.state.selectCity}
+                      onChange={selectedOption =>
+                        this.handleChangeCity(selectedOption)
+                      }
+                      options={this.state.cities}
+                      placeholder={"Seleccione una ciudad"}
+                      styles={{
+                        marginTop: "20px"
+                      }}
+                    />
+                    <br />
+                    {this.state.cityState === "error" && (
+                      <InputAdornment position="end" className={classes.danger}>
+                        Seleccione Una Ciudad
+                        <Close />
+                      </InputAdornment>
+                    )}
+                    <br />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <Select
+                      value={this.state.selectProfile}
+                      onChange={selectedOption =>
+                        this.handleChangeProfile(selectedOption)
+                      }
+                      options={this.state.profiles}
+                      placeholder={"Seleccione un perfil"}
+                    />
+                    <br />
+                    {this.state.profileState === "error" && (
+                      <InputAdornment position="end" className={classes.danger}>
+                        Seleccione Un Perfil
+                        <Close />
+                      </InputAdornment>
+                    )}
+                    <br />
                   </GridItem>
                 </GridContainer>
               </form>
@@ -186,4 +304,4 @@ class EditCategory extends React.Component {
   }
 }
 
-export default withStyles(validationFormsStyle)(EditCategory);
+export default withStyles(validationFormsStyle)(EditSubsidiary);
