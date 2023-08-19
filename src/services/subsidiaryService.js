@@ -83,14 +83,14 @@ export const deleteSubsidiaryService = subsidiaryId => {
     .then(currentSession => {
       const SUBSIDIARY_API_ENDPOINT = `${SERVER_URL}/api/subsidiary/${subsidiaryId}`;
 
-      const dataSubsidary = {
+      const dataSubsidiary = {
         headers: {
           Authorization: `Bearer ${currentSession.access_token}`
         }
       };
 
       return axios
-        .delete(SUBSIDIARY_API_ENDPOINT, dataSubsidary)
+        .delete(SUBSIDIARY_API_ENDPOINT, dataSubsidiary)
         .then(response => {
           return response;
         })
