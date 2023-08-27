@@ -309,7 +309,7 @@ class registerInvoiceForm extends React.Component {
   }
   // Let's use the static moment reference in the Datetime component
   validDate(current) {
-    const yesterday = Datetime.moment("20190301");
+    const yesterday = Datetime.moment("20230501");
     return current.isAfter(yesterday);
   }
   render() {

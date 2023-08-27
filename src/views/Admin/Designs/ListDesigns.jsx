@@ -26,9 +26,9 @@ import Button from "components/CustomButtons/Button.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import {
-  getCategoriesService,
-  deleteProductCategoryService
-} from "../../../services/productCategoryService";
+  getDesignsService,
+  deleteDesignService
+} from "../../../services/designService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
@@ -41,11 +41,11 @@ const styles = {
   ...sweetAlertStyle
 };
 
-class ListCategories extends React.Component {
+class ListDesigns extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productCategories: [],
+      designs: [],
       alert: null,
       show: false
     };
@@ -53,21 +53,21 @@ class ListCategories extends React.Component {
     this.hideAlert = this.hideAlert.bind(this);
   }
   componentDidMount() {
-    getCategoriesService()
-      .then(dataCategories => {
-        this.setState({ productCategories: dataCategories.data });
+    getDesignsService()
+      .then(dataDesigns => {
+        this.setState({ designs: dataDesigns.data });
       })
       .catch();
   }
 
-  warningWithConfirmMessage(categoryId) {
+  warningWithConfirmMessage(designId) {
     this.setState({
       alert: (
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Está seguro que desea borrar esta Categoría?"
-          onConfirm={() => this.deleteProductCategory(categoryId)}
+          title="Está seguro que desea borrar este Diseño?"
+          onConfirm={() => this.deleteDesign(designId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
@@ -79,13 +79,13 @@ class ListCategories extends React.Component {
           cancelBtnText="Cancelar"
           showCancel
         >
-          Después de eliminada no podrá recuperar la Información
+          Después de eliminado no podrá recuperar la Información
         </SweetAlert>
       )
     });
   }
 
-  successDelete(categoryId) {
+  successDelete(designId) {
     this.setState({
       alert: (
         <SweetAlert
@@ -97,7 +97,7 @@ class ListCategories extends React.Component {
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          La categoría con ID: {categoryId} ha sido eliminada.
+          El diseño con ID: {designId} ha sido eliminado.
         </SweetAlert>
       )
     });
@@ -121,28 +121,26 @@ class ListCategories extends React.Component {
     });
   }
 
-  deleteProductCategory(categoryId) {
-    deleteProductCategoryService(categoryId)
-      .then(productCategoryInfo => {
-        if (productCategoryInfo.data.message === "success") {
-          const productCategories = this.state.productCategories;
-          productCategories.find((productCategory, i) => {
-            if (productCategory.id === categoryId) {
-              productCategories.splice(i, 1);
+  deleteDesign(designId) {
+    deleteDesignService(designId)
+      .then(designInfo => {
+        if (designInfo.data.message === "success") {
+          const designs = this.state.designs;
+          designs.find((design, i) => {
+            if (design.id === designId) {
+              designs.splice(i, 1);
               return true;
             }
             return false;
           });
-          this.setState({ productCategories: productCategories });
-          this.successDelete(categoryId);
+          this.setState({ designs: designs });
+          this.successDelete(designId);
         } else {
-          return this.cancelDetele(productCategoryInfo.data.detail);
+          return this.cancelDetele(designInfo.data.detail);
         }
       })
       .catch(e => {
-        console.log(
-          "Error eliminando categoria de producto con id: categoryId"
-        );
+        console.log(`Error eliminando diseño con id: ${designId}`, e);
       });
   }
 
@@ -154,11 +152,12 @@ class ListCategories extends React.Component {
 
   buildDataTable() {
     let data = [];
-    if (this.state.productCategories.length > 0) {
-      data = this.state.productCategories.map((productCategory, key) => {
+    if (this.state.designs && this.state.designs.length > 0) {
+      data = this.state.designs.map((design, key) => {
         const dataTable = {
-          id: productCategory.id,
-          name: productCategory.name,
+          id: design.id,
+          name: design.name,
+          brand: design.brand.name,
           actions: (
             // we've added some custom button actions
             <div className="actions-right">
@@ -168,11 +167,11 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  let categorySelect = this.state.productCategories.find(
-                    findCategory => findCategory.id === productCategory.id
+                  let designSelect = this.state.designs.find(
+                    findCategory => findCategory.id === design.id
                   );
                   this.props.history.push(
-                    `/admin/edit-category/${categorySelect.id}`
+                    `/admin/edit-design/${designSelect.id}`
                   );
                 }}
                 color="warning"
@@ -186,7 +185,7 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  this.warningWithConfirmMessage(productCategory.id);
+                  this.warningWithConfirmMessage(design.id);
                 }}
                 color="danger"
                 className="remove"
@@ -216,7 +215,7 @@ class ListCategories extends React.Component {
                 <CardIcon color="warning">
                   <Assignment />
                 </CardIcon>
-                <h4 className={classes.cardIconTitle}>Lista de Categorias</h4>
+                <h4 className={classes.cardIconTitle}>Lista de Diseños</h4>
               </CardHeader>
               <CardBody>
                 <ReactTable
@@ -226,7 +225,7 @@ class ListCategories extends React.Component {
                   ofText="de"
                   rowsText="filas"
                   loadingText="Cargando..."
-                  noDataText="No hay usuarios"
+                  noDataText="No hay diseños registrados"
                   data={dataTable}
                   filterable
                   columns={[
@@ -235,8 +234,12 @@ class ListCategories extends React.Component {
                       accessor: "id"
                     },
                     {
-                      Header: "Categoria",
+                      Header: "Diseño",
                       accessor: "name"
+                    },
+                    {
+                      Header: "Marca",
+                      accessor: "brand"
                     },
                     {
                       Header: "Acciones",
@@ -259,4 +262,4 @@ class ListCategories extends React.Component {
   }
 }
 
-export default withStyles(styles)(ListCategories);
+export default withStyles(styles)(ListDesigns);

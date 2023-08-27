@@ -26,6 +26,8 @@ import * as userActions from "../../../actions/userActions";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+
 const styles = {
   cardIconTitle: {
     ...cardTitle,
@@ -51,7 +53,7 @@ class UserList extends React.Component {
           email: user.email,
           phone: user.phone,
           points: user.points,
-          profile: user.profile.name,
+          profile: capitalizeFirstLetter(user.profile.name),
           actions: (
             // we've added some custom button actions
             <div className="actions-right">

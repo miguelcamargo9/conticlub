@@ -23,48 +23,40 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
-import { insertSubsidiary } from "../../../services/subsidiaryService";
-import { getCities } from "../../../services/cityService";
-import { getSellersProfiles } from "../../../services/profileService";
+import { createDesignService } from "../../../services/designService";
+import { getBrands } from "../../../services/brandService";
 
-// Utils
-import { capitalizeFirstLetter } from "../../../utils/formatters";
-
-class CreateSubsidiary extends React.Component {
+class CreateDesign extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      subsidiaryName: "",
-      subsidiaryNameState: "",
-      city: "",
-      cityState: "",
-      cities: [],
-      profile: "",
-      profileState: "",
-      profiles: []
+      designName: "",
+      designNameState: "",
+      brand: "",
+      brandState: "",
+      brands: []
     };
     this.isValidated = this.isValidated.bind(this);
   }
 
   handleSubmit() {
     if (this.isValidated()) {
-      const dataSubsidiary = {
-        subsidiaryName: this.state.subsidiaryName,
-        cityId: this.state.city.id,
-        profileId: this.state.profile.id
+      const dataDesign = {
+        name: this.state.designName,
+        brand_id: this.state.brand.id
       };
-      insertSubsidiary(dataSubsidiary).then(responseSaveSubsidiary => {
-        if (responseSaveSubsidiary.data.message === "success") {
+      createDesignService(dataDesign).then(responseSaveDesign => {
+        if (responseSaveDesign.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Sucursal Creada con Éxito`
+            successMessage: `Diseño Creada con Éxito`
           });
           setTimeout(() => {
-            this.props.history.push(`/admin/list-subsidiaries`);
+            this.props.history.push(`/admin/list-designs`);
           }, 3000);
         } else {
           this.setState({
-            messageError: responseSaveSubsidiary.data.message,
+            messageError: responseSaveDesign.data.message,
             successMessage: null
           });
         }
@@ -80,12 +72,8 @@ class CreateSubsidiary extends React.Component {
     return false;
   }
 
-  handleChangeCity = city => {
-    this.setState({ city: city, cityState: "success" });
-  };
-
-  handleChangeProfile = profile => {
-    this.setState({ profile: profile, profileState: "success" });
+  handleChangeBrand = brand => {
+    this.setState({ brand: brand, brandState: "success" });
   };
 
   change(event, stateName, type, stateNameEqualTo) {
@@ -112,41 +100,35 @@ class CreateSubsidiary extends React.Component {
   }
 
   componentDidMount() {
-    getCities().then(cityInfo => {
-      const citySelectData = cityInfo.data.map(city => {
-        city.value = city.id;
-        city.label = city.name;
-        return city;
-      });
-      this.setState({ cities: citySelectData });
-    });
+    this.loadBrands();
+  }
 
-    getSellersProfiles().then(profileInfo => {
-      const profileSelectData = profileInfo.data.map(profile => {
-        profile.value = profile.id;
-        profile.label = capitalizeFirstLetter(profile.name);
-        return profile;
+  async loadBrands() {
+    try {
+      const brandInfo = await getBrands();
+      const brandSelectData = brandInfo.data.map(brand => {
+        brand.value = brand.id;
+        brand.label = brand.name;
+        return brand;
       });
-      this.setState({ profiles: profileSelectData });
-    });
+      this.setState({ brands: brandSelectData });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   isValidated() {
     if (
-      this.state.subsidiaryNameState === "success" &&
-      this.state.cityState === "success" &&
-      this.state.profileState === "success"
+      this.state.designNameState === "success" &&
+      this.state.brandState === "success"
     ) {
       return true;
     } else {
-      if (this.state.subsidiaryNameState !== "success") {
-        this.setState({ subsidiaryNameState: "error" });
+      if (this.state.designNameState !== "success") {
+        this.setState({ designNameState: "error" });
       }
-      if (this.state.cityState !== "success") {
-        this.setState({ cityState: "error" });
-      }
-      if (this.state.profileState !== "success") {
-        this.setState({ profileState: "error" });
+      if (this.state.brandState !== "success") {
+        this.setState({ brandState: "error" });
       }
     }
     return false;
@@ -185,7 +167,7 @@ class CreateSubsidiary extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Crear Sucursal</h4>
+                <h4 className={classes.cardTitle}>Crear Diseño</h4>
               </CardText>
             </CardHeader>
             <CardBody>
@@ -193,23 +175,23 @@ class CreateSubsidiary extends React.Component {
                 <GridContainer>
                   <GridItem xs={12} sm={4}>
                     <CustomInput
-                      success={this.state.subsidiaryNameState === "success"}
-                      error={this.state.subsidiaryNameState === "error"}
+                      success={this.state.designNameState === "success"}
+                      error={this.state.designNameState === "error"}
                       labelText={
                         <span>
-                          Sucursal <small>(requerido)</small>
+                          Diseño <small>(requerido)</small>
                         </span>
                       }
-                      id="subsidiaryName"
+                      id="designName"
                       formControlProps={{
                         fullWidth: true
                       }}
                       inputProps={{
                         onChange: event =>
-                          this.change(event, "subsidiaryName", "length", 5),
+                          this.change(event, "designName", "length", 5),
                         type: "text",
                         endAdornment:
-                          this.state.subsidiaryNameState === "error" ? (
+                          this.state.designNameState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -227,41 +209,17 @@ class CreateSubsidiary extends React.Component {
                     }}
                   >
                     <Select
-                      value={this.state.selectCity}
+                      value={this.state.selectBrand}
                       onChange={selectedOption =>
-                        this.handleChangeCity(selectedOption)
+                        this.handleChangeBrand(selectedOption)
                       }
-                      options={this.state.cities}
-                      placeholder={"Seleccione una ciudad"}
+                      options={this.state.brands}
+                      placeholder={"Seleccione una marca"}
                     />
                     <br />
-                    {this.state.cityState === "error" && (
+                    {this.state.brandState === "error" && (
                       <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Una Ciudad
-                        <Close />
-                      </InputAdornment>
-                    )}
-                    <br />
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={4}
-                    style={{
-                      marginTop: "20px"
-                    }}
-                  >
-                    <Select
-                      value={this.state.selectProfile}
-                      onChange={selectedOption =>
-                        this.handleChangeProfile(selectedOption)
-                      }
-                      options={this.state.profiles}
-                      placeholder={"Seleccione un perfil"}
-                    />
-                    <br />
-                    {this.state.profileState === "error" && (
-                      <InputAdornment position="end" className={classes.danger}>
-                        Seleccione Un Perfil
+                        Seleccione Una Marca
                         <Close />
                       </InputAdornment>
                     )}
@@ -282,4 +240,4 @@ class CreateSubsidiary extends React.Component {
   }
 }
 
-export default withStyles(validationFormsStyle)(CreateSubsidiary);
+export default withStyles(validationFormsStyle)(CreateDesign);

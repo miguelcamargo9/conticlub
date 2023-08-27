@@ -2,11 +2,11 @@ import axios from "axios";
 import { sessionService } from "redux-react-session";
 import { SERVER_URL } from "../constants/server";
 
-export const getDesignsByBrandId = brandId => {
+export const getTiresByDesigndId = designId => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design/byBrand/${brandId}`;
+      const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/byDesign/${designId}`;
 
       const data = {
         headers: {
@@ -26,10 +26,10 @@ export const getDesignsByBrandId = brandId => {
     .catch(err => console.log(err));
 };
 
-export const getDesignsService = async () => {
+export const getTiresService = async () => {
   try {
     const currentSession = await sessionService.loadSession();
-    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design`;
+    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire`;
 
     const data = {
       headers: {
@@ -48,10 +48,10 @@ export const getDesignsService = async () => {
   }
 };
 
-export const getDesignById = async designId => {
+export const getTireById = async tireId => {
   try {
     const currentSession = await sessionService.loadSession();
-    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design/${designId}`;
+    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/${tireId}`;
 
     const data = {
       headers: {
@@ -70,10 +70,10 @@ export const getDesignById = async designId => {
   }
 };
 
-export const createDesignService = async design => {
+export const createTireService = async tire => {
   try {
     const currentSession = await sessionService.loadSession();
-    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design`;
+    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire`;
 
     const data = {
       headers: {
@@ -82,7 +82,7 @@ export const createDesignService = async design => {
     };
 
     try {
-      const response = await axios.post(DESIGN_API_ENDPOINT, design, data);
+      const response = await axios.post(DESIGN_API_ENDPOINT, tire, data);
       return response;
     } catch (error) {
       console.log(error);
@@ -92,10 +92,10 @@ export const createDesignService = async design => {
   }
 };
 
-export const updateDesignService = async design => {
+export const updateTireService = async tire => {
   try {
     const currentSession = await sessionService.loadSession();
-    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design/${design.id}`;
+    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/${tire.id}`;
 
     const data = {
       headers: {
@@ -104,7 +104,7 @@ export const updateDesignService = async design => {
     };
 
     try {
-      const response = await axios.put(DESIGN_API_ENDPOINT, design, data);
+      const response = await axios.put(DESIGN_API_ENDPOINT, tire, data);
       return response;
     } catch (error) {
       console.log(error);
@@ -114,10 +114,10 @@ export const updateDesignService = async design => {
   }
 };
 
-export const deleteDesignService = async designId => {
+export const deleteTireService = async tireId => {
   try {
     const currentSession = await sessionService.loadSession();
-    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/design/${designId}`;
+    const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/${tireId}`;
 
     const data = {
       headers: {

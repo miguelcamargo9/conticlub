@@ -26,9 +26,10 @@ import Button from "components/CustomButtons/Button.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import {
-  getCategoriesService,
-  deleteProductCategoryService
-} from "../../../services/productCategoryService";
+  getTiresService,
+  deleteTireService,
+  getTiresByDesigndId
+} from "../../../services/tireService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
@@ -41,11 +42,11 @@ const styles = {
   ...sweetAlertStyle
 };
 
-class ListCategories extends React.Component {
+class ListTires extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productCategories: [],
+      tires: [],
       alert: null,
       show: false
     };
@@ -53,21 +54,29 @@ class ListCategories extends React.Component {
     this.hideAlert = this.hideAlert.bind(this);
   }
   componentDidMount() {
-    getCategoriesService()
-      .then(dataCategories => {
-        this.setState({ productCategories: dataCategories.data });
-      })
-      .catch();
+    if (this.props.designId) {
+      getTiresByDesigndId(this.props.designId)
+        .then(dataTires => {
+          this.setState({ tires: dataTires.data });
+        })
+        .catch();
+    } else {
+      getTiresService()
+        .then(dataTires => {
+          this.setState({ tires: dataTires.data });
+        })
+        .catch();
+    }
   }
 
-  warningWithConfirmMessage(categoryId) {
+  warningWithConfirmMessage(tireId) {
     this.setState({
       alert: (
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Está seguro que desea borrar esta Categoría?"
-          onConfirm={() => this.deleteProductCategory(categoryId)}
+          title="Está seguro que desea borrar esta Llanta?"
+          onConfirm={() => this.deleteTire(tireId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
@@ -85,19 +94,19 @@ class ListCategories extends React.Component {
     });
   }
 
-  successDelete(categoryId) {
+  successDelete(tireId) {
     this.setState({
       alert: (
         <SweetAlert
           success
           style={{ display: "block", marginTop: "-200px" }}
-          title="Eliminado!"
+          title="Eliminada!"
           onConfirm={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          La categoría con ID: {categoryId} ha sido eliminada.
+          La llanta con ID: {tireId} ha sido eliminada.
         </SweetAlert>
       )
     });
@@ -121,28 +130,26 @@ class ListCategories extends React.Component {
     });
   }
 
-  deleteProductCategory(categoryId) {
-    deleteProductCategoryService(categoryId)
-      .then(productCategoryInfo => {
-        if (productCategoryInfo.data.message === "success") {
-          const productCategories = this.state.productCategories;
-          productCategories.find((productCategory, i) => {
-            if (productCategory.id === categoryId) {
-              productCategories.splice(i, 1);
+  deleteTire(tireId) {
+    deleteTireService(tireId)
+      .then(tireInfo => {
+        if (tireInfo.data.message === "success") {
+          const tires = this.state.tires;
+          tires.find((tire, i) => {
+            if (tire.id === tireId) {
+              tires.splice(i, 1);
               return true;
             }
             return false;
           });
-          this.setState({ productCategories: productCategories });
-          this.successDelete(categoryId);
+          this.setState({ tires: tires });
+          this.successDelete(tireId);
         } else {
-          return this.cancelDetele(productCategoryInfo.data.detail);
+          return this.cancelDetele(tireInfo.data.detail);
         }
       })
       .catch(e => {
-        console.log(
-          "Error eliminando categoria de producto con id: categoryId"
-        );
+        console.log(`Error eliminando llanta con id: ${tireId}`, e);
       });
   }
 
@@ -154,11 +161,14 @@ class ListCategories extends React.Component {
 
   buildDataTable() {
     let data = [];
-    if (this.state.productCategories.length > 0) {
-      data = this.state.productCategories.map((productCategory, key) => {
+    if (this.state.tires && this.state.tires.length > 0) {
+      data = this.state.tires.map(tire => {
         const dataTable = {
-          id: productCategory.id,
-          name: productCategory.name,
+          id: tire.id,
+          name: tire.name,
+          code: tire.tire_code,
+          desc: tire.description,
+          design: tire.design.name,
           actions: (
             // we've added some custom button actions
             <div className="actions-right">
@@ -168,12 +178,10 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  let categorySelect = this.state.productCategories.find(
-                    findCategory => findCategory.id === productCategory.id
+                  let tireSelect = this.state.tires.find(
+                    findCategory => findCategory.id === tire.id
                   );
-                  this.props.history.push(
-                    `/admin/edit-category/${categorySelect.id}`
-                  );
+                  this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
                 }}
                 color="warning"
                 className="edit"
@@ -186,7 +194,7 @@ class ListCategories extends React.Component {
                 round
                 simple
                 onClick={() => {
-                  this.warningWithConfirmMessage(productCategory.id);
+                  this.warningWithConfirmMessage(tire.id);
                 }}
                 color="danger"
                 className="remove"
@@ -216,7 +224,7 @@ class ListCategories extends React.Component {
                 <CardIcon color="warning">
                   <Assignment />
                 </CardIcon>
-                <h4 className={classes.cardIconTitle}>Lista de Categorias</h4>
+                <h4 className={classes.cardIconTitle}>Lista de Llantas</h4>
               </CardHeader>
               <CardBody>
                 <ReactTable
@@ -226,7 +234,7 @@ class ListCategories extends React.Component {
                   ofText="de"
                   rowsText="filas"
                   loadingText="Cargando..."
-                  noDataText="No hay usuarios"
+                  noDataText="No hay llantas registrados"
                   data={dataTable}
                   filterable
                   columns={[
@@ -235,8 +243,20 @@ class ListCategories extends React.Component {
                       accessor: "id"
                     },
                     {
-                      Header: "Categoria",
+                      Header: "Llanta",
                       accessor: "name"
+                    },
+                    {
+                      Header: "Código",
+                      accessor: "code"
+                    },
+                    {
+                      Header: "Descripción",
+                      accessor: "desc"
+                    },
+                    {
+                      Header: "Diseño",
+                      accessor: "design"
                     },
                     {
                       Header: "Acciones",
@@ -259,4 +279,4 @@ class ListCategories extends React.Component {
   }
 }
 
-export default withStyles(styles)(ListCategories);
+export default withStyles(styles)(ListTires);

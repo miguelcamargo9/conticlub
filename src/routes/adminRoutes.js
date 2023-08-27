@@ -27,6 +27,16 @@ import CreateSubsidiary from "../views/Admin/Subsidiaries/CreateSubsidiary.jsx";
 import ListSubsidiaries from "../views/Admin/Subsidiaries/ListSubsidiaries.jsx";
 import EditSubsidiary from "../views/Admin/Subsidiaries/EditSubsidiary.jsx";
 
+//Designs
+import CreateDesign from "../views/Admin/Designs/CreateDesign.jsx";
+import ListDesigns from "../views/Admin/Designs/ListDesigns.jsx";
+import EditDesign from "../views/Admin/Designs/EditDesign.jsx";
+
+//Tires
+import CreateTire from "../views/Admin/Tires/CreateTire.jsx";
+import ListTires from "../views/Admin/Tires/ListTires.jsx";
+import EditTire from "../views/Admin/Tires/EditTire.jsx";
+
 //Invoices
 import InvoicesListAll from "../views/Lists/Invoices/InvoicesListAll.jsx";
 import InvoiceDetails from "../views/Lists/Invoices/InvoiceDetails";
@@ -43,6 +53,8 @@ import Store from "@material-ui/icons/Store";
 import Category from "@material-ui/icons/CategorySharp";
 import Slideshow from "@material-ui/icons/Slideshow";
 import LocalMall from "@material-ui/icons/LocalMall";
+import Brush from "@material-ui/icons/Brush";
+import DriveEta from "@material-ui/icons/DriveEta";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -114,7 +126,7 @@ export const adminRoutes = [
   {
     collapse: true,
     name: "Sucursales",
-    rtlName: "Sucursales",
+    rtlName: "Subsidiares",
     icon: LocalMall,
     state: "pageSubsidiariesCollapse",
     views: [
@@ -181,6 +193,80 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Diseños",
+    rtlName: "Designs",
+    icon: Brush,
+    state: "pageDesignsCollapse",
+    views: [
+      {
+        path: "/create-design",
+        name: "Crear Diseño",
+        rtlName: "Create Design",
+        mini: "CD",
+        rtlMini: "CD",
+        component: CreateDesign,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-design/:id",
+        name: "Editar Diseño",
+        rtlName: "Edit Design",
+        mini: "ED",
+        rtlMini: "ED",
+        component: EditDesign,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-designs",
+        name: "Lista Diseños",
+        rtlName: "Designs List",
+        mini: "LD",
+        rtlMini: "LD",
+        component: ListDesigns,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Llantas",
+    rtlName: "Tires",
+    icon: DriveEta,
+    state: "pageTiresCollapse",
+    views: [
+      {
+        path: "/create-tire",
+        name: "Crear Llanta",
+        rtlName: "Create Tire",
+        mini: "CL",
+        rtlMini: "CT",
+        component: CreateTire,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-tire/:id",
+        name: "Editar Llanta",
+        rtlName: "Edit Tire",
+        mini: "EL",
+        rtlMini: "ED",
+        component: EditTire,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-tires",
+        name: "Lista Llantas",
+        rtlName: "Tires List",
+        mini: "LL",
+        rtlMini: "TD",
+        component: ListTires,
         layout: "/admin"
       }
     ]
