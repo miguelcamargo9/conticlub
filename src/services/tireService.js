@@ -2,11 +2,11 @@ import axios from "axios";
 import { sessionService } from "redux-react-session";
 import { SERVER_URL } from "../constants/server";
 
-export const getTiresByBrandId = brandId => {
+export const getTiresByDesigndId = designId => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/byBrand/${brandId}`;
+      const DESIGN_API_ENDPOINT = `${SERVER_URL}/api/tire/byDesign/${designId}`;
 
       const data = {
         headers: {

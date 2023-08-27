@@ -23,6 +23,8 @@ import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
+import ListTires from "../Tires/ListTires";
+
 import {
   getDesignById,
   updateDesignService
@@ -250,6 +252,9 @@ class EditDesign extends React.Component {
               </Button>
             </CardFooter>
           </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <ListTires designId={this.props.match.params.id} />
         </GridItem>
       </GridContainer>
     );

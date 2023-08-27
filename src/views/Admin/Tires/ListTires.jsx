@@ -27,7 +27,8 @@ import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import {
   getTiresService,
-  deleteTireService
+  deleteTireService,
+  getTiresByDesigndId
 } from "../../../services/tireService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
@@ -53,11 +54,19 @@ class ListTires extends React.Component {
     this.hideAlert = this.hideAlert.bind(this);
   }
   componentDidMount() {
-    getTiresService()
-      .then(dataTires => {
-        this.setState({ tires: dataTires.data });
-      })
-      .catch();
+    if (this.props.designId) {
+      getTiresByDesigndId(this.props.designId)
+        .then(dataTires => {
+          this.setState({ tires: dataTires.data });
+        })
+        .catch();
+    } else {
+      getTiresService()
+        .then(dataTires => {
+          this.setState({ tires: dataTires.data });
+        })
+        .catch();
+    }
   }
 
   warningWithConfirmMessage(tireId) {
