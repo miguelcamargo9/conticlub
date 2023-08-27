@@ -168,7 +168,7 @@ class ListDesigns extends React.Component {
                 simple
                 onClick={() => {
                   let designSelect = this.state.designs.find(
-                    findCategory => findCategory.id === design.id
+                    findDesign => findDesign.id === design.id
                   );
                   this.props.history.push(
                     `/admin/edit-design/${designSelect.id}`

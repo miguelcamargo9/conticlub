@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
@@ -179,7 +180,7 @@ class ListTires extends React.Component {
                 simple
                 onClick={() => {
                   let tireSelect = this.state.tires.find(
-                    findCategory => findCategory.id === tire.id
+                    findTire => findTire.id === tire.id
                   );
                   this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
                 }}
@@ -279,4 +280,4 @@ class ListTires extends React.Component {
   }
 }
 
-export default withStyles(styles)(ListTires);
+export default withRouter(withStyles(styles)(ListTires));
