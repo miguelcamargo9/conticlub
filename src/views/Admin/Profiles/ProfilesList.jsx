@@ -32,6 +32,9 @@ import {
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
 
+// Utils
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+
 const styles = {
   cardIconTitle: {
     ...cardTitle,
@@ -135,7 +138,7 @@ class profilesList extends React.Component {
         }
       })
       .catch(e => {
-        console.log("Error eliminado perfil id: profileId");
+        console.log("Error eliminado perfil id: profileId", e);
       });
   }
 
@@ -152,7 +155,7 @@ class profilesList extends React.Component {
         const dataTable = {
           id: key,
           code: profile.id,
-          name: profile.name,
+          name: capitalizeFirstLetter(profile.name),
           actions: (
             // we've added some custom button actions
             <div className="actions-right">

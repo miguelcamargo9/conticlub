@@ -19,12 +19,20 @@ import CardText from "components/Card/CardText.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
 import SnackbarContent from "components/Snackbar/SnackbarContent.jsx";
+import Accordion from "components/Accordion/Accordion.jsx";
 
 // style for this view
 import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/validationFormsStyle.jsx";
 
+// Services
 import { createTireService } from "../../../services/tireService";
 import { getDesignsService } from "../../../services/designService";
+import { getSellersProfiles } from "../../../services/profileService";
+
+// Utils
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+
+import Point from "./Point";
 
 class CreateTire extends React.Component {
   constructor(props) {
@@ -32,9 +40,16 @@ class CreateTire extends React.Component {
     this.state = {
       tireName: "",
       tireNameState: "",
+      tireCode: "",
+      tireCodeState: "",
+      tireDesc: "",
+      tireDescState: "",
       design: "",
       designState: "",
-      designs: []
+      designs: [],
+      profiles: [],
+      accordion: [],
+      tirePoints: []
     };
     this.isValidated = this.isValidated.bind(this);
   }
@@ -43,8 +58,12 @@ class CreateTire extends React.Component {
     if (this.isValidated()) {
       const dataTire = {
         name: this.state.tireName,
-        design_id: this.state.design.id
+        tire_code: this.state.tireCode,
+        description: this.state.tireDesc,
+        design_id: this.state.design.id,
+        tire_points: this.state.tirePoints
       };
+      console.log('dataTire', dataTire);
       createTireService(dataTire).then(responseSaveTire => {
         if (responseSaveTire.data.message === "success") {
           this.setState({
@@ -101,6 +120,7 @@ class CreateTire extends React.Component {
 
   componentDidMount() {
     this.loadDesigns();
+    this.loadProfiles();
   }
 
   async loadDesigns() {
@@ -117,15 +137,63 @@ class CreateTire extends React.Component {
     }
   }
 
+  async loadProfiles() {
+    try {
+      const { data } = await getSellersProfiles();
+      this.setState({ profiles: data });
+      this.setPointsAccordion();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  setPointsAccordion() {
+    const { classes } = this.props;
+    const pointsTires = [];
+    const accordion = this.state.profiles.map(profile => {
+      const point = {
+        profiles_id: profile.id,
+        points_general: 0,
+        points_uhp: 0,
+        points_total: 0
+      };
+
+      pointsTires.push(point);
+
+      return {
+        title: capitalizeFirstLetter(profile.name),
+        content: (
+          <Point
+            point={point}
+            onChange={(field, value) =>
+              this.handlePointChange(profile.id, field, value)
+            }
+            classes={classes}
+          />
+        )
+      };
+    });
+    this.setState({ accordion });
+    this.setState({ tirePoints: pointsTires });
+  }
+
   isValidated() {
     if (
       this.state.tireNameState === "success" &&
+      this.state.tireCodeState === "success" &&
+      this.state.tireDescState === "success" &&
       this.state.designState === "success"
     ) {
       return true;
     } else {
       if (this.state.tireNameState !== "success") {
         this.setState({ tireNameState: "error" });
+      }
+      if (this.state.tireCodeState !== "success") {
+        this.setState({ tireCodeState: "error" });
+      }
+      if (this.state.tireDescState !== "success") {
+        this.setState({ tireDescState: "error" });
       }
       if (this.state.designState !== "success") {
         this.setState({ designState: "error" });
@@ -134,10 +202,25 @@ class CreateTire extends React.Component {
     return false;
   }
 
+  handleInputChange = (field, value) => {
+    this.setState({ [field]: value });
+  };
+
+  handlePointChange = (profileId, field, value) => {
+    const newTirePoints = [...this.state.tirePoints];
+    const point = newTirePoints.find(p => p.profiles_id === profileId);
+    if (point) {
+      point[field] = value;
+    } else {
+      console.error(`No se encontró el punto con profiles_id: ${profileId}`);
+    }
+    this.setState({ tirePoints: newTirePoints });
+  };
+
   render() {
     const { classes } = this.props;
 
-    const { messageError, successMessage } = this.state;
+    const { messageError, successMessage, accordion } = this.state;
 
     const errorDiv = messageError ? (
       <GridContainer justify="center">
@@ -179,7 +262,7 @@ class CreateTire extends React.Component {
                       error={this.state.tireNameState === "error"}
                       labelText={
                         <span>
-                          Llanta <small>(requerido)</small>
+                          Medida <small>(requerido)</small>
                         </span>
                       }
                       id="tireName"
@@ -192,6 +275,62 @@ class CreateTire extends React.Component {
                         type: "text",
                         endAdornment:
                           this.state.tireNameState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <CustomInput
+                      success={this.state.tireCodeState === "success"}
+                      error={this.state.tireCodeState === "error"}
+                      labelText={
+                        <span>
+                          Codigo <small>(requerido)</small>
+                        </span>
+                      }
+                      id="tireCode"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "tireCode", "length", 5),
+                        type: "text",
+                        endAdornment:
+                          this.state.tireCodeState === "error" ? (
+                            <InputAdornment position="end">
+                              <Close className={classes.danger} />
+                            </InputAdornment>
+                          ) : (
+                            undefined
+                          )
+                      }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={4}>
+                    <CustomInput
+                      success={this.state.tireDescState === "success"}
+                      error={this.state.tireDescState === "error"}
+                      labelText={
+                        <span>
+                          Descripción <small>(requerido)</small>
+                        </span>
+                      }
+                      id="tireDesc"
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        onChange: event =>
+                          this.change(event, "tireDesc", "length", 5),
+                        type: "text",
+                        endAdornment:
+                          this.state.tireDescState === "error" ? (
                             <InputAdornment position="end">
                               <Close className={classes.danger} />
                             </InputAdornment>
@@ -224,6 +363,14 @@ class CreateTire extends React.Component {
                       </InputAdornment>
                     )}
                     <br />
+                  </GridItem>
+                </GridContainer>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <h4>Puntos</h4>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <Accordion active={0} collapses={accordion} />
                   </GridItem>
                 </GridContainer>
               </form>

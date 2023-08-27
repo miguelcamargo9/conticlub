@@ -30,6 +30,9 @@ import {
 import { getCities } from "../../../services/cityService";
 import { getSellersProfiles } from "../../../services/profileService";
 
+// Utils
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+
 class EditSubsidiary extends React.Component {
   constructor(props) {
     super(props);
@@ -91,7 +94,7 @@ class EditSubsidiary extends React.Component {
       const profileInfo = await getSellersProfiles();
       const profileSelectData = profileInfo.data.map(profile => {
         profile.value = profile.id;
-        profile.label = profile.name;
+        profile.label = capitalizeFirstLetter(profile.name);
         return profile;
       });
       this.setState({ profiles: profileSelectData });

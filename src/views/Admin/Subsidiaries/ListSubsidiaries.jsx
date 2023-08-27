@@ -25,12 +25,16 @@ import Button from "components/CustomButtons/Button.jsx";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
+// Services
 import {
   getSubsidiariesService,
   deleteSubsidiaryService
 } from "../../../services/subsidiaryService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+
+// Utils
+import { capitalizeFirstLetter } from "../../../utils/formatters";
 
 const styles = {
   cardIconTitle: {
@@ -153,12 +157,12 @@ class ListSubsidiaries extends React.Component {
   buildDataTable() {
     let data = [];
     if (this.state.subsidiaries && this.state.subsidiaries.length > 0) {
-      data = this.state.subsidiaries.map((subsidiary, key) => {
+      data = this.state.subsidiaries.map(subsidiary => {
         const dataTable = {
           id: subsidiary.id,
           name: subsidiary.name,
           city: subsidiary.city.name,
-          profile: subsidiary.profile.name,
+          profile: capitalizeFirstLetter(subsidiary.profile.name),
           actions: (
             // we've added some custom button actions
             <div className="actions-right">

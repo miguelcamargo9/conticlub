@@ -27,6 +27,9 @@ import { insertSubsidiary } from "../../../services/subsidiaryService";
 import { getCities } from "../../../services/cityService";
 import { getSellersProfiles } from "../../../services/profileService";
 
+// Utils
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+
 class CreateSubsidiary extends React.Component {
   constructor(props) {
     super(props);
@@ -121,7 +124,7 @@ class CreateSubsidiary extends React.Component {
     getSellersProfiles().then(profileInfo => {
       const profileSelectData = profileInfo.data.map(profile => {
         profile.value = profile.id;
-        profile.label = profile.name;
+        profile.label = capitalizeFirstLetter(profile.name);
         return profile;
       });
       this.setState({ profiles: profileSelectData });
