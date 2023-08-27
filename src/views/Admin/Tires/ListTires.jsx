@@ -66,7 +66,7 @@ class ListTires extends React.Component {
         <SweetAlert
           warning
           style={{ display: "block", marginTop: "-200px" }}
-          title="Está seguro que desea borrar este Llanta?"
+          title="Está seguro que desea borrar esta Llanta?"
           onConfirm={() => this.deleteTire(tireId)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={
@@ -79,7 +79,7 @@ class ListTires extends React.Component {
           cancelBtnText="Cancelar"
           showCancel
         >
-          Después de eliminado no podrá recuperar la Información
+          Después de eliminada no podrá recuperar la Información
         </SweetAlert>
       )
     });
@@ -91,13 +91,13 @@ class ListTires extends React.Component {
         <SweetAlert
           success
           style={{ display: "block", marginTop: "-200px" }}
-          title="Eliminado!"
+          title="Eliminada!"
           onConfirm={() => this.hideAlert()}
           confirmBtnCssClass={
             this.props.classes.button + " " + this.props.classes.success
           }
         >
-          El llanta con ID: {tireId} ha sido eliminado.
+          La llanta con ID: {tireId} ha sido eliminada.
         </SweetAlert>
       )
     });
@@ -153,10 +153,12 @@ class ListTires extends React.Component {
   buildDataTable() {
     let data = [];
     if (this.state.tires && this.state.tires.length > 0) {
-      data = this.state.tires.map((tire, key) => {
+      data = this.state.tires.map(tire => {
         const dataTable = {
           id: tire.id,
           name: tire.name,
+          code: tire.tire_code,
+          desc: tire.description,
           design: tire.design.name,
           actions: (
             // we've added some custom button actions
@@ -170,9 +172,7 @@ class ListTires extends React.Component {
                   let tireSelect = this.state.tires.find(
                     findCategory => findCategory.id === tire.id
                   );
-                  this.props.history.push(
-                    `/admin/edit-tire/${tireSelect.id}`
-                  );
+                  this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
                 }}
                 color="warning"
                 className="edit"
@@ -236,6 +236,14 @@ class ListTires extends React.Component {
                     {
                       Header: "Llanta",
                       accessor: "name"
+                    },
+                    {
+                      Header: "Código",
+                      accessor: "code"
+                    },
+                    {
+                      Header: "Descripción",
+                      accessor: "desc"
                     },
                     {
                       Header: "Diseño",
