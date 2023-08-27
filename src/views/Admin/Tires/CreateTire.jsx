@@ -63,7 +63,6 @@ class CreateTire extends React.Component {
         design_id: this.state.design.id,
         tire_points: this.state.tirePoints
       };
-      console.log('dataTire', dataTire);
       createTireService(dataTire).then(responseSaveTire => {
         if (responseSaveTire.data.message === "success") {
           this.setState({
