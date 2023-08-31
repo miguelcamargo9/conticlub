@@ -53,7 +53,7 @@ class UserList extends React.Component {
           email: user.email,
           phone: user.phone,
           points: user.points,
-          profile: capitalizeFirstLetter(user.profile.name),
+          profile: user.profile && capitalizeFirstLetter(user.profile.name),
           actions: (
             // we've added some custom button actions
             <div className="actions-right">

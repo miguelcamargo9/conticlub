@@ -6,7 +6,7 @@ export const getInvoiceByUserService = () => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const API_ENDPOINT = `${SERVER_URL}/api/reportes/invoicebyuser`;
+      const API_ENDPOINT = `${SERVER_URL}/api/reports/invoiceByUser`;
 
       const data = {
         headers: {

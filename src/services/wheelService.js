@@ -6,7 +6,7 @@ export const getWheelsByDesignId = designId => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const API_ENDPOINT = `${SERVER_URL}/api/rin/byDesign/${designId}`;
+      const API_ENDPOINT = `${SERVER_URL}/api/tire/byDesign/${designId}`;
 
       const data = {
         headers: {
