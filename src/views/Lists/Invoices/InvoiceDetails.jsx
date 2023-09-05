@@ -105,9 +105,9 @@ class ConfirmRedeemForm extends React.Component {
       data = this.state.invoice.invoiceReferences.map(wheel => {
         const dataTable = {
           id: wheel.id,
-          brand: wheel.rin.design.brand.name,
-          design: wheel.rin.design.name,
-          wheel: wheel.rin.description,
+          brand: wheel.tire.design.brand.name,
+          design: wheel.tire.design.name,
+          wheel: wheel.tire.description,
           amount: wheel.amount,
           points: wheel.points
         };

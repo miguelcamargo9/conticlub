@@ -34,7 +34,7 @@ import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/
 
 import { getBrands } from "../../../services/brandService";
 import { getDesignsByBrandId } from "../../../services/designService";
-import { getWheelsByDesignId } from "../../../services/wheelService";
+import { getTiresByDesigndId } from "../../../services/tireService";
 import { insertInvoice } from "../../../services/invoiceService";
 
 import * as sessionActions from "../../../actions/sessionActions";
@@ -127,7 +127,7 @@ class registerInvoiceForm extends React.Component {
     });
   };
   handleChangeDesign = (design, index) => {
-    getWheelsByDesignId(design.id).then(wheelInfo => {
+    getTiresByDesigndId(design.id).then(wheelInfo => {
       const wheelSelectData = wheelInfo.data.map(wheel => {
         wheel.value = wheel.id;
         wheel.label = wheel.name;
@@ -429,7 +429,7 @@ class registerInvoiceForm extends React.Component {
                 color="danger"
                 size="sm"
                 className={classes.marginRight}
-                onClick={e => this.deleteWheel(key)}
+                onClick={() => this.deleteWheel(key)}
               >
                 X
               </Button>
