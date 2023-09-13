@@ -6,3 +6,5 @@ CHANGELOG.md
 ISSUE_TEMPLATE.md
 build/
 .env
+.env.development
+.env.production
