@@ -21,10 +21,10 @@ export const insertInvoice = invoiceData => {
         price: invoiceData.totalAmount,
         subsidiary_id: invoiceData.subsidiaryId
       };
-      const rines = invoiceData.rines;
+      const tires = invoiceData.tires;
 
       formData.append("data", JSON.stringify(data)); //append the values with key, value pair
-      formData.append("rines", JSON.stringify(rines));
+      formData.append("tires", JSON.stringify(tires));
       formData.append("image", invoiceData.image, invoiceData.image.name);
 
       return axios
