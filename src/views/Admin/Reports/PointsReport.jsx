@@ -56,8 +56,8 @@ class PointsReport extends React.Component {
           apply_rechazado: user.apply_rechazado,
           apply_espera: user.apply_espera,
           invoices_count: user.invoices_count,
-          subsidiary: user.subsidiary.name,
-          city: user.subsidiary.city.name
+          subsidiary: user.subsidiary && user.subsidiary.name,
+          city: user.subsidiary && user.subsidiary.city.name
         };
         return dataTable;
       });
@@ -69,7 +69,6 @@ class PointsReport extends React.Component {
   render() {
     const { classes } = this.props;
     const dataTable = this.state.users;
-    console.table(dataTable);
     const csvData = this.buildDataTable();
     const prettyLink = {
       backgroundColor: "#fb8c00",

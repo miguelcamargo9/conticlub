@@ -34,7 +34,7 @@ import validationFormsStyle from "assets/jss/material-dashboard-pro-react/views/
 
 import { getBrands } from "../../../services/brandService";
 import { getDesignsByBrandId } from "../../../services/designService";
-import { getWheelsByDesignId } from "../../../services/wheelService";
+import { getTiresByDesigndId } from "../../../services/tireService";
 import { insertInvoice } from "../../../services/invoiceService";
 
 import * as sessionActions from "../../../actions/sessionActions";
@@ -71,7 +71,7 @@ class registerInvoiceForm extends React.Component {
     const currentWheels = this.state.wheels;
     const lastWheelIndex = currentWheels.length - 1;
     const lastWheel = currentWheels[lastWheelIndex];
-    if (lastWheel.rin_id === undefined) {
+    if (lastWheel.tire_id === undefined) {
       const lastWheelIndex = currentWheels.length - 1;
       currentWheels[lastWheelIndex].brandState = "error";
       currentWheels[lastWheelIndex].designState = "error";
@@ -127,7 +127,7 @@ class registerInvoiceForm extends React.Component {
     });
   };
   handleChangeDesign = (design, index) => {
-    getWheelsByDesignId(design.id).then(wheelInfo => {
+    getTiresByDesigndId(design.id).then(wheelInfo => {
       const wheelSelectData = wheelInfo.data.map(wheel => {
         wheel.value = wheel.id;
         wheel.label = wheel.name;
@@ -142,7 +142,7 @@ class registerInvoiceForm extends React.Component {
   handleChangeWheel = (wheel, index) => {
     const currentWheels = this.state.wheels;
     currentWheels[index].wheelState = "success";
-    currentWheels[index].rin_id = wheel.id;
+    currentWheels[index].tire_id = wheel.id;
     currentWheels[index].selectWheel = wheel;
     this.setState({ wheels: currentWheels });
   };
@@ -160,7 +160,7 @@ class registerInvoiceForm extends React.Component {
         totalAmount: this.state.totalInvoice,
         subsidiaryId: this.state.subsidiaryId,
         date: this.state.date,
-        rines: this.state.wheels,
+        tires: this.state.wheels,
         image: this.state.image
       };
       console.log("dataInvoice", dataInvoice);
@@ -185,8 +185,6 @@ class registerInvoiceForm extends React.Component {
           });
         }
       });
-    } else {
-      console.log("que paso?");
     }
   }
   componentDidMount() {
@@ -429,7 +427,7 @@ class registerInvoiceForm extends React.Component {
                 color="danger"
                 size="sm"
                 className={classes.marginRight}
-                onClick={e => this.deleteWheel(key)}
+                onClick={() => this.deleteWheel(key)}
               >
                 X
               </Button>
