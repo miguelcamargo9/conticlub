@@ -22,6 +22,11 @@ import CreateCategory from "../views/Admin/Categories/CreateCategory.jsx";
 import ListCategories from "../views/Admin/Categories/ListCategories.jsx";
 import EditCategory from "../views/Admin/Categories/EditCategory.jsx";
 
+//Cities
+import CreateCity from "../views/Admin/Cities/CreateCity.jsx";
+import ListCities from "../views/Admin/Cities/ListCities.jsx";
+import EditCity from "../views/Admin/Cities/EditCity.jsx";
+
 //Subsidiaries
 import CreateSubsidiary from "../views/Admin/Subsidiaries/CreateSubsidiary.jsx";
 import ListSubsidiaries from "../views/Admin/Subsidiaries/ListSubsidiaries.jsx";
@@ -55,6 +60,7 @@ import Slideshow from "@material-ui/icons/Slideshow";
 import LocalMall from "@material-ui/icons/LocalMall";
 import Brush from "@material-ui/icons/Brush";
 import DriveEta from "@material-ui/icons/DriveEta";
+import LocationCity from "@material-ui/icons/LocationCity";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -125,6 +131,43 @@ export const adminRoutes = [
   },
   {
     collapse: true,
+    name: "Ciuades",
+    rtlName: "Cities",
+    icon: LocationCity,
+    state: "pageCitiesCollapse",
+    views: [
+      {
+        path: "/create-city",
+        name: "Crear Ciudad",
+        rtlName: "Create City",
+        mini: "CC",
+        rtlMini: "CC",
+        component: CreateCity,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-city/:id",
+        name: "Editar Ciudad",
+        rtlName: "Edit City",
+        mini: "EC",
+        rtlMini: "EC",
+        component: EditCity,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-cities",
+        name: "Lista Ciudades",
+        rtlName: "Cities List",
+        mini: "LC",
+        rtlMini: "CL",
+        component: ListCities,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
     name: "Sucursales",
     rtlName: "Subsidiares",
     icon: LocalMall,
@@ -143,8 +186,8 @@ export const adminRoutes = [
         path: "/edit-subsidiary/:id",
         name: "Editar Subsidiaria",
         rtlName: "Edit Sucursal",
-        mini: "EC",
-        rtlMini: "EC",
+        mini: "ES",
+        rtlMini: "ES",
         component: EditSubsidiary,
         layout: "/admin",
         invisible: true
@@ -154,7 +197,7 @@ export const adminRoutes = [
         name: "Lista Sucursales",
         rtlName: "Subsidiaries List",
         mini: "LS",
-        rtlMini: "LS",
+        rtlMini: "SL",
         component: ListSubsidiaries,
         layout: "/admin"
       }
