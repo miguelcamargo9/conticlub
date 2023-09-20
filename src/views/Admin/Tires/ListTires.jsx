@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
+import { CSVLink } from "react-csv";
 
 // react component used to create sweet alerts
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -49,7 +50,8 @@ class ListTires extends React.Component {
     this.state = {
       tires: [],
       alert: null,
-      show: false
+      show: false,
+      profiles: []
     };
     this.warningWithConfirmMessage = this.warningWithConfirmMessage.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
@@ -58,13 +60,15 @@ class ListTires extends React.Component {
     if (this.props.designId) {
       getTiresByDesigndId(this.props.designId)
         .then(dataTires => {
-          this.setState({ tires: dataTires.data });
+          this.setState({ tires: dataTires.data.tires });
+          this.setState({ profiles: dataTires.data.profiles });
         })
         .catch();
     } else {
       getTiresService()
         .then(dataTires => {
-          this.setState({ tires: dataTires.data });
+          this.setState({ tires: dataTires.data.tires });
+          this.setState({ profiles: dataTires.data.profiles });
         })
         .catch();
     }
@@ -164,7 +168,7 @@ class ListTires extends React.Component {
     let data = [];
     if (this.state.tires && this.state.tires.length > 0) {
       data = this.state.tires.map(tire => {
-        const dataTable = {
+        let dataTable = {
           id: tire.id,
           name: tire.name,
           code: tire.tire_code,
@@ -205,6 +209,12 @@ class ListTires extends React.Component {
             </div>
           )
         };
+        tire.tire_points_by_profile.map(tpbp => {
+          if (tpbp && tpbp.profile !== null) {
+            dataTable[tpbp.profile.name] = tpbp.total_points;
+          }
+        });
+
         return dataTable;
       });
       return data;
@@ -212,9 +222,109 @@ class ListTires extends React.Component {
     return data;
   }
 
+  buildDataExcel() {
+    let data = [];
+    if (this.state.tires && this.state.tires.length > 0) {
+      data = this.state.tires.map(tire => {
+        let dataTable = {
+          id: tire.id,
+          name: tire.name,
+          code: tire.tire_code,
+          desc: tire.description,
+          design: tire.design.name
+        };
+        tire.tire_points_by_profile.map(tpbp => {
+          if (tpbp && tpbp.profile !== null) {
+            dataTable[`${tpbp.profile.name}_points_general`] =
+              tpbp.points_general;
+            dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
+            dataTable[`${tpbp.profile.name}`] = tpbp.total_points;
+          }
+        });
+
+        return dataTable;
+      });
+      return data;
+    }
+    return data;
+  }
+
+  buildHeadTableProfiles() {
+    var data = [];
+    if (this.state.profiles && this.state.profiles.length > 0) {
+      this.state.profiles.map(profile => {
+        data.push({
+          Header: profile.name.toUpperCase(),
+          accessor: profile.name
+        });
+      });
+    }
+    return data;
+  }
+  buildHeadExcelProfiles() {
+    var data = [];
+    if (this.state.profiles && this.state.profiles.length > 0) {
+      this.state.profiles.map(profile => {
+        data.push(
+          {
+            Header: `${profile.name.toUpperCase()}_points_general`,
+            accessor: `${profile.name}_points_general`
+          },
+          {
+            Header: `${profile.name.toUpperCase()}_points_uhp`,
+            accessor: `${profile.name}_points_uhp`
+          },
+          {
+            Header: `${profile.name.toUpperCase()}`,
+            accessor: `${profile.name}`
+          }
+        );
+      });
+    }
+    return data;
+  }
   render() {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
+    const dataExcel = this.buildDataExcel();
+    const columns = [
+      {
+        Header: "ID",
+        accessor: "id"
+      },
+      {
+        Header: "Llanta",
+        accessor: "name"
+      },
+      {
+        Header: "Código",
+        accessor: "code"
+      },
+      {
+        Header: "Descripción",
+        accessor: "desc"
+      },
+      {
+        Header: "Diseño",
+        accessor: "design"
+      }
+    ];
+    const headTableProfiles = this.buildHeadTableProfiles().concat([
+      {
+        Header: "Acciones",
+        accessor: "actions",
+        sortable: false,
+        filterable: false
+      }
+    ]);
+    const totalColumns = columns.concat(headTableProfiles);
+    const headExcel = columns.concat(this.buildHeadExcelProfiles());
+    const prettyLink = {
+      backgroundColor: "#fb8c00",
+      height: 20,
+      padding: "10px",
+      color: "#fff"
+    };
     return (
       <div>
         {this.state.alert}
@@ -228,6 +338,23 @@ class ListTires extends React.Component {
                 <h4 className={classes.cardIconTitle}>Lista de Llantas</h4>
               </CardHeader>
               <CardBody>
+                <GridContainer justify="space-between">
+                  <GridItem xs={12} sm={10} md={6} />
+                  <GridItem xs={12} sm={10} md={3}>
+                    <span>
+                      <CSVLink
+                        columns={headExcel}
+                        data={dataExcel}
+                        style={prettyLink}
+                        filename={"llantas.csv"}
+                      >
+                        Exportar a CSV
+                      </CSVLink>
+                    </span>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardBody>
                 <ReactTable
                   previousText="Atrás"
                   nextText="Siguiente"
@@ -238,34 +365,7 @@ class ListTires extends React.Component {
                   noDataText="No hay llantas registrados"
                   data={dataTable}
                   filterable
-                  columns={[
-                    {
-                      Header: "ID",
-                      accessor: "id"
-                    },
-                    {
-                      Header: "Llanta",
-                      accessor: "name"
-                    },
-                    {
-                      Header: "Código",
-                      accessor: "code"
-                    },
-                    {
-                      Header: "Descripción",
-                      accessor: "desc"
-                    },
-                    {
-                      Header: "Diseño",
-                      accessor: "design"
-                    },
-                    {
-                      Header: "Acciones",
-                      accessor: "actions",
-                      sortable: false,
-                      filterable: false
-                    }
-                  ]}
+                  columns={totalColumns}
                   defaultPageSize={10}
                   showPaginationTop
                   showPaginationBottom={false}
