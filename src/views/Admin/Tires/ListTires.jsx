@@ -209,12 +209,16 @@ class ListTires extends React.Component {
             </div>
           )
         };
-        tire.tire_points_by_profile.map(tpbp => {
-          if (tpbp && tpbp.profile !== null) {
-            dataTable[tpbp.profile.name] = tpbp.total_points;
-          }
-        });
-
+        if (
+          typeof tire !== "undefined" &&
+          typeof tire.tire_points_by_profile !== "undefined"
+        ) {
+          tire.tire_points_by_profile.map(tpbp => {
+            if (tpbp && tpbp.profile !== null) {
+              dataTable[tpbp.profile.name] = tpbp.total_points;
+            }
+          });
+        }
         return dataTable;
       });
       return data;
@@ -233,15 +237,19 @@ class ListTires extends React.Component {
           desc: tire.description,
           design: tire.design.name
         };
-        tire.tire_points_by_profile.map(tpbp => {
-          if (tpbp && tpbp.profile !== null) {
-            dataTable[`${tpbp.profile.name}_points_general`] =
-              tpbp.points_general;
-            dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
-            dataTable[`${tpbp.profile.name}`] = tpbp.total_points;
-          }
-        });
-
+        if (
+          typeof tire !== "undefined" &&
+          typeof tire.tire_points_by_profile !== "undefined"
+        ) {
+          tire.tire_points_by_profile.map(tpbp => {
+            if (tpbp && tpbp.profile !== null) {
+              dataTable[`${tpbp.profile.name}_points_general`] =
+                tpbp.points_general;
+              dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
+              dataTable[`${tpbp.profile.name}`] = tpbp.total_points;
+            }
+          });
+        }
         return dataTable;
       });
       return data;
