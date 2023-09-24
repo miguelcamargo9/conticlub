@@ -349,23 +349,22 @@ class productListAdmin extends React.Component {
     }
   }
 
-  buildDataExcel(){
-    let data = [];
-    if (this.state.products && this.state.products.length > 0) {
-      data = this.state.products.map(product => {
-        let dataTable = {
-          id: product.id,
-          name: product.name,
-          points: product.points,
-          category: product.product_category && product.product_category.name,
-          estimated_value: product.estimated_value,
-          status: product.state ? "ACTIVO" : "DESACTIVADO",
-        };
-        return dataTable;
-      });
-      return data;
+  buildDataExcel() {
+    const { products } = this.state;
+
+    if (!products || products.length === 0) {
+      return [];
     }
-    return data;
+
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      points: product.points,
+      points_value: product.points_value,
+      category: product.product_category && product.product_category.name,
+      estimated_value: product.estimated_value,
+      status: product.state ? "ACTIVO" : "DESACTIVADO"
+    }));
   }
 
   render() {
@@ -395,6 +394,10 @@ class productListAdmin extends React.Component {
       {
         Header: "Puntos",
         accessor: "points"
+      },
+      {
+        Header: "Valor por puntos",
+        accessor: "points_value"
       },
       {
         Header: "Categoria",

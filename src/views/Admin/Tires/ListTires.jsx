@@ -34,6 +34,8 @@ import {
 } from "../../../services/tireService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+import { PROFILES } from "../../../constants/profiles";
 
 const styles = {
   cardIconTitle: {
@@ -192,7 +194,7 @@ class ListTires extends React.Component {
                 className="edit"
               >
                 <Dvr />
-              </Button>{" "}
+              </Button>
               {/* use this button to remove the data row */}
               <Button
                 justIcon
@@ -205,7 +207,7 @@ class ListTires extends React.Component {
                 className="remove"
               >
                 <Close />
-              </Button>{" "}
+              </Button>
             </div>
           )
         };
@@ -213,7 +215,7 @@ class ListTires extends React.Component {
           typeof tire !== "undefined" &&
           typeof tire.tire_points_by_profile !== "undefined"
         ) {
-          tire.tire_points_by_profile.map(tpbp => {
+          tire.tire_points_by_profile.forEach(tpbp => {
             if (tpbp && tpbp.profile !== null) {
               dataTable[tpbp.profile.name] = tpbp.total_points;
             }
@@ -237,19 +239,14 @@ class ListTires extends React.Component {
           desc: tire.description,
           design: tire.design.name
         };
-        if (
-          typeof tire !== "undefined" &&
-          typeof tire.tire_points_by_profile !== "undefined"
-        ) {
-          tire.tire_points_by_profile.map(tpbp => {
-            if (tpbp && tpbp.profile !== null) {
-              dataTable[`${tpbp.profile.name}_points_general`] =
-                tpbp.points_general;
-              dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
-              dataTable[`${tpbp.profile.name}`] = tpbp.total_points;
-            }
-          });
-        }
+        tire.tire_points_by_profile.forEach(tpbp => {
+          if (tpbp && tpbp.profile !== null) {
+            dataTable[`${tpbp.profile.name}_points_general`] =
+              tpbp.points_general;
+            dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
+            dataTable[`${tpbp.profile.name}_total_points`] = tpbp.total_points;
+          }
+        });
         return dataTable;
       });
       return data;
@@ -258,21 +255,24 @@ class ListTires extends React.Component {
   }
 
   buildHeadTableProfiles() {
-    var data = [];
+    const data = [];
     if (this.state.profiles && this.state.profiles.length > 0) {
-      this.state.profiles.map(profile => {
+      this.state.profiles.forEach(profile => {
+        const width = profile.name === PROFILES.MERQUELLANTAS ? 150 : 85;
         data.push({
-          Header: profile.name.toUpperCase(),
-          accessor: profile.name
+          Header: capitalizeFirstLetter(profile.name),
+          accessor: profile.name,
+          width: width
         });
       });
     }
     return data;
   }
+
   buildHeadExcelProfiles() {
-    var data = [];
+    const data = [];
     if (this.state.profiles && this.state.profiles.length > 0) {
-      this.state.profiles.map(profile => {
+      this.state.profiles.forEach(profile => {
         data.push(
           {
             Header: `${profile.name.toUpperCase()}_points_general`,
@@ -283,7 +283,7 @@ class ListTires extends React.Component {
             accessor: `${profile.name}_points_uhp`
           },
           {
-            Header: `${profile.name.toUpperCase()}`,
+            Header: `${profile.name.toUpperCase()}_total_points`,
             accessor: `${profile.name}`
           }
         );
@@ -291,6 +291,7 @@ class ListTires extends React.Component {
     }
     return data;
   }
+
   render() {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
@@ -298,34 +299,38 @@ class ListTires extends React.Component {
     const columns = [
       {
         Header: "ID",
-        accessor: "id"
+        accessor: "id",
+        width: 50
       },
       {
         Header: "Llanta",
-        accessor: "name"
+        accessor: "name",
+        width: 110
       },
       {
         Header: "Código",
-        accessor: "code"
+        accessor: "code",
+        width: 110
       },
       {
         Header: "Descripción",
-        accessor: "desc"
+        accessor: "desc",
+        width: 250
       },
       {
         Header: "Diseño",
-        accessor: "design"
-      }
-    ];
-    const headTableProfiles = this.buildHeadTableProfiles().concat([
+        accessor: "design",
+        width: 160
+      },
+      ...this.buildHeadTableProfiles(),
       {
         Header: "Acciones",
         accessor: "actions",
+        width: 100,
         sortable: false,
         filterable: false
       }
-    ]);
-    const totalColumns = columns.concat(headTableProfiles);
+    ];
     const headExcel = columns.concat(this.buildHeadExcelProfiles());
     const prettyLink = {
       backgroundColor: "#fb8c00",
@@ -373,7 +378,7 @@ class ListTires extends React.Component {
                   noDataText="No hay llantas registrados"
                   data={dataTable}
                   filterable
-                  columns={totalColumns}
+                  columns={columns}
                   defaultPageSize={10}
                   showPaginationTop
                   showPaginationBottom={false}
