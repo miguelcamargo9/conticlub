@@ -167,128 +167,132 @@ class ListTires extends React.Component {
   }
 
   buildDataTable() {
-    let data = [];
-    if (this.state.tires && this.state.tires.length > 0) {
-      data = this.state.tires.map(tire => {
-        let dataTable = {
-          id: tire.id,
-          name: tire.name,
-          code: tire.tire_code,
-          desc: tire.description,
-          design: tire.design.name,
-          actions: (
-            // we've added some custom button actions
-            <div className="actions-right">
-              {/* use this button to add a edit kind of action */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  let tireSelect = this.state.tires.find(
-                    findTire => findTire.id === tire.id
-                  );
-                  this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
-                }}
-                color="warning"
-                className="edit"
-              >
-                <Dvr />
-              </Button>
-              {/* use this button to remove the data row */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  this.warningWithConfirmMessage(tire.id);
-                }}
-                color="danger"
-                className="remove"
-              >
-                <Close />
-              </Button>
-            </div>
-          )
-        };
-        if (
-          typeof tire !== "undefined" &&
-          typeof tire.tire_points_by_profile !== "undefined"
-        ) {
-          tire.tire_points_by_profile.forEach(tpbp => {
-            if (tpbp && tpbp.profile !== null) {
-              dataTable[tpbp.profile.name] = tpbp.total_points;
-            }
-          });
-        }
-        return dataTable;
-      });
-      return data;
+    const { tires } = this.state;
+
+    if (!tires || tires.length === 0) {
+      return [];
     }
-    return data;
+
+    return tires.map(tire => {
+      const dataTable = {
+        id: tire.id,
+        name: tire.name,
+        code: tire.tire_code,
+        desc: tire.description,
+        design: tire.design.name,
+        actions: (
+          // we've added some custom button actions
+          <div className="actions-right">
+            {/* use this button to add a edit kind of action */}
+            <Button
+              justIcon
+              round
+              simple
+              onClick={() => {
+                const tireSelect = this.state.tires.find(
+                  findTire => findTire.id === tire.id
+                );
+                this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
+              }}
+              color="warning"
+              className="edit"
+            >
+              <Dvr />
+            </Button>
+            {/* use this button to remove the data row */}
+            <Button
+              justIcon
+              round
+              simple
+              onClick={() => {
+                this.warningWithConfirmMessage(tire.id);
+              }}
+              color="danger"
+              className="remove"
+            >
+              <Close />
+            </Button>
+          </div>
+        )
+      };
+      tire.tire_points_by_profile.forEach(tpbp => {
+        if (tpbp && tpbp.profile !== null) {
+          dataTable[tpbp.profile.name] = tpbp.total_points;
+        }
+      });
+      return dataTable;
+    });
   }
 
   buildDataExcel() {
-    let data = [];
-    if (this.state.tires && this.state.tires.length > 0) {
-      data = this.state.tires.map(tire => {
-        let dataTable = {
-          id: tire.id,
-          name: tire.name,
-          code: tire.tire_code,
-          desc: tire.description,
-          design: tire.design.name
-        };
-        tire.tire_points_by_profile.forEach(tpbp => {
-          if (tpbp && tpbp.profile !== null) {
-            dataTable[`${tpbp.profile.name}_points_general`] =
-              tpbp.points_general;
-            dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
-            dataTable[`${tpbp.profile.name}_total_points`] = tpbp.total_points;
-          }
-        });
-        return dataTable;
-      });
-      return data;
+    const { tires } = this.state;
+
+    if (!tires || tires.length === 0) {
+      return [];
     }
-    return data;
+
+    return tires.map(tire => {
+      const dataTable = {
+        id: tire.id,
+        name: tire.name,
+        code: tire.tire_code,
+        desc: tire.description,
+        design: tire.design.name
+      };
+      tire.tire_points_by_profile.forEach(tpbp => {
+        if (tpbp && tpbp.profile !== null) {
+          dataTable[`${tpbp.profile.name}_points_general`] =
+            tpbp.points_general;
+          dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
+          dataTable[`${tpbp.profile.name}_total_points`] = tpbp.total_points;
+        }
+      });
+      return dataTable;
+    });
   }
 
   buildHeadTableProfiles() {
-    const data = [];
-    if (this.state.profiles && this.state.profiles.length > 0) {
-      this.state.profiles.forEach(profile => {
-        const width = profile.name === PROFILES.MERQUELLANTAS ? 150 : 85;
-        data.push({
-          Header: capitalizeFirstLetter(profile.name),
-          accessor: profile.name,
-          width: width
-        });
-      });
+    const { profiles } = this.state;
+
+    if (!profiles || profiles.length === 0) {
+      return [];
     }
-    return data;
+
+    return profiles.map(profile => {
+      const width = profile.name === PROFILES.MERQUELLANTAS ? 150 : 85;
+      return {
+        Header: capitalizeFirstLetter(profile.name),
+        accessor: profile.name,
+        width: width
+      };
+    });
   }
 
   buildHeadExcelProfiles() {
-    const data = [];
-    if (this.state.profiles && this.state.profiles.length > 0) {
-      this.state.profiles.forEach(profile => {
-        data.push(
-          {
-            Header: `${profile.name.toUpperCase()}_points_general`,
-            accessor: `${profile.name}_points_general`
-          },
-          {
-            Header: `${profile.name.toUpperCase()}_points_uhp`,
-            accessor: `${profile.name}_points_uhp`
-          },
-          {
-            Header: `${profile.name.toUpperCase()}_total_points`,
-            accessor: `${profile.name}`
-          }
-        );
-      });
+    const { profiles } = this.state;
+
+    if (!profiles || profiles.length === 0) {
+      return [];
     }
+
+    const data = profiles.flatMap(profile => {
+      const upperName = profile.name.toUpperCase();
+      return [
+        {
+          Header: `${upperName}_points_general`,
+          accessor: `${profile.name}_points_general`
+        },
+        {
+          Header: `${upperName}_points_uhp`,
+          accessor: `${profile.name}_points_uhp`
+        },
+        {
+          Header: `${upperName}_total_points`,
+          accessor: `${profile.name}`
+        }
+      ];
+    });
+
     return data;
   }
 
