@@ -16,6 +16,8 @@ import Search from "@material-ui/icons/Search";
 // react component used to create sweet alerts
 import SweetAlert from "react-bootstrap-sweetalert";
 
+import { CSVLink } from "react-csv";
+
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
@@ -347,6 +349,24 @@ class productListAdmin extends React.Component {
     }
   }
 
+  buildDataExcel() {
+    const { products } = this.state;
+
+    if (!products || products.length === 0) {
+      return [];
+    }
+
+    return products.map(product => ({
+      id: product.id,
+      name: product.name,
+      points: product.points,
+      points_value: product.points_value,
+      category: product.product_category && product.product_category.name,
+      estimated_value: product.estimated_value,
+      status: product.state ? "ACTIVO" : "DESACTIVADO"
+    }));
+  }
+
   render() {
     const { classes, rtlActive } = this.props;
     const searchButton =
@@ -361,10 +381,63 @@ class productListAdmin extends React.Component {
       });
 
     const gridData = this.buildGridData(classes);
-
+    const dataExcel = this.buildDataExcel();
+    const headExcel = [
+      {
+        Header: "ID",
+        accessor: "id"
+      },
+      {
+        Header: "Nombre",
+        accessor: "name"
+      },
+      {
+        Header: "Puntos",
+        accessor: "points"
+      },
+      {
+        Header: "Valor por puntos",
+        accessor: "points_value"
+      },
+      {
+        Header: "Categoria",
+        accessor: "category"
+      },
+      {
+        Header: "Valor estimado",
+        accessor: "estimated_value"
+      },
+      {
+        Header: "Stado",
+        accessor: "status"
+      }
+    ];
+    const prettyLink = {
+      backgroundColor: "#fb8c00",
+      height: 20,
+      padding: "10px",
+      color: "#fff"
+    };
     return this.state.products.length > 0 ? (
       <div>
         {this.state.alert}
+        <CardBody>
+          <GridContainer justify="space-between">
+            <GridItem xs={12} sm={10} md={6} />
+            <GridItem xs={12} sm={10} md={3}>
+              <span>
+                <CSVLink
+                  columns={headExcel}
+                  data={dataExcel}
+                  style={prettyLink}
+                  filename={"productos.csv"}
+                >
+                  Exportar a CSV
+                </CSVLink>
+              </span>
+            </GridItem>
+          </GridContainer>
+        </CardBody>
         <GridContainer justify="space-between">
           <GridItem xs={12} sm={2}>
             <h4>Lista de Productos</h4>

@@ -48,12 +48,15 @@ class UserList extends React.Component {
         const dataTable = {
           id: index,
           name: user.name,
+          subsidiary:
+            user.subsidiary && capitalizeFirstLetter(user.subsidiary.name),
           identification_number: user.identification_number,
           identification_type: user.identification_type,
           email: user.email,
           phone: user.phone,
           points: user.points,
           profile: user.profile && capitalizeFirstLetter(user.profile.name),
+          status: user.state ? "ACTIVO" : "DESACTIVADO",
           actions: (
             // we've added some custom button actions
             <div className="actions-right">
@@ -106,7 +109,11 @@ class UserList extends React.Component {
                 <GridItem xs={12} sm={10} md={6} />
                 <GridItem xs={12} sm={10} md={3}>
                   <span>
-                    <CSVLink data={csvData} style={prettyLink}>
+                    <CSVLink
+                      data={csvData}
+                      style={prettyLink}
+                      filename={"usuarios.csv"}
+                    >
                       Exportar a CSV
                     </CSVLink>
                   </span>
@@ -128,6 +135,10 @@ class UserList extends React.Component {
                   {
                     Header: "Nombre",
                     accessor: "name"
+                  },
+                  {
+                    Header: "Sucursal",
+                    accessor: "subsidiary"
                   },
                   {
                     Header: "Documento",
@@ -152,6 +163,10 @@ class UserList extends React.Component {
                   {
                     Header: "Perfil",
                     accessor: "profile"
+                  },
+                  {
+                    Header: "Stado",
+                    accessor: "status"
                   },
                   {
                     Header: "Acciones",

@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // react component for creating dynamic tables
 import ReactTable from "react-table";
+import { CSVLink } from "react-csv";
 
 // react component used to create sweet alerts
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -33,6 +34,8 @@ import {
 } from "../../../services/tireService";
 
 import sweetAlertStyle from "assets/jss/material-dashboard-pro-react/views/sweetAlertStyle.jsx";
+import { capitalizeFirstLetter } from "../../../utils/formatters";
+import { PROFILES } from "../../../constants/profiles";
 
 const styles = {
   cardIconTitle: {
@@ -49,7 +52,8 @@ class ListTires extends React.Component {
     this.state = {
       tires: [],
       alert: null,
-      show: false
+      show: false,
+      profiles: []
     };
     this.warningWithConfirmMessage = this.warningWithConfirmMessage.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
@@ -58,13 +62,15 @@ class ListTires extends React.Component {
     if (this.props.designId) {
       getTiresByDesigndId(this.props.designId)
         .then(dataTires => {
-          this.setState({ tires: dataTires.data });
+          this.setState({ tires: dataTires.data.tires });
+          this.setState({ profiles: dataTires.data.profiles });
         })
         .catch();
     } else {
       getTiresService()
         .then(dataTires => {
-          this.setState({ tires: dataTires.data });
+          this.setState({ tires: dataTires.data.tires });
+          this.setState({ profiles: dataTires.data.profiles });
         })
         .catch();
     }
@@ -161,60 +167,181 @@ class ListTires extends React.Component {
   }
 
   buildDataTable() {
-    let data = [];
-    if (this.state.tires && this.state.tires.length > 0) {
-      data = this.state.tires.map(tire => {
-        const dataTable = {
-          id: tire.id,
-          name: tire.name,
-          code: tire.tire_code,
-          desc: tire.description,
-          design: tire.design.name,
-          actions: (
-            // we've added some custom button actions
-            <div className="actions-right">
-              {/* use this button to add a edit kind of action */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  let tireSelect = this.state.tires.find(
-                    findTire => findTire.id === tire.id
-                  );
-                  this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
-                }}
-                color="warning"
-                className="edit"
-              >
-                <Dvr />
-              </Button>{" "}
-              {/* use this button to remove the data row */}
-              <Button
-                justIcon
-                round
-                simple
-                onClick={() => {
-                  this.warningWithConfirmMessage(tire.id);
-                }}
-                color="danger"
-                className="remove"
-              >
-                <Close />
-              </Button>{" "}
-            </div>
-          )
-        };
-        return dataTable;
-      });
-      return data;
+    const { tires } = this.state;
+
+    if (!tires || tires.length === 0) {
+      return [];
     }
+
+    return tires.map(tire => {
+      const dataTable = {
+        id: tire.id,
+        name: tire.name,
+        code: tire.tire_code,
+        desc: tire.description,
+        design: tire.design.name,
+        actions: (
+          // we've added some custom button actions
+          <div className="actions-right">
+            {/* use this button to add a edit kind of action */}
+            <Button
+              justIcon
+              round
+              simple
+              onClick={() => {
+                const tireSelect = this.state.tires.find(
+                  findTire => findTire.id === tire.id
+                );
+                this.props.history.push(`/admin/edit-tire/${tireSelect.id}`);
+              }}
+              color="warning"
+              className="edit"
+            >
+              <Dvr />
+            </Button>
+            {/* use this button to remove the data row */}
+            <Button
+              justIcon
+              round
+              simple
+              onClick={() => {
+                this.warningWithConfirmMessage(tire.id);
+              }}
+              color="danger"
+              className="remove"
+            >
+              <Close />
+            </Button>
+          </div>
+        )
+      };
+      tire.tire_points_by_profile.forEach(tpbp => {
+        if (tpbp && tpbp.profile !== null) {
+          dataTable[tpbp.profile.name] = tpbp.total_points;
+        }
+      });
+      return dataTable;
+    });
+  }
+
+  buildDataExcel() {
+    const { tires } = this.state;
+
+    if (!tires || tires.length === 0) {
+      return [];
+    }
+
+    return tires.map(tire => {
+      const dataTable = {
+        id: tire.id,
+        name: tire.name,
+        code: tire.tire_code,
+        desc: tire.description,
+        design: tire.design.name
+      };
+      tire.tire_points_by_profile.forEach(tpbp => {
+        if (tpbp && tpbp.profile !== null) {
+          dataTable[`${tpbp.profile.name}_points_general`] =
+            tpbp.points_general;
+          dataTable[`${tpbp.profile.name}_points_uhp`] = tpbp.points_uhp;
+          dataTable[`${tpbp.profile.name}_total_points`] = tpbp.total_points;
+        }
+      });
+      return dataTable;
+    });
+  }
+
+  buildHeadTableProfiles() {
+    const { profiles } = this.state;
+
+    if (!profiles || profiles.length === 0) {
+      return [];
+    }
+
+    return profiles.map(profile => {
+      const width = profile.name === PROFILES.MERQUELLANTAS ? 150 : 85;
+      return {
+        Header: capitalizeFirstLetter(profile.name),
+        accessor: profile.name,
+        width: width
+      };
+    });
+  }
+
+  buildHeadExcelProfiles() {
+    const { profiles } = this.state;
+
+    if (!profiles || profiles.length === 0) {
+      return [];
+    }
+
+    const data = profiles.flatMap(profile => {
+      const upperName = profile.name.toUpperCase();
+      return [
+        {
+          Header: `${upperName}_points_general`,
+          accessor: `${profile.name}_points_general`
+        },
+        {
+          Header: `${upperName}_points_uhp`,
+          accessor: `${profile.name}_points_uhp`
+        },
+        {
+          Header: `${upperName}_total_points`,
+          accessor: `${profile.name}`
+        }
+      ];
+    });
+
     return data;
   }
 
   render() {
     const { classes } = this.props;
     const dataTable = this.buildDataTable();
+    const dataExcel = this.buildDataExcel();
+    const columns = [
+      {
+        Header: "ID",
+        accessor: "id",
+        width: 50
+      },
+      {
+        Header: "Llanta",
+        accessor: "name",
+        width: 110
+      },
+      {
+        Header: "Código",
+        accessor: "code",
+        width: 110
+      },
+      {
+        Header: "Descripción",
+        accessor: "desc",
+        width: 250
+      },
+      {
+        Header: "Diseño",
+        accessor: "design",
+        width: 160
+      },
+      ...this.buildHeadTableProfiles(),
+      {
+        Header: "Acciones",
+        accessor: "actions",
+        width: 100,
+        sortable: false,
+        filterable: false
+      }
+    ];
+    const headExcel = columns.concat(this.buildHeadExcelProfiles());
+    const prettyLink = {
+      backgroundColor: "#fb8c00",
+      height: 20,
+      padding: "10px",
+      color: "#fff"
+    };
     return (
       <div>
         {this.state.alert}
@@ -228,6 +355,23 @@ class ListTires extends React.Component {
                 <h4 className={classes.cardIconTitle}>Lista de Llantas</h4>
               </CardHeader>
               <CardBody>
+                <GridContainer justify="space-between">
+                  <GridItem xs={12} sm={10} md={6} />
+                  <GridItem xs={12} sm={10} md={3}>
+                    <span>
+                      <CSVLink
+                        columns={headExcel}
+                        data={dataExcel}
+                        style={prettyLink}
+                        filename={"llantas.csv"}
+                      >
+                        Exportar a CSV
+                      </CSVLink>
+                    </span>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardBody>
                 <ReactTable
                   previousText="Atrás"
                   nextText="Siguiente"
@@ -238,34 +382,7 @@ class ListTires extends React.Component {
                   noDataText="No hay llantas registrados"
                   data={dataTable}
                   filterable
-                  columns={[
-                    {
-                      Header: "ID",
-                      accessor: "id"
-                    },
-                    {
-                      Header: "Llanta",
-                      accessor: "name"
-                    },
-                    {
-                      Header: "Código",
-                      accessor: "code"
-                    },
-                    {
-                      Header: "Descripción",
-                      accessor: "desc"
-                    },
-                    {
-                      Header: "Diseño",
-                      accessor: "design"
-                    },
-                    {
-                      Header: "Acciones",
-                      accessor: "actions",
-                      sortable: false,
-                      filterable: false
-                    }
-                  ]}
+                  columns={columns}
                   defaultPageSize={10}
                   showPaginationTop
                   showPaginationBottom={false}
