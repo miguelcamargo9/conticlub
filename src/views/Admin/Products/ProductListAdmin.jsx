@@ -449,7 +449,7 @@ class productListAdmin extends React.Component {
                 className: classes.search
               }}
               inputProps={{
-                placeholder: rtlActive ? "Search" : "Buscar",
+                placeholder: rtlActive ? "Search" : "Buscar Producto",
                 onChange: event => this.change(event),
                 type: "search"
               }}
