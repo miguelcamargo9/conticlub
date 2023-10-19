@@ -55,44 +55,13 @@ class EditTire extends React.Component {
   }
 
   componentDidMount() {
-    this.loadDesigns();
-    this.loadProfiles();
-    getTireById(this.props.match.params.id)
-      .then(responeTire => {
-        const design = responeTire.data.design;
-        const selectDesign = {
-          ...design,
-          value: design.id,
-          label: design.name
-        };
-        const updatedTirePoints = [...this.state.tirePoints];
+    this.loadData();
+  }
 
-        responeTire.data.tire_points_by_profile.forEach(point => {
-          const existingPointIndex = updatedTirePoints.findIndex(
-            tirePoint => tirePoint.profiles_id === point.profiles_id
-          );
-
-          if (existingPointIndex !== -1) {
-            const updatedPoint = {
-              ...updatedTirePoints[existingPointIndex],
-              points_general: point.points_general,
-              points_uhp: point.points_uhp
-            };
-
-            updatedTirePoints[existingPointIndex] = updatedPoint;
-          }
-        });
-
-        this.setState({
-          tireName: responeTire.data.name,
-          tireCode: responeTire.data.tire_code,
-          tireDesc: responeTire.data.description,
-          tirePoints: updatedTirePoints,
-          selectDesign: selectDesign
-        });
-        this.setPointsAccordion();
-      })
-      .catch(e => console.log("error", e));
+  async loadData() {
+    await this.loadDesigns();
+    await this.loadProfiles();
+    await this.loadTire();
   }
 
   async loadDesigns() {
@@ -116,6 +85,48 @@ class EditTire extends React.Component {
       await this.setPointsAccordion();
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  async loadTire() {
+    try {
+      const responeTire = await getTireById(this.props.match.params.id);
+      const design = responeTire.data.design;
+      const selectDesign = {
+        ...design,
+        value: design.id,
+        label: design.name
+      };
+
+      const updatedTirePoints = [...this.state.tirePoints];
+
+      responeTire.data.tire_points_by_profile.forEach(point => {
+        const existingPointIndex = updatedTirePoints.findIndex(
+          tirePoint => tirePoint.profiles_id === point.profiles_id
+        );
+
+        if (existingPointIndex !== -1) {
+          const updatedPoint = {
+            ...updatedTirePoints[existingPointIndex],
+            points_general: point.points_general,
+            points_uhp: point.points_uhp
+          };
+
+          updatedTirePoints[existingPointIndex] = updatedPoint;
+        }
+      });
+
+      this.setState({
+        tireName: responeTire.data.name,
+        tireCode: responeTire.data.tire_code,
+        tireDesc: responeTire.data.description,
+        tirePoints: updatedTirePoints,
+        selectDesign: selectDesign
+      });
+
+      this.setPointsAccordion();
+    } catch (e) {
+      console.log("error", e);
     }
   }
 
