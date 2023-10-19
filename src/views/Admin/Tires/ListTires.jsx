@@ -152,7 +152,7 @@ class ListTires extends React.Component {
           this.setState({ tires: tires });
           this.successDelete(tireId);
         } else {
-          return this.cancelDetele(tireInfo.data.detail);
+          return this.cancelDetele(tireInfo.data.message);
         }
       })
       .catch(e => {
