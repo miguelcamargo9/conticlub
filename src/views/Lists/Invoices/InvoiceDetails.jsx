@@ -213,7 +213,8 @@ class ConfirmRedeemForm extends React.Component {
     const { invoice } = this.state;
 
     const rejectButton =
-      invoice.state === "Creada" && user.profiles_id === 4 ? (
+      invoice.state === "Creada" &&
+      (user.profiles_id === 4 || user.profiles_id === 1) ? (
         <Button
           size="sm"
           onClick={() => this.rejectInvoice()}
@@ -228,7 +229,8 @@ class ConfirmRedeemForm extends React.Component {
       );
 
     const approveButton =
-      invoice.state === "Creada" && user.profiles_id === 4 ? (
+      invoice.state === "Creada" &&
+      (user.profiles_id === 4 || user.profiles_id === 1) ? (
         <Button
           size="sm"
           onClick={() => this.approveInvoice()}
@@ -391,7 +393,8 @@ class ConfirmRedeemForm extends React.Component {
                       inputProps={{
                         value: invoice.comment,
                         disabled:
-                          invoice.state === "Creada" && user.profiles_id === 4
+                          invoice.state === "Creada" &&
+                          (user.profiles_id === 4 || user.profiles_id === 1)
                             ? false
                             : true,
                         onChange: event =>
