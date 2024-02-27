@@ -15,18 +15,50 @@ import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashbo
 import { BUCKET_URL } from "../../../constants/server";
 
 class WheelsList extends React.Component {
+  wheels = [
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/contisportcontact5.png`,
+      title: "ContiSportContact 5",
+      brand: "CONTINENTAL"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactatr.png`,
+      title: "CrossContact ATR",
+      brand: "CONTINENTAL"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactat50.png`,
+      title: "TerrainContact AT-50",
+      brand: "CONTINENTAL"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/continental_premium_contact_6_fixed.png`,
+      title: "Premium Contact 6",
+      brand: "CONTINENTAL"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/grabberATX_bsw_fixed.png`,
+      title: "Grabber A/Tx",
+      brand: "GENERAL TIRE"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/altimax_xp7_fixed.png`,
+      title: "ALTIMAX XP7",
+      brand: "GENERAL TIRE"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/g_max_rs.png`,
+      title: "G-MAX RS",
+      brand: "GENERAL TIRE"
+    },
+    {
+      src: `${BUCKET_URL}/files/assets/img/llantascontinental/general_tire_grabber_GT_plus_fixed.png`,
+      title: "Grabber GT+",
+      brand: "GENERAL TIRE"
+    }
+  ];
   render() {
     const { classes } = this.props;
-
-    const wheel1 = `${BUCKET_URL}/files/assets/img/llantascontinental/contisportcontact5.png`;
-    const wheel2 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactatr.png`;
-    const wheel3 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactat50.png`;
-    const wheel4 = `${BUCKET_URL}/files/assets/img/llantascontinental/crosscontactuhp.png`;
-    const wheel5 = `${BUCKET_URL}/files/assets/img/llantascontinental/grabber_at2.png`;
-    const wheel6 = `${BUCKET_URL}/files/assets/img/llantascontinental/altimax_xp7.png`;
-    const wheel7 = `${BUCKET_URL}/files/assets/img/llantascontinental/g_max_rs.png`;
-    const wheel8 = `${BUCKET_URL}/files/assets/img/llantascontinental/grabber_x3.png`;
-
     return (
       <div>
         <GridContainer justify="space-between">
@@ -36,106 +68,19 @@ class WheelsList extends React.Component {
         </GridContainer>
         <hr />
         <GridContainer>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel1} alt={wheel1} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  ContiSportContact 5
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel2} alt={wheel2} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>CrossContact ATR</h4>
-                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel3} alt={wheel3} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>
-                  TerrainContact AT-50
-                </h4>
-                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel4} alt={wheel4} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>CrossContact UHP</h4>
-                <p className={classes.cardProductDesciprion}>{"CONTINENTAL"}</p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel5} alt={wheel5} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>GRABBER AT2</h4>
-                <p className={classes.cardProductDesciprion}>
-                  {"GENERAL TIRE"}
-                </p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel6} alt={wheel6} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>ALTIMAX XP7</h4>
-                <p className={classes.cardProductDesciprion}>
-                  {"GENERAL TIRE"}
-                </p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel7} alt={wheel7} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>G-MAX RS</h4>
-                <p className={classes.cardProductDesciprion}>
-                  {"GENERAL TIRE"}
-                </p>
-              </CardBody>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={6} lg={3}>
-            <Card product>
-              <CardHeader image>
-                <img src={wheel8} alt={wheel8} />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardProductTitle}>GRABBER X3</h4>
-                <p className={classes.cardProductDesciprion}>
-                  {"GENERAL TIRE"}
-                </p>
-              </CardBody>
-            </Card>
-          </GridItem>
+          {this.wheels.map((wheel, index) => (
+            <GridItem key={index} xs={12} sm={6} md={6} lg={3}>
+              <Card product>
+                <CardHeader image>
+                  <img src={wheel.src} alt={wheel.title} />
+                </CardHeader>
+                <CardBody>
+                  <h4 className={classes.cardProductTitle}>{wheel.title}</h4>
+                  <p className={classes.cardProductDesciprion}>{wheel.brand}</p>
+                </CardBody>
+              </Card>
+            </GridItem>
+          ))}
         </GridContainer>
       </div>
     );
