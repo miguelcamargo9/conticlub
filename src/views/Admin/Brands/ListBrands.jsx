@@ -135,7 +135,10 @@ class ListBrands extends React.Component {
         }
       })
       .catch(e => {
-        console.log("Error eliminado marca id: brandId", e);
+        console.error("Error eliminado marca id: brandId", e);
+        this.cancelDetele(
+          "Ocurrió un error eliminando la marca. Inténtelo de nuevo."
+        );
       });
   }
 

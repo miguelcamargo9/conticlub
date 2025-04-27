@@ -251,7 +251,7 @@ export const adminRoutes = [
     name: "Marcas",
     rtlName: "Brands",
     icon: LocalOffer,
-    state: "pageDesignsCollapse",
+    state: "pageBrandsCollapse",
     views: [
       {
         path: "/create-brand",
