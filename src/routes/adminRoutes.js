@@ -32,6 +32,11 @@ import CreateSubsidiary from "../views/Admin/Subsidiaries/CreateSubsidiary.jsx";
 import ListSubsidiaries from "../views/Admin/Subsidiaries/ListSubsidiaries.jsx";
 import EditSubsidiary from "../views/Admin/Subsidiaries/EditSubsidiary.jsx";
 
+//Brands
+import CreateBrand from "../views/Admin/Brands/CreateBrand.jsx";
+import ListBrands from "../views/Admin/Brands/ListBrands.jsx";
+import EditBrand from "../views/Admin/Brands/EditBrand.jsx";
+
 //Designs
 import CreateDesign from "../views/Admin/Designs/CreateDesign.jsx";
 import ListDesigns from "../views/Admin/Designs/ListDesigns.jsx";
@@ -61,6 +66,7 @@ import LocalMall from "@material-ui/icons/LocalMall";
 import Brush from "@material-ui/icons/Brush";
 import DriveEta from "@material-ui/icons/DriveEta";
 import LocationCity from "@material-ui/icons/LocationCity";
+import LocalOffer from "@material-ui/icons/LocalOffer";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
 
@@ -236,6 +242,43 @@ export const adminRoutes = [
         mini: "LP",
         rtlMini: "PL",
         component: ProfilesList,
+        layout: "/admin"
+      }
+    ]
+  },
+  {
+    collapse: true,
+    name: "Marcas",
+    rtlName: "Brands",
+    icon: LocalOffer,
+    state: "pageDesignsCollapse",
+    views: [
+      {
+        path: "/create-brand",
+        name: "Crear Marca",
+        rtlName: "Create Brand",
+        mini: "CM",
+        rtlMini: "CB",
+        component: CreateBrand,
+        layout: "/admin"
+      },
+      {
+        path: "/edit-brand/:id",
+        name: "Editar Marca",
+        rtlName: "Edit Brand",
+        mini: "EM",
+        rtlMini: "EB",
+        component: EditBrand,
+        layout: "/admin",
+        invisible: true
+      },
+      {
+        path: "/list-brands",
+        name: "Lista Marcas",
+        rtlName: "Brands List",
+        mini: "LM",
+        rtlMini: "BL",
+        component: ListBrands,
         layout: "/admin"
       }
     ]
