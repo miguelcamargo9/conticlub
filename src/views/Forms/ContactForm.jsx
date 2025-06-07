@@ -34,7 +34,7 @@ class contactForm extends React.Component {
       descriptionState: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    window.open("https://bit.ly/38aPnVJ");
+    window.open("https://bit.ly/4dRNJZ3");
     this.props.history.goBack();
   }
   // function that verifies if a string has a given length or not
