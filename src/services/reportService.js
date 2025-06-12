@@ -25,3 +25,25 @@ export const getInvoiceByUserService = () => {
     })
     .catch(err => console.log(err));
 };
+
+export const getFullInvoicesReportService = () => {
+  return sessionService
+    .loadSession()
+    .then(currentSession => {
+      const API_ENDPOINT = `${SERVER_URL}/api/reports/invoices/full`;
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${currentSession.access_token}`
+        }
+      };
+
+      return axios
+        .get(API_ENDPOINT, config)
+        .then(response => response.data)
+        .catch(error => {
+          console.log(error);
+        });
+    })
+    .catch(err => console.log(err));
+};

@@ -69,6 +69,7 @@ import LocationCity from "@material-ui/icons/LocationCity";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 
 import { generalRoutes, generaFinallRoutes } from "./generalRoutes";
+import FullInvoiceReport from "../views/Admin/Reports/FullInvoiceReport.jsx";
 
 export const adminRoutes = [
   ...generalRoutes,
@@ -474,6 +475,15 @@ export const adminRoutes = [
         rtlMini: "RP",
         layout: "/admin",
         component: PointsReport
+      },
+      {
+        path: "/invoices",
+        name: "Reporte de facturas",
+        rtlName: "Invoice Report",
+        mini: "RF",
+        rtlMini: "IR",
+        layout: "/admin",
+        component: FullInvoiceReport
       }
     ]
   },
