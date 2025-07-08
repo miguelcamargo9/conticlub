@@ -31,10 +31,10 @@ class contactForm extends React.Component {
       subject: "",
       subjectState: "",
       description: "",
-      descriptionState: "",
+      descriptionState: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    window.open("https://bit.ly/38aPnVJ");
+    window.open("https://bit.ly/4dRNJZ3");
     this.props.history.goBack();
   }
   // function that verifies if a string has a given length or not
@@ -59,7 +59,10 @@ class contactForm extends React.Component {
     this.setState({ [stateName]: event.target.value });
   }
   isValidated() {
-    if (this.state.subjectState === "success" && this.state.descriptionState === "success") {
+    if (
+      this.state.subjectState === "success" &&
+      this.state.descriptionState === "success"
+    ) {
       return true;
     } else {
       if (this.state.subjectState === "") {
@@ -76,13 +79,13 @@ class contactForm extends React.Component {
     if (this.isValidated()) {
       const dataMail = {
         subject: this.state.subject,
-        description: this.state.description,
+        description: this.state.description
       };
-      sendMailService(dataMail).then((responseSendMail) => {
+      sendMailService(dataMail).then(responseSendMail => {
         if (responseSendMail.data.message === "success") {
           this.setState({
             messageError: null,
-            successMessage: `Correo enviado con éxito.`,
+            successMessage: `Correo enviado con éxito.`
           });
           setTimeout(() => {
             this.props.history.push(`/admin/home`);
@@ -90,7 +93,7 @@ class contactForm extends React.Component {
         } else {
           this.setState({
             messageError: responseSendMail.data.detail,
-            successMessage: null,
+            successMessage: null
           });
         }
       });
@@ -104,19 +107,24 @@ class contactForm extends React.Component {
           <Card>
             <CardHeader color="warning" text>
               <CardText color="warning">
-                <h4 className={classes.cardTitle}>Escríbenos tus dudas y comentarios</h4>
+                <h4 className={classes.cardTitle}>
+                  Escríbenos tus dudas y comentarios
+                </h4>
               </CardText>
             </CardHeader>
             <CardBody>
               <p>
-                Para ContiClub es importante saber lo que piensas, por eso abrimos este espacio para
-                que puedas tener una comunicación directa con nosotros y así poder solventar
-                cualquier cosas que necesites.
+                Para ContiClub es importante saber lo que piensas, por eso
+                abrimos este espacio para que puedas tener una comunicación
+                directa con nosotros y así poder solventar cualquier cosas que
+                necesites.
               </p>
               <form>
                 <GridContainer>
                   <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>Asunto</FormLabel>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Asunto
+                    </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={7}>
                     <CustomInput
@@ -124,10 +132,11 @@ class contactForm extends React.Component {
                       error={this.state.subjectState === "error"}
                       id="subject"
                       formControlProps={{
-                        fullWidth: true,
+                        fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (event) => this.change(event, "subject", "length", 5),
+                        onChange: event =>
+                          this.change(event, "subject", "length", 5),
                         type: "text",
                         endAdornment:
                           this.state.subjectState === "error" ? (
@@ -136,7 +145,7 @@ class contactForm extends React.Component {
                             </InputAdornment>
                           ) : (
                             undefined
-                          ),
+                          )
                       }}
                     />
                   </GridItem>
@@ -148,7 +157,9 @@ class contactForm extends React.Component {
                 </GridContainer>
                 <GridContainer>
                   <GridItem xs={12} sm={2}>
-                    <FormLabel className={classes.labelHorizontal}>Descripción</FormLabel>
+                    <FormLabel className={classes.labelHorizontal}>
+                      Descripción
+                    </FormLabel>
                   </GridItem>
                   <GridItem xs={12} sm={7}>
                     <CustomInput
@@ -156,10 +167,11 @@ class contactForm extends React.Component {
                       error={this.state.descriptionState === "error"}
                       id="description"
                       formControlProps={{
-                        fullWidth: true,
+                        fullWidth: true
                       }}
                       inputProps={{
-                        onChange: (event) => this.change(event, "description", "length", 20),
+                        onChange: event =>
+                          this.change(event, "description", "length", 20),
                         type: "text",
                         endAdornment:
                           this.state.descriptionState === "error" ? (
@@ -168,7 +180,7 @@ class contactForm extends React.Component {
                             </InputAdornment>
                           ) : (
                             undefined
-                          ),
+                          )
                       }}
                     />
                   </GridItem>
