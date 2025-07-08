@@ -34,7 +34,7 @@ export const confirmRedeemService = dataRedeem => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/buyed/${
+      const REDEEM_API_ENDPOINT = `${SERVER_URL}/api/product/bought/${
         dataRedeem.id
       }`;
 
