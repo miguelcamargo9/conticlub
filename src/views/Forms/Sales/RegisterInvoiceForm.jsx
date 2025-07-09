@@ -593,7 +593,19 @@ class registerInvoiceForm extends React.Component {
         <GridItem>
           <SnackbarContent
             message={
-              "Si no encuentras la referencia que vendiste por favor contáctanos en la linea CAU 3013211294."
+              <span>
+                Si no encuentras la referencia que vendiste por favor
+                contáctanos en la linea CAU{" "}
+                <a
+                  href="https://bit.ly/4dRNJZ3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#fff", textDecoration: "underline" }}
+                >
+                  +57 304 5429502
+                </a>
+                .
+              </span>
             }
             icon={Help}
             color="info"
