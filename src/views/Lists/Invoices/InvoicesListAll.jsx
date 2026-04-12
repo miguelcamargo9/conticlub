@@ -19,6 +19,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import Button from "components/CustomButtons/Button.jsx";
+import CustomInput from "components/CustomInput/CustomInput.jsx";
 
 import * as invoiceActions from "../../../actions/invoiceActions";
 
@@ -30,12 +31,62 @@ const styles = {
     ...cardTitle,
     marginTop: "15px",
     marginBottom: "0px"
+  },
+  searchContainer: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: "10px",
+    gap: "10px"
   }
 };
 
 class InvoicesListAll extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: "",
+      searchTimeout: null
+    };
+  }
+
   componentDidMount() {
-    this.props.InvoiceActions.getInvoiceHistory();
+    const { pagination } = this.props;
+    this.props.InvoiceActions.getInvoiceHistory(
+      pagination.currentPage,
+      pagination.perPage
+    );
+  }
+
+  handlePageChange(pageIndex) {
+    const { pagination } = this.props;
+    this.props.InvoiceActions.getInvoiceHistory(
+      pageIndex + 1,
+      pagination.perPage,
+      this.state.search
+    );
+  }
+
+  handlePageSizeChange(pageSize) {
+    this.props.InvoiceActions.getInvoiceHistory(
+      1,
+      pageSize,
+      this.state.search
+    );
+  }
+
+  handleSearchChange(e) {
+    const value = e.target.value;
+    if (this.state.searchTimeout) {
+      clearTimeout(this.state.searchTimeout);
+    }
+    const timeout = setTimeout(() => {
+      this.props.InvoiceActions.getInvoiceHistory(
+        1,
+        this.props.pagination.perPage,
+        value
+      );
+    }, 500);
+    this.setState({ search: value, searchTimeout: timeout });
   }
 
   buildDataTable() {
@@ -72,17 +123,12 @@ class InvoicesListAll extends React.Component {
             </a>
           ),
           actions: (
-            // we've added some custom button actions
             <div className="actions-left">
-              {/* use this button to add a edit kind of action */}
               <Button
                 size="sm"
                 onClick={() => {
-                  let invoiceSelect = this.props.invoices.find(
-                    findInvoice => findInvoice.id === invoice.id
-                  );
                   this.props.history.push(
-                    `/admin/invoice-details/${invoiceSelect.id}`
+                    `/admin/invoice-details/${invoice.id}`
                   );
                 }}
                 color="warning"
@@ -102,7 +148,7 @@ class InvoicesListAll extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, pagination, loading } = this.props;
     const dataTable = this.buildDataTable();
     return (
       <GridContainer>
@@ -115,30 +161,41 @@ class InvoicesListAll extends React.Component {
               <h4 className={classes.cardIconTitle}>Lista de Ventas</h4>
             </CardHeader>
             <CardBody>
+              <div className={classes.searchContainer}>
+                <CustomInput
+                  formControlProps={{
+                    style: { margin: 0, paddingTop: 0 }
+                  }}
+                  inputProps={{
+                    placeholder: "Buscar por nombre, # factura o estado...",
+                    value: this.state.search,
+                    onChange: e => this.handleSearchChange(e),
+                    style: { width: "350px" }
+                  }}
+                />
+                {pagination.total > 0 && (
+                  <span style={{ color: "#999", fontSize: "13px" }}>
+                    {pagination.total} resultados
+                  </span>
+                )}
+              </div>
               <ReactTable
-                previousText="Atrás"
+                manual
+                pages={pagination.lastPage}
+                page={pagination.currentPage - 1}
+                onPageChange={pageIndex => this.handlePageChange(pageIndex)}
+                onPageSizeChange={pageSize =>
+                  this.handlePageSizeChange(pageSize)
+                }
+                loading={loading}
+                previousText="Atr&aacute;s"
                 nextText="Siguiente"
-                pageText="Página"
+                pageText="P&aacute;gina"
                 ofText="de"
                 rowsText="filas"
                 loadingText="Cargando..."
                 noDataText="No ha ingresado ventas"
                 data={dataTable}
-                filterable
-                getTrProps={(state, rowInfo, column) => {
-                  return {
-                    style: {
-                      textDecorationLine:
-                        rowInfo && rowInfo.row.state === "Rechazada"
-                          ? "line-through"
-                          : "",
-                      color:
-                        rowInfo && rowInfo.row.state === "Rechazada"
-                          ? "red"
-                          : null
-                    }
-                  };
-                }}
                 columns={[
                   {
                     Header: "Usuario",
@@ -187,13 +244,22 @@ class InvoicesListAll extends React.Component {
                     filterable: false
                   }
                 ]}
-                defaultPageSize={10}
-                defaultSorted={[
-                  {
-                    id: "register_date",
-                    desc: true
-                  }
-                ]}
+                defaultPageSize={15}
+                pageSizeOptions={[15, 30, 50, 100]}
+                getTrProps={(state, rowInfo) => {
+                  return {
+                    style: {
+                      textDecorationLine:
+                        rowInfo && rowInfo.row.state === "Rechazada"
+                          ? "line-through"
+                          : "",
+                      color:
+                        rowInfo && rowInfo.row.state === "Rechazada"
+                          ? "red"
+                          : null
+                    }
+                  };
+                }}
                 showPaginationTop
                 showPaginationBottom={false}
                 className="-striped -highlight"
@@ -208,7 +274,9 @@ class InvoicesListAll extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    invoices: state.invoice.invoices
+    invoices: state.invoice.invoices,
+    pagination: state.invoice.pagination,
+    loading: state.invoice.loading
   };
 }
 
