@@ -39,11 +39,18 @@ export const insertInvoice = invoiceData => {
     .catch(err => console.log(err));
 };
 
-export const getInvoiceHistoryService = () => {
+export const getInvoiceHistoryService = (
+  page = 1,
+  perPage = 15,
+  search = ""
+) => {
   return sessionService
     .loadSession()
     .then(currentSession => {
-      const INVOICE_API_ENDPOINT = `${SERVER_URL}/api/invoice/all`;
+      let url = `${SERVER_URL}/api/invoice/all?page=${page}&per_page=${perPage}`;
+      if (search) {
+        url += `&search=${encodeURIComponent(search)}`;
+      }
 
       const data = {
         headers: {
@@ -52,7 +59,7 @@ export const getInvoiceHistoryService = () => {
       };
 
       return axios
-        .get(INVOICE_API_ENDPOINT, data)
+        .get(url, data)
         .then(response => {
           return response;
         })
