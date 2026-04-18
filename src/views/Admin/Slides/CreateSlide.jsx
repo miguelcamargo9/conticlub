@@ -64,6 +64,7 @@ class CreateSlide extends React.Component {
         responsive: this.state.checked.length > 0 ? 1 : 0
       };
       insertSlideService(dataSlide).then(responseSaveSlide => {
+        if (!responseSaveSlide || !responseSaveSlide.data) return;
         if (responseSaveSlide.data.message === "success") {
           this.setState({
             messageError: null,

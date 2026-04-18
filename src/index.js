@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
+import axios from "axios";
 
 import { Provider } from "react-redux";
 import { sessionService } from "redux-react-session";
@@ -12,11 +13,26 @@ import RtlLayout from "layouts/RTL.jsx";
 import AdminLayout from "layouts/Admin.jsx";
 
 import configureStore from "store/configureStore";
+import { NETWORK_ERROR } from "actions/index";
 
 import "assets/scss/material-dashboard-pro-react.scss?v=1.5.0";
 
 const hist = createBrowserHistory();
 const store = configureStore();
+
+// Global axios interceptor — single point of error handling
+axios.interceptors.response.use(
+  function(response) {
+    store.dispatch({ type: NETWORK_ERROR, payload: false });
+    return response;
+  },
+  function(error) {
+    if (!error.response) {
+      store.dispatch({ type: NETWORK_ERROR, payload: true });
+    }
+    return Promise.reject(error);
+  }
+);
 
 const validateSession = () => {
   // check if your session is still valid

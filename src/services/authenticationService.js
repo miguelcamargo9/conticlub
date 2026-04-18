@@ -19,8 +19,8 @@ export const loginUserService = request => {
     .then(response => {
       return response;
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(function() {
+      return { data: null };
     });
 };
 
@@ -40,7 +40,7 @@ export const recoveryPassService = request => {
     .then(response => {
       return response;
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(function() {
+      return { data: null };
     });
 };

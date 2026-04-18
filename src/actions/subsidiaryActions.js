@@ -20,6 +20,7 @@ export const setSubsidiariesData = subsidiaries => {
 export const getSubsidiariesData = () => {
   return dispatch => {
     getSubsidiariesService().then(subsidiaries => {
+      if (!subsidiaries) return;
       dispatch(setSubsidiariesData(subsidiaries));
     });
   };

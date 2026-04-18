@@ -39,6 +39,7 @@ export const setUserData = (user, history) => {
 export const loginUserAction = (user, history) => {
   return dispatch => {
     loginUserService(user).then(userInfo => {
+      if (!userInfo || !userInfo.data) return;
       if (userInfo.data.message) {
         dispatch(setMessageError(userInfo.data.message));
       } else {
@@ -53,6 +54,7 @@ export const loginUserAction = (user, history) => {
 export const recoveryPassAction = user => {
   return dispatch => {
     recoveryPassService(user).then(userInfo => {
+      if (!userInfo || !userInfo.data) return;
       if (userInfo.data.message === "error") {
         dispatch(setMessageError(userInfo.data.detail));
         dispatch(setMessage(null));

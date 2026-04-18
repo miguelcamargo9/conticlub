@@ -64,6 +64,7 @@ class CreateTire extends React.Component {
         tire_points: this.state.tirePoints
       };
       createTireService(dataTire).then(responseSaveTire => {
+        if (!responseSaveTire || !responseSaveTire.data) return;
         if (responseSaveTire.data.message === "success") {
           this.setState({
             messageError: null,
@@ -125,6 +126,7 @@ class CreateTire extends React.Component {
   async loadDesigns() {
     try {
       const designInfo = await getDesignsService();
+      if (!designInfo || !designInfo.data) return;
       const designSelectData = designInfo.data.map(design => {
         design.value = design.id;
         design.label = design.name;

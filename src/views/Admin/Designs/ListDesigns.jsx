@@ -55,7 +55,7 @@ class ListDesigns extends React.Component {
   componentDidMount() {
     getDesignsService()
       .then(dataDesigns => {
-        this.setState({ designs: dataDesigns.data });
+        this.setState({ designs: dataDesigns.data || [] });
       })
       .catch();
   }

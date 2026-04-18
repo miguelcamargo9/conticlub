@@ -127,6 +127,7 @@ class ConfirmRedeemForm extends React.Component {
         comment: invoice.comment ? invoice.comment : null
       };
       rejectInvoiceService(dataInvoice).then(responseRejectInvocie => {
+        if (!responseRejectInvocie || !responseRejectInvocie.data) return;
         if (responseRejectInvocie.data.message === "success") {
           this.setState({
             messageError: null,
@@ -151,6 +152,7 @@ class ConfirmRedeemForm extends React.Component {
       id: invoice.id
     };
     approveInvoiceService(dataInvoice).then(responseApproveInvocie => {
+      if (!responseApproveInvocie || !responseApproveInvocie.data) return;
       if (responseApproveInvocie.data.message === "success") {
         this.setState({
           messageError: null,

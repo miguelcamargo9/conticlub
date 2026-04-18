@@ -83,6 +83,7 @@ class CreateProduct extends React.Component {
   }
   componentDidMount() {
     getCategoriesService().then(categoryInfo => {
+      if (!categoryInfo || !categoryInfo.data) return;
       const categorySelectData = categoryInfo.data.map(category => {
         category.value = category.id;
         category.label = category.name;

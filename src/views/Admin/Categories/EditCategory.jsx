@@ -40,6 +40,7 @@ class EditCategory extends React.Component {
   componentDidMount() {
     getCategoryById(this.props.match.params.id)
       .then(responeProductCategory => {
+        if (!responeProductCategory || !responeProductCategory.data) return;
         this.setState({ categoryName: responeProductCategory.data.name });
       })
       .catch(e => console.log("error", e));

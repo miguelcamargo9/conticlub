@@ -54,7 +54,7 @@ class profilesList extends React.Component {
 
   componentDidMount() {
     getProfiles().then(profilesInfo => {
-      this.setState({ profiles: profilesInfo.data });
+      this.setState({ profiles: profilesInfo.data || [] });
     });
   }
 

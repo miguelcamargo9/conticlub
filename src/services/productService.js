@@ -20,11 +20,11 @@ export const productService = () => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getProductsByCategoryIdService = idCategory => {
@@ -45,11 +45,11 @@ export const getProductsByCategoryIdService = idCategory => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const updateProduct = productData => {
@@ -86,11 +86,11 @@ export const updateProduct = productData => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const deleteProductService = productId => {
@@ -109,11 +109,11 @@ export const deleteProductService = productId => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const insertProduct = productData => {
@@ -148,11 +148,11 @@ export const insertProduct = productData => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const redeemProductService = idProduct => {
@@ -175,11 +175,11 @@ export const redeemProductService = idProduct => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getProductByIdService = idProduct => {
@@ -200,9 +200,9 @@ export const getProductByIdService = idProduct => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };

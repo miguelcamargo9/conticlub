@@ -67,6 +67,7 @@ class EditTire extends React.Component {
   async loadDesigns() {
     try {
       const designInfo = await getDesignsService();
+      if (!designInfo || !designInfo.data) return;
       const designSelectData = designInfo.data.map(design => {
         design.value = design.id;
         design.label = design.name;
@@ -91,6 +92,7 @@ class EditTire extends React.Component {
   async loadTire() {
     try {
       const responeTire = await getTireById(this.props.match.params.id);
+      if (!responeTire || !responeTire.data) return;
       const design = responeTire.data.design;
       const selectDesign = {
         ...design,
@@ -190,6 +192,7 @@ class EditTire extends React.Component {
         tire_points: this.state.tirePoints
       };
       updateTireService(dataTire).then(responseSaveTire => {
+        if (!responseSaveTire || !responseSaveTire.data) return;
         if (responseSaveTire.data.message === "success") {
           this.setState({
             messageError: null,

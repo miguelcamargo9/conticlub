@@ -19,11 +19,11 @@ export const getInvoiceByUserService = () => {
         .then(response => {
           return response.data;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return [];
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => []);
 };
 
 export const getFullInvoicesReportService = () => {
@@ -41,9 +41,9 @@ export const getFullInvoicesReportService = () => {
       return axios
         .get(API_ENDPOINT, config)
         .then(response => response.data)
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
+          return [];
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => []);
 };

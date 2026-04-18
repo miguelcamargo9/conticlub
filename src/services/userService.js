@@ -20,11 +20,11 @@ export const userService = () => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getUserByIdService = userId => {
@@ -44,11 +44,11 @@ export const getUserByIdService = userId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const updateUserService = request => {
@@ -109,11 +109,11 @@ export const updateUserService = request => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const createUserService = request => {
@@ -145,8 +145,8 @@ export const createUserService = request => {
     .then(response => {
       return response;
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(function() {
+      return { data: null };
     });
 };
 
@@ -167,11 +167,11 @@ export const getInvoiceHistoryByUserService = userId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getRedeemListService = () => {
@@ -191,11 +191,11 @@ export const getRedeemListService = () => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getRedeemListByUserIdService = userId => {
@@ -215,9 +215,9 @@ export const getRedeemListByUserIdService = userId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };

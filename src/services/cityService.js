@@ -17,10 +17,10 @@ export const getCities = async () => {
       const response = await axios.get(API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -39,10 +39,10 @@ export const getCity = async id => {
       const response = await axios.get(API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -61,10 +61,10 @@ export const createCity = async city => {
       const response = await axios.post(API_ENDPOINT, city, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -83,10 +83,10 @@ export const updateCity = async city => {
       const response = await axios.put(API_ENDPOINT, city, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -105,9 +105,9 @@ export const deleteCityService = async id => {
       const response = await axios.delete(API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };

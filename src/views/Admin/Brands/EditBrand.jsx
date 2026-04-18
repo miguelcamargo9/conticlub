@@ -37,6 +37,7 @@ class EditBrand extends React.Component {
   componentDidMount() {
     getBrandById(this.props.match.params.id)
       .then(responeBrand => {
+        if (!responeBrand || !responeBrand.data) return;
         this.setState({ brandName: responeBrand.data.name });
       })
       .catch(e => console.log("error", e));

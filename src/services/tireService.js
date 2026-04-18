@@ -19,11 +19,11 @@ export const getTiresByDesigndId = designId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getTiresService = async () => {
@@ -41,10 +41,10 @@ export const getTiresService = async () => {
       const response = await axios.get(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -63,10 +63,10 @@ export const getTireById = async tireId => {
       const response = await axios.get(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -85,10 +85,10 @@ export const createTireService = async tire => {
       const response = await axios.post(DESIGN_API_ENDPOINT, tire, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -107,10 +107,10 @@ export const updateTireService = async tire => {
       const response = await axios.put(DESIGN_API_ENDPOINT, tire, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -129,9 +129,9 @@ export const deleteTireService = async tireId => {
       const response = await axios.delete(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };

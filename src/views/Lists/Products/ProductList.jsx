@@ -31,6 +31,7 @@ import { getCategoriesService } from "../../../services/productCategoryService";
 // utils
 
 import { BUCKET_URL } from "../../../constants/server";
+import Loading from "components/Loading/Loading.jsx";
 
 const selectStyles = {
   container: (base, state) => ({
@@ -59,6 +60,7 @@ class productList extends React.Component {
     this.props.ProductActions.getProductsAction();
 
     getCategoriesService().then(categories => {
+      if (!categories || !categories.data) return;
       categories = categories.data.map(category => {
         category.value = category.id;
         category.label = category.name;
@@ -284,7 +286,7 @@ class productList extends React.Component {
         </GridContainer>
       </div>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 }

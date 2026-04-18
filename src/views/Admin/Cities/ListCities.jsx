@@ -54,7 +54,7 @@ class ListCities extends React.Component {
     getCities()
       .then(dataCities => {
         console.log("dataCities", dataCities);
-        this.setState({ cities: dataCities.data });
+        this.setState({ cities: dataCities.data || [] });
       })
       .catch();
   }

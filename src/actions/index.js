@@ -29,6 +29,7 @@ export const SET_SUBSIDIARIES = "SET_SUBSIDIARIES";
 
 //Errors
 export const ERROR_MESSAGE = "ERROR_MESSAGE";
+export const NETWORK_ERROR = "NETWORK_ERROR";
 
 //Message
 export const MESSAGE = "MESSAGE";

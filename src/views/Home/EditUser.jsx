@@ -70,6 +70,7 @@ class EditUser extends React.Component {
       })
       .then(() => {
         getUserByIdService(sessionUser.id).then(userData => {
+          if (!userData || !userData.data) return;
           const user = {
             ...this.state.user,
             ...userData.data
@@ -104,6 +105,7 @@ class EditUser extends React.Component {
         image: this.state.image
       };
       updateUserService(dataUser).then(responseSaveUser => {
+        if (!responseSaveUser || !responseSaveUser.data) return;
         if (responseSaveUser.data.message === "success") {
           this.setState({
             messageError: null,

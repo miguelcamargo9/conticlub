@@ -82,6 +82,7 @@ class contactForm extends React.Component {
         description: this.state.description
       };
       sendMailService(dataMail).then(responseSendMail => {
+        if (!responseSendMail || !responseSendMail.data) return;
         if (responseSendMail.data.message === "success") {
           this.setState({
             messageError: null,

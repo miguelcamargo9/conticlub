@@ -40,6 +40,7 @@ class editProfile extends React.Component {
   componentDidMount() {
     getProfileById(this.props.match.params.id)
       .then(responeProfile => {
+        if (!responeProfile || !responeProfile.data) return;
         this.setState({ profileName: responeProfile.data.name });
       })
       .catch(e => console.log("error", e));

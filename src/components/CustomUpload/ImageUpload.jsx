@@ -93,7 +93,7 @@ class ImageUpload extends React.Component {
           <img
             src={this.state.imagePreviewUrl}
             alt="..."
-            style={this.state.isPdf ? { width: "auto", maxHeight: "180px", padding: "20px" } : {}}
+            style={this.state.isPdf ? { width: "60%", height: "auto", padding: "25px 20%" } : {}}
           />
         </div>
         <div>

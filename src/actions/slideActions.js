@@ -57,6 +57,7 @@ export const setSlidesDownResponsiveData = dataSlide => {
 export const getSlidesAction = (position, responsive) => {
   return dispatch => {
     getSlideByPositionService(position, responsive).then(slideInfo => {
+      if (!slideInfo || !slideInfo.data) return;
       if (position === "up") {
         if (responsive === 1) {
           dispatch(setSlidesUpResponsiveData(slideInfo.data));

@@ -30,6 +30,7 @@ import {
   getSlideService,
   deleteSlideService
 } from "../../../services/slideService";
+import Loading from "components/Loading/Loading.jsx";
 
 const styles = {
   ...extendedTablesStyle,
@@ -45,7 +46,8 @@ class ListSlides extends React.Component {
   }
   componentDidMount() {
     getSlideService().then(slidesInfo => {
-      this.setState({ slides: slidesInfo.data });
+      if (!slidesInfo || !slidesInfo.data) return;
+      this.setState({ slides: slidesInfo.data || [] });
     });
   }
 
@@ -188,7 +190,7 @@ class ListSlides extends React.Component {
         </GridContainer>
       </div>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 

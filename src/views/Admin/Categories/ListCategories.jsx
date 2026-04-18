@@ -55,7 +55,7 @@ class ListCategories extends React.Component {
   componentDidMount() {
     getCategoriesService()
       .then(dataCategories => {
-        this.setState({ productCategories: dataCategories.data });
+        this.setState({ productCategories: dataCategories.data || [] });
       })
       .catch();
   }

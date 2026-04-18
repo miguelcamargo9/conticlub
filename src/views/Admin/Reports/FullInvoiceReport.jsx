@@ -13,6 +13,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 import { getFullInvoicesReportService } from "services/reportService";
+import Loading from "components/Loading/Loading.jsx";
 
 const styles = {
   cardIconTitle: {
@@ -29,6 +30,7 @@ class FullInvoiceReport extends React.Component {
 
   componentDidMount() {
     getFullInvoicesReportService().then(report => {
+      if (!report) return;
       this.setState({ data: Array.isArray(report) ? report : [] });
     });
   }
@@ -125,7 +127,7 @@ class FullInvoiceReport extends React.Component {
         </GridItem>
       </GridContainer>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 }
