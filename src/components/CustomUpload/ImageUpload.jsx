@@ -7,6 +7,7 @@ import Button from "components/CustomButtons/Button.jsx";
 
 import defaultImage from "assets/img/image_placeholder.jpg";
 import defaultAvatar from "assets/img/placeholder.jpg";
+const pdfIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='%23e53935' d='M320 464H64c-17.7 0-32-14.3-32-32V80c0-17.7 14.3-32 32-32h160l128 128v288c0 17.7-14.3 32-32 32z'/%3E%3Cpath fill='%23ef9a9a' d='M224 48l128 128H256c-17.7 0-32-14.3-32-32V48z'/%3E%3Ctext x='192' y='340' text-anchor='middle' fill='white' font-size='120' font-family='Arial' font-weight='bold'%3EPDF%3C/text%3E%3C/svg%3E";
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -33,16 +34,26 @@ class ImageUpload extends React.Component {
   }
   handleImageChange(e) {
     e.preventDefault();
-    let reader = new FileReader();
     let file = e.target.files[0];
-    reader.onloadend = () => {
+    if (!file) return;
+    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    if (isPdf) {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: pdfIcon
       });
-      this.props.handleChangeImage(this.state.file);
-    };
-    reader.readAsDataURL(file);
+      this.props.handleChangeImage(file);
+    } else {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        this.setState({
+          file: file,
+          imagePreviewUrl: reader.result
+        });
+        this.props.handleChangeImage(file);
+      };
+      reader.readAsDataURL(file);
+    }
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -73,7 +84,7 @@ class ImageUpload extends React.Component {
     } = this.props;
     return (
       <div className="fileinput text-center">
-        <input type="file" onChange={this.handleImageChange} ref="fileInput" />
+        <input type="file" accept="image/jpeg,image/png,image/gif,application/pdf" onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (avatar ? " img-circle" : "")}>
           <img src={this.state.imagePreviewUrl} alt="..." />
         </div>
