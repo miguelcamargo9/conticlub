@@ -16,7 +16,8 @@ class ImageUpload extends React.Component {
       this.props.imagePreview !== "" ? this.props.imagePreview : defaultImage;
     this.state = {
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImageLoad,
+      isPdf: false
     };
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +41,8 @@ class ImageUpload extends React.Component {
     if (isPdf) {
       this.setState({
         file: file,
-        imagePreviewUrl: pdfIcon
+        imagePreviewUrl: pdfIcon,
+        isPdf: true
       });
       this.props.handleChangeImage(file);
     } else {
@@ -48,7 +50,8 @@ class ImageUpload extends React.Component {
       reader.onloadend = () => {
         this.setState({
           file: file,
-          imagePreviewUrl: reader.result
+          imagePreviewUrl: reader.result,
+          isPdf: false
         });
         this.props.handleChangeImage(file);
       };
@@ -67,7 +70,8 @@ class ImageUpload extends React.Component {
   handleRemove() {
     this.setState({
       file: null,
-      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage
+      imagePreviewUrl: this.props.avatar ? defaultAvatar : defaultImage,
+      isPdf: false
     });
     this.refs.fileInput.value = null;
     this.props.handleRemoveImage();
@@ -86,7 +90,11 @@ class ImageUpload extends React.Component {
       <div className="fileinput text-center">
         <input type="file" accept="image/jpeg,image/png,image/gif,application/pdf" onChange={this.handleImageChange} ref="fileInput" />
         <div className={"thumbnail" + (avatar ? " img-circle" : "")}>
-          <img src={this.state.imagePreviewUrl} alt="..." />
+          <img
+            src={this.state.imagePreviewUrl}
+            alt="..."
+            style={this.state.isPdf ? { width: "auto", maxHeight: "180px", padding: "20px" } : {}}
+          />
         </div>
         <div>
           {this.state.file === null ? (
