@@ -51,7 +51,7 @@ class ListBrands extends React.Component {
 
   componentDidMount() {
     getBrands().then(brandsInfo => {
-      this.setState({ brands: brandsInfo.data });
+      this.setState({ brands: brandsInfo.data || [] });
     });
   }
 

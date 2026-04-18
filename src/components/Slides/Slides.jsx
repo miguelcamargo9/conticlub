@@ -1,5 +1,6 @@
 import React from "react";
 import { Zoom } from "react-slideshow-image";
+import Loading from "components/Loading/Loading.jsx";
 
 const zoomOutProperties = {
   duration: 5000,
@@ -19,7 +20,7 @@ class Slides extends React.Component {
         ))}
       </Zoom>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 }

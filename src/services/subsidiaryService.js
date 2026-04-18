@@ -17,8 +17,8 @@ export const getSubsidiariesService = () => {
     .then(response => {
       return response.data;
     })
-    .catch(function(error) {
-      console.log(error);
+    .catch(function() {
+      return [];
     });
 };
 
@@ -41,11 +41,11 @@ export const insertSubsidiary = subsidiaryData => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const updateSubsidiary = subsidiaryData => {
@@ -70,11 +70,11 @@ export const updateSubsidiary = subsidiaryData => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const deleteSubsidiaryService = subsidiaryId => {
@@ -94,11 +94,11 @@ export const deleteSubsidiaryService = subsidiaryId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getSubsidiaryById = async subsidiaryId => {
@@ -116,9 +116,9 @@ export const getSubsidiaryById = async subsidiaryId => {
       const response = await axios.get(SUBSIDIARY_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };

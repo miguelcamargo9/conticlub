@@ -37,6 +37,7 @@ class EditCity extends React.Component {
   componentDidMount() {
     getCity(this.props.match.params.id)
       .then(responeCity => {
+        if (!responeCity || !responeCity.data) return;
         this.setState({
           cityName: responeCity.data.name
         });

@@ -32,11 +32,11 @@ export const insertInvoice = invoiceData => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getInvoiceHistoryService = (
@@ -63,11 +63,11 @@ export const getInvoiceHistoryService = (
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getInvoiceDetailsService = invoiceId => {
@@ -87,11 +87,11 @@ export const getInvoiceDetailsService = invoiceId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const rejectInvoiceService = dataInvoice => {
@@ -115,11 +115,11 @@ export const rejectInvoiceService = dataInvoice => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const approveInvoiceService = dataInvoice => {
@@ -139,9 +139,9 @@ export const approveInvoiceService = dataInvoice => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };

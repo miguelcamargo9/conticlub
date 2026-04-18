@@ -115,6 +115,7 @@ class registerInvoiceForm extends React.Component {
   };
   handleChangeBrand = (brand, index) => {
     getDesignsByBrandId(brand.id).then(designInfo => {
+      if (!designInfo || !designInfo.data) return;
       const designSelectData = designInfo.data.map(design => {
         design.value = design.id;
         design.label = design.name;
@@ -128,6 +129,7 @@ class registerInvoiceForm extends React.Component {
   };
   handleChangeDesign = (design, index) => {
     getTiresByDesigndId(design.id).then(wheelInfo => {
+      if (!wheelInfo || !wheelInfo.data) return;
       const wheelSelectData = wheelInfo.data.map(wheel => {
         wheel.value = wheel.id;
         wheel.label = wheel.name;
@@ -189,6 +191,7 @@ class registerInvoiceForm extends React.Component {
   }
   componentDidMount() {
     getBrands().then(brandInfo => {
+      if (!brandInfo || !brandInfo.data) return;
       const brandSelectData = brandInfo.data.map(brand => {
         brand.value = brand.id;
         brand.label = brand.name;

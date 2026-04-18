@@ -57,6 +57,7 @@ class EditProduct extends React.Component {
   componentDidMount() {
     getCategoriesService()
       .then(categoryInfo => {
+        if (!categoryInfo || !categoryInfo.data) return;
         const categorySelectData = categoryInfo.data.map(category => {
           category.value = category.id;
           category.label = category.name;
@@ -67,6 +68,7 @@ class EditProduct extends React.Component {
       })
       .then(() => {
         getProductByIdService(this.props.match.params.id).then(productInfo => {
+          if (!productInfo || !productInfo.data) return;
           const category = productInfo.data.product_category;
           const selectCategory = {
             ...category,

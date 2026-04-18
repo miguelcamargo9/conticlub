@@ -19,11 +19,11 @@ export const getDesignsByBrandId = brandId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getDesignsService = async () => {
@@ -41,10 +41,10 @@ export const getDesignsService = async () => {
       const response = await axios.get(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -63,10 +63,10 @@ export const getDesignById = async designId => {
       const response = await axios.get(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -85,10 +85,10 @@ export const createDesignService = async design => {
       const response = await axios.post(DESIGN_API_ENDPOINT, design, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -107,10 +107,10 @@ export const updateDesignService = async design => {
       const response = await axios.put(DESIGN_API_ENDPOINT, design, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };
 
@@ -129,9 +129,9 @@ export const deleteDesignService = async designId => {
       const response = await axios.delete(DESIGN_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };

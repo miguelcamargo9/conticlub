@@ -21,6 +21,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import { cardTitle } from "assets/jss/material-dashboard-pro-react.jsx";
 
 import { getInvoiceByUserService } from "../../../services/reportService";
+import Loading from "components/Loading/Loading.jsx";
 
 const styles = {
   cardIconTitle: {
@@ -38,6 +39,7 @@ class PointsReport extends React.Component {
 
   componentDidMount() {
     getInvoiceByUserService().then(userInfo => {
+      if (!userInfo) return;
       this.setState({ users: userInfo });
     });
   }
@@ -157,7 +159,7 @@ class PointsReport extends React.Component {
         </GridItem>
       </GridContainer>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 }

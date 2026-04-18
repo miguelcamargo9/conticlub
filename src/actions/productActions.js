@@ -16,7 +16,7 @@ export const setPictureData = dataProduct => {
 export const getProductsAction = () => {
   return dispatch => {
     productService().then(dataProduct => {
-      // let output = dataProduct.data.slice(0, 12);
+      if (!dataProduct || !dataProduct.data) return;
       dispatch(setPictureData(dataProduct.data));
     });
   };
@@ -25,7 +25,7 @@ export const getProductsAction = () => {
 export const getProductsByCategoryId = idCategory => {
   return dispatch => {
     getProductsByCategoryIdService(idCategory).then(dataProduct => {
-      // let output = dataProduct.data.slice(0, 12);
+      if (!dataProduct || !dataProduct.data) return;
       dispatch(setPictureData(dataProduct.data));
     });
   };

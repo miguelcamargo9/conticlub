@@ -62,15 +62,17 @@ class ListTires extends React.Component {
     if (this.props.designId) {
       getTiresByDesigndId(this.props.designId)
         .then(dataTires => {
-          this.setState({ tires: dataTires.data.tires });
-          this.setState({ profiles: dataTires.data.profiles });
+          if (!dataTires || !dataTires.data) return;
+          this.setState({ tires: dataTires.data.tires || [] });
+          this.setState({ profiles: dataTires.data.profiles || [] });
         })
         .catch();
     } else {
       getTiresService()
         .then(dataTires => {
-          this.setState({ tires: dataTires.data.tires });
-          this.setState({ profiles: dataTires.data.profiles });
+          if (!dataTires || !dataTires.data) return;
+          this.setState({ tires: dataTires.data.tires || [] });
+          this.setState({ profiles: dataTires.data.profiles || [] });
         })
         .catch();
     }

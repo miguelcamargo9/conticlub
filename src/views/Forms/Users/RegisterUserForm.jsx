@@ -50,6 +50,7 @@ class RegisterUserForm extends React.Component {
 
     console.log("data a post", data);
     createUserService(data).then(userInfo => {
+      if (!userInfo || !userInfo.data) return;
       if (userInfo.data.message === "success") {
         this.setState({
           messageError: null,

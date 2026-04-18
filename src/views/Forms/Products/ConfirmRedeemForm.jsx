@@ -164,6 +164,7 @@ class ConfirmRedeemForm extends React.Component {
       comment: redeem.comment ? redeem.comment : null
     };
     approveRedeemService(dataRedeem).then(responseApproveRedeem => {
+      if (!responseApproveRedeem || !responseApproveRedeem.data) return;
       if (responseApproveRedeem.data.message === "success") {
         this.setState({
           messageError: null,
@@ -191,6 +192,7 @@ class ConfirmRedeemForm extends React.Component {
       };
       console.log("data enviada", dataRedeem);
       confirmRedeemService(dataRedeem).then(responseApproveRedeem => {
+        if (!responseApproveRedeem || !responseApproveRedeem.data) return;
         if (responseApproveRedeem.data.message === "success") {
           this.setState({
             messageError: null,
@@ -217,6 +219,7 @@ class ConfirmRedeemForm extends React.Component {
         comment: redeem.comment ? redeem.comment : null
       };
       rejectRedeemService(dataRedeem).then(responseApproveRedeem => {
+        if (!responseApproveRedeem || !responseApproveRedeem.data) return;
         if (responseApproveRedeem.data.message === "success") {
           this.setState({
             messageError: null,

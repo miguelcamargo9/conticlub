@@ -20,11 +20,11 @@ export const insertProfile = profileData => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const updateProfile = profileData => {
@@ -47,11 +47,11 @@ export const updateProfile = profileData => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const deleteProfileService = profileId => {
@@ -71,11 +71,11 @@ export const deleteProfileService = profileId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getProfileById = profileId => {
@@ -95,11 +95,11 @@ export const getProfileById = profileId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getProfiles = () => {
@@ -119,11 +119,11 @@ export const getProfiles = () => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getSellersProfiles = async () => {
@@ -141,9 +141,9 @@ export const getSellersProfiles = async () => {
       const response = await axios.get(PROFILE_API_ENDPOINT, data);
       return response;
     } catch (error) {
-      console.log(error);
+      return { data: null };
     }
   } catch (err) {
-    console.log(err);
+    return { data: null };
   }
 };

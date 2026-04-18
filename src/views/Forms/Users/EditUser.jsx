@@ -78,6 +78,7 @@ class EditUser extends React.Component {
   componentDidMount() {
     getProfiles()
       .then(profilesInfo => {
+        if (!profilesInfo || !profilesInfo.data) return;
         const profileSelectData = profilesInfo.data.map(profile => {
           profile.value = profile.id;
           profile.label = profile.name;
@@ -88,6 +89,7 @@ class EditUser extends React.Component {
       })
       .then(() => {
         getSubsidiariesService().then(subsidiariesInfo => {
+          if (!subsidiariesInfo) return;
           const subsidiarySelectData = subsidiariesInfo.map(subsidiary => {
             subsidiary.value = subsidiary.id;
             subsidiary.label = subsidiary.name;
@@ -99,6 +101,7 @@ class EditUser extends React.Component {
       })
       .then(() => {
         getUserByIdService(this.props.match.params.id).then(userData => {
+          if (!userData || !userData.data) return;
           const profile = userData.data.profile;
           const selectProfile = {
             ...profile,
@@ -311,6 +314,7 @@ class EditUser extends React.Component {
         image: this.state.image
       };
       updateUserService(dataUser).then(responseSaveUser => {
+        if (!responseSaveUser || !responseSaveUser.data) return;
         if (responseSaveUser.data.message === "success") {
           this.setState({
             messageError: null,

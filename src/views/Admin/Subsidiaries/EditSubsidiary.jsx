@@ -54,6 +54,7 @@ class EditSubsidiary extends React.Component {
     this.loadProfiles();
     getSubsidiaryById(this.props.match.params.id)
       .then(responeSubsidiary => {
+        if (!responeSubsidiary || !responeSubsidiary.data) return;
         const city = responeSubsidiary.data.city;
         const selectCity = {
           ...city,
@@ -78,6 +79,7 @@ class EditSubsidiary extends React.Component {
   async loadCities() {
     try {
       const cityInfo = await getCities();
+      if (!cityInfo || !cityInfo.data) return;
       const citySelectData = cityInfo.data.map(city => {
         city.value = city.id;
         city.label = city.name;
@@ -92,6 +94,7 @@ class EditSubsidiary extends React.Component {
   async loadProfiles() {
     try {
       const profileInfo = await getSellersProfiles();
+      if (!profileInfo || !profileInfo.data) return;
       const profileSelectData = profileInfo.data.map(profile => {
         profile.value = profile.id;
         profile.label = capitalizeFirstLetter(profile.name);

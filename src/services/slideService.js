@@ -20,11 +20,11 @@ export const getSlideService = () => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getSlideByPositionService = (position, responsive) => {
@@ -44,11 +44,11 @@ export const getSlideByPositionService = (position, responsive) => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const deleteSlideService = slideId => {
@@ -68,11 +68,11 @@ export const deleteSlideService = slideId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const insertSlideService = slideData => {
@@ -103,9 +103,9 @@ export const insertSlideService = slideData => {
           console.log(response);
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };

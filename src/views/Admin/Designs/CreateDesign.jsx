@@ -46,6 +46,7 @@ class CreateDesign extends React.Component {
         brand_id: this.state.brand.id
       };
       createDesignService(dataDesign).then(responseSaveDesign => {
+        if (!responseSaveDesign || !responseSaveDesign.data) return;
         if (responseSaveDesign.data.message === "success") {
           this.setState({
             messageError: null,
@@ -106,6 +107,7 @@ class CreateDesign extends React.Component {
   async loadBrands() {
     try {
       const brandInfo = await getBrands();
+      if (!brandInfo || !brandInfo.data) return;
       const brandSelectData = brandInfo.data.map(brand => {
         brand.value = brand.id;
         brand.label = brand.name;

@@ -39,6 +39,7 @@ import { deleteProductService } from "../../../services/productService";
 
 // utils
 import { BUCKET_URL } from "../../../constants/server";
+import Loading from "components/Loading/Loading.jsx";
 
 const productListAdminStyles = {
   ...sweetAlertStyle,
@@ -76,6 +77,7 @@ class productListAdmin extends React.Component {
     this.props.ProductActions.getProductsAction();
 
     getCategoriesService().then(categories => {
+      if (!categories || !categories.data) return;
       categories = categories.data.map(category => {
         category.value = category.id;
         category.label = category.name;
@@ -483,7 +485,7 @@ class productListAdmin extends React.Component {
         </GridContainer>
       </div>
     ) : (
-      <div>Loading...</div>
+      <Loading />
     );
   }
 }

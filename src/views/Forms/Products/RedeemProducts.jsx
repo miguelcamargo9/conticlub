@@ -52,12 +52,14 @@ class RedeemProduct extends React.Component {
 
   componentDidMount() {
     getProductByIdService(this.props.match.params.id).then(product => {
+      if (!product || !product.data) return;
       this.setState({ product: product.data });
     });
   }
 
   handleRedeemProduct(product) {
     redeemProductService(product.id).then(responseRedeemProfile => {
+      if (!responseRedeemProfile || !responseRedeemProfile.data) return;
       if (responseRedeemProfile.data.message === "success") {
         this.props.SessionActions.setPoints(
           responseRedeemProfile.data.currentPoints

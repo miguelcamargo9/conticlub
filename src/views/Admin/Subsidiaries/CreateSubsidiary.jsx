@@ -113,6 +113,7 @@ class CreateSubsidiary extends React.Component {
 
   componentDidMount() {
     getCities().then(cityInfo => {
+      if (!cityInfo || !cityInfo.data) return;
       const citySelectData = cityInfo.data.map(city => {
         city.value = city.id;
         city.label = city.name;
@@ -122,6 +123,7 @@ class CreateSubsidiary extends React.Component {
     });
 
     getSellersProfiles().then(profileInfo => {
+      if (!profileInfo || !profileInfo.data) return;
       const profileSelectData = profileInfo.data.map(profile => {
         profile.value = profile.id;
         profile.label = capitalizeFirstLetter(profile.name);

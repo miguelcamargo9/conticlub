@@ -36,6 +36,7 @@ export const setRedeemListData = dataRedeem => {
 export const getUsersAction = () => {
   return dispatch => {
     userService().then(dataUsers => {
+      if (!dataUsers || !dataUsers.data) return;
       dispatch(setUserData(dataUsers.data));
     });
   };
@@ -44,6 +45,7 @@ export const getUsersAction = () => {
 export const getInvoiceHistoryByUser = userId => {
   return dispatch => {
     getInvoiceHistoryByUserService(userId).then(dataInvoices => {
+      if (!dataInvoices || !dataInvoices.data) return;
       dispatch(setInvoiceHistoryData(dataInvoices.data));
     });
   };
@@ -52,6 +54,7 @@ export const getInvoiceHistoryByUser = userId => {
 export const getRedeemList = () => {
   return dispatch => {
     getRedeemListService().then(dataRedeem => {
+      if (!dataRedeem || !dataRedeem.data) return;
       dispatch(setRedeemListData(dataRedeem.data));
     });
   };
@@ -60,6 +63,7 @@ export const getRedeemList = () => {
 export const getRedeemListByUserId = userId => {
   return dispatch => {
     getRedeemListByUserIdService(userId).then(dataRedeem => {
+      if (!dataRedeem || !dataRedeem.data) return;
       dispatch(setRedeemListData(dataRedeem.data));
     });
   };

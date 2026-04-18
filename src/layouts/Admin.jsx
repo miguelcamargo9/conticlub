@@ -187,6 +187,20 @@ class Dashboard extends React.Component {
           {/* On the /maps/full-screen-maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
             <div className={classes.content}>
+              {this.props.networkError && (
+                <div style={{
+                  background: "#f44336",
+                  color: "#fff",
+                  padding: "10px 20px",
+                  textAlign: "center",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  borderRadius: "4px",
+                  marginBottom: "15px"
+                }}>
+                  No se pudo conectar con el servidor. Verifique su conexion o intente mas tarde.
+                </div>
+              )}
               <div className={classes.container}>
                 <Switch>{this.getRoutes(this.state.routes)}</Switch>
               </div>
@@ -220,11 +234,12 @@ Dashboard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps({ localSession, session }) {
+function mapStateToProps({ localSession, session, error }) {
   const points =
     localSession.points === 0 ? session.user.points : localSession.points;
   return {
-    points: points
+    points: points,
+    networkError: error.networkError
   };
 }
 

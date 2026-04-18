@@ -23,11 +23,11 @@ export const approveRedeemService = dataRedeem => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const confirmRedeemService = dataRedeem => {
@@ -52,11 +52,11 @@ export const confirmRedeemService = dataRedeem => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const rejectRedeemService = dataRedeem => {
@@ -80,11 +80,11 @@ export const rejectRedeemService = dataRedeem => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
 
 export const getRedeemByIdService = redeemId => {
@@ -104,9 +104,9 @@ export const getRedeemByIdService = redeemId => {
         .then(response => {
           return response;
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          return { data: null };
         });
     })
-    .catch(err => console.log(err));
+    .catch(() => ({ data: null }));
 };
